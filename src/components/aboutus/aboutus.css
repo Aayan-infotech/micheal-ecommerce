@@ -1,0 +1,74 @@
+.banner-aboutUs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 300px;
+    width: 100vw;
+    text-align: center;
+    background: linear-gradient(110deg, #E54B22 55%, #34236D 55%);
+}
+
+.banner-aboutUs h2, .aboutus-para{
+    color: #fff;
+}
+
+.aboutus-para{
+    width: 420px;
+}
+
+.aboutus-first-sec{
+    display: flex;
+    flex-direction: column;
+    margin-right: 35px;
+}
+
+.aboutus-content{
+    display: flex;
+    justify-content: space-between;
+}
+
+.aboutus-sec-first .first-text p{
+    margin-bottom: 20px;
+}
+
+.aboutus-content img{
+    border-radius: 20px;
+}
+
+.first-inner-img{
+    display: flex;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.aboutus-second-sec .aboutus-text{
+    color: black;
+}
+
+.aboutus-sec-first,
+.about-sec-second{
+    display: flex;
+    margin-top: 20px;
+}
+
+.first-text{
+    margin-left: 20px;
+}
+
+.first-text p{
+    width: 330px;
+}
+
+.aboutus-second-sec button{
+    margin-top: 20px;
+    color: #fff;
+    padding: 12px 20px;
+    background-color: #383564;
+    border-radius: 50px;
+}
+
+.aboutus-second-sec .second-text{
+    line-height: 43px;
+    margin-bottom: 22px;
+}
