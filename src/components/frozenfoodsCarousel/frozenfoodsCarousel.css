@@ -1,0 +1,151 @@
+.frozenfoodsCarousel {
+    margin-bottom: 60px;
+  }
+  
+  .cart-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .left-cart-sec {
+    position: relative;
+  }
+  
+  .left-cart-sec img {
+    height: 350px;
+    width: 500px;
+    border-radius: 20px;
+    object-fit: cover;
+  }
+  
+  .left-cart-para {
+    width: 170px;
+    height: 40px;
+    border-radius: 20px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #383564;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: -10px;
+    left: 160px;
+    font-size: 0.9rem;
+  }
+  
+  .right-cart-sec {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;
+  }
+  
+  .cart-head {
+    font-size: 1.8rem;
+    color: black;
+    margin-bottom: 10px;
+  }
+  
+  .right-cart-para {
+    margin: 10px 0;
+    font-size: 1rem;
+    line-height: 2;
+    color: black;
+    width: 70%;
+  }
+  
+  .right-cart-credential {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  .right-cart-info {
+    font-size: 1rem;
+    color: #383564;
+  }
+  
+  .bxs-star {
+    font-weight: bold;
+    color: #FECC63;
+  }
+  
+  .right-cart-navi {
+    display: flex;
+    align-items: center;
+  }
+  
+  .right-cart-butt {
+    padding: 10px 30px;
+    border-radius: 25px;
+    background-color: #383564;
+    color: #fff;
+    font-size: 1.2rem;
+    border: none;
+    margin-right: 15px;
+    cursor: pointer;
+  }
+  
+  .heart-icon {
+    font-size: 2rem;
+    color: #383564;
+    cursor: pointer;
+  }
+  
+  .cart-about {
+    margin: 40px 0;
+    display: flex;
+  }
+  
+  .cart-about .cart-head {
+    font-size: 1.5rem;
+    color: black;
+    margin-bottom: 15px;
+    width: 30%;
+  }
+  
+  .cart-about-summary {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: black;
+  }
+  
+  .cart-links {
+    margin: 80px 0 60px 0;
+    display: flex;
+  }
+  
+  .cart-links .cart-head {
+    font-size: 1.5rem;
+    color: black;
+    margin-bottom: 15px;
+    width: 60%;
+  }
+  
+  .cart-links-info {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  
+  .cart-links-first {
+    margin-bottom: 15px;
+    color: #808080;
+    font-size: 1rem;
+  }
+  
+  .cart-links-info h2 {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .cart-links-second {
+    color: #5956E9;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
