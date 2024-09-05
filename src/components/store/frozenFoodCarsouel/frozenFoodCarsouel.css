@@ -1,0 +1,181 @@
+.highlights-heading {
+  color: black;
+}
+
+.carousel-text {
+  margin: 30px 0 20px 0;
+}
+
+.carousel-text .carousel-red {
+  width: 200px;
+  height: 50px;
+  border-radius: 50px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #fd0002;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 250px;
+  white-space: nowrap;
+}
+
+.carousel-text .carousel-blue {
+  width: 200px;
+  height: 50px;
+  border-radius: 50px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #332c45;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 100px;
+  left: 190px;
+  white-space: nowrap;
+}
+
+.legend3 {
+  text-align: left;
+  color: black;
+}
+
+.carousel-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.carousel-text .carousel-info .legend4 {
+  font-size: 1.1rem;
+}
+
+.carousel-text .carousel-info .legend4 .bxs-star {
+  color: #fecc63;
+}
+
+.carousel-text .carousel-info .legend5 .bx-heart {
+  color: #f5835e;
+  font-size: 2rem;
+  position: relative;
+  bottom: 16px;
+}
+
+.carousel-slide .carousel-img {
+  width: 400px !important;
+  height: 270px;
+}
+
+.beautyproduct-discounts {
+  margin: 20px auto;
+  text-align: center;
+  border: 1px solid #d3d3d3;
+  border-radius: 50px;
+  padding: 20px;
+}
+
+.beautyproduct-discounts .discounts-heading,
+.highlights-carousel .highlights-heading {
+  color: black;
+  margin-bottom: 20px;
+}
+
+.highlights-carousel {
+  margin: 20px auto;
+  text-align: center;
+}
+
+.carousel .slide {
+  background: none;
+  border-radius: 50px;
+  transition: transform 0.5s;
+  height: 100%;
+  width: 100%;
+}
+
+.carousel .slide img,
+.carousel-item img {
+  border-radius: 10px;
+  max-width: 100%;
+  max-height: 350px;
+}
+
+.carousel .carousel-text .legend1 {
+  color: black;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.7rem;
+}
+
+.carousel .control-prev.control-arrow,
+.carousel .control-next.control-arrow {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  color: white;
+  border: none;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 5px 15px;
+  cursor: pointer;
+  z-index: 2;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.carousel-arrow:hover {
+  background-color: rgba(0, 0, 0, 0.801);
+}
+
+.carousel-arrow.prev {
+  left: 0;
+}
+
+.carousel-arrow.next {
+  right: 0;
+}
+
+.carousel .control-dots .dot {
+  background: black;
+}
+
+.carousel-caption {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.carousel-caption .discount {
+  display: block;
+  background-color: #4a4a4a;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  font-size: 0.8em;
+}
+
+@media screen and (max-width: 992px) {
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 576px) {
+}
+
+@media screen and (max-width: 350px) {
+}

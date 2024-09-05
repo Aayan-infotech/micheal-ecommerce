@@ -1,0 +1,138 @@
+.myorders-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 150px;
+  width: 100%;
+  text-align: center;
+  background: linear-gradient(110deg, #e54b22 55%, #34236d 55%);
+}
+
+.myorders-cart {
+  width: 80%;
+  margin: -40px auto 50px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-summarys{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+}
+
+.order-summarys h2{
+  font-size: 1.3rem;
+}
+.myorders a{
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 20px 12px 20px;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.order-head {
+  font-size: 1.2rem;
+  color: black;
+  font-weight: bold;
+}
+
+.myOrders-first {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  cursor: pointer;
+}
+
+.myOrder-inner {
+  display: flex;
+  align-items: center;
+}
+
+.orders-price h2 {
+  margin-bottom: 40px;
+}
+
+.myorders-img img {
+  height: 130px;
+  width: 120px;
+  border-radius: 10px;
+}
+
+.myorders-text {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}
+
+.myorders-text h2 {
+  margin: 0;
+  color: black;
+}
+
+.myorders-text p {
+  margin: 5px 0 15px 0;
+  text-align: left;
+  color: #555;
+}
+
+.myorders-text button {
+  padding: 8px 20px;
+  border-radius: 10px;
+  background-color: #fff;
+  color: black;
+  border: 1px solid #cacaca;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.myorders-text button:hover {
+  background-color: black;
+  color: #fff;
+}
+
+@media screen and (max-width: 992px) {
+  .myOrders-first{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .orders-price{
+    margin-bottom: -20px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .myorders a{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .myorders-img img {
+    max-width: 100%;
+    height: 80px;
+  }
+
+  .myorders-text {
+    margin-left: 0;
+    margin-top: 15px;
+  }
+  .myorders-img{
+    margin-right: 20px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+}
+
+@media screen and (max-width: 350px) {
+
+}

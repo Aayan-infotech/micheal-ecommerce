@@ -1,0 +1,43 @@
+.pay-message {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.pay-message img {
+  height: 350px;
+  width: 250px;
+}
+
+.pay-message button {
+  padding: 15px 100px;
+  border-radius: 50px;
+  background-color: #383564;
+  cursor: pointer;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.pay-message .success {
+  color: black;
+  font-size: 2rem;
+}
+
+.pay-message .message1 {
+  color: #fe0002;
+  margin: 15px 0;
+  font-weight: 500;
+}
+
+.pay-message .message2 {
+  color: #352da8;
+  margin-bottom: 50px;
+  font-weight: 500;
+}
+
+@media screen and (max-width: 992px) {
+    .pay-message .pay-button{
+        padding: 15px 80px!important;
+    }
+}
