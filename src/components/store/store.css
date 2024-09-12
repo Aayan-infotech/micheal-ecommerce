@@ -1,0 +1,152 @@
+.first-store {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 300px;
+  width: 100vw;
+  text-align: center;
+  background: url("../../images/background-img.png");
+}
+
+.store-para {
+  width: 640px;
+}
+
+.second-store {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 50px;
+}
+
+.second-store .food-store,
+.second-store .products-store {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 400px;
+  width: 600px;
+  overflow: hidden;
+}
+
+.second-store .food-store .food-sec,
+.second-store .products-store .products-sec {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 250px;
+  width: 100%;
+  border-radius: 20px;
+
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.second-store .food-store .food-sec {
+  background-color: #2a265f;
+}
+
+.second-store .products-store .products-sec {
+  background-color: #fe1400;
+}
+
+.second-store .sec-store-img {
+  height: 250px;
+  width: 480px;
+  object-fit: cover;
+  border-radius: 20px;
+  margin-top: 110px;
+}
+
+.second-store h2,
+.second-store p {
+  color: black;
+  text-align: left;
+}
+
+.second-store h2 {
+  margin-top: 70px;
+  margin-right: 210px;
+}
+
+.second-store p {
+  margin-right: 400px;
+}
+
+.second-store .frozen {
+  margin-right: 245px;
+}
+
+@media screen and (max-width: 992px) {
+  .second-store {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 576px) {
+  .second-store .food-store,
+  .second-store .products-store {
+    height: 200px;
+    width: 380px;
+    overflow: visible;
+  }
+  .products-store {
+    margin: 150px 0;
+  }
+  .second-store .sec-store-img {
+    height: 250px;
+    width: 330px;
+    border-radius: 20px;
+    margin-top: 60px;
+  }
+  .second-store h2,
+  .second-store p {
+    color: black;
+    text-align: left;
+  }
+
+  .second-store h2 {
+    margin-top: 40px;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .second-store p {
+    margin-right: 0px;
+  }
+
+  .second-store .frozen {
+    margin-right: 0px;
+  }
+  .products-store h2 {
+    margin-right: 0px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .second-store .food-store .food-sec,
+  .second-store .products-store .products-sec {
+    height: 150px;
+  }
+  .second-store .food-store,
+  .second-store .products-store {
+    height: 100px;
+    width: 200px;
+    overflow: visible;
+  }
+  .products-store {
+    margin: 150px 0;
+  }
+  .second-store .sec-store-img {
+    height: 150px;
+    width: 170px;
+    border-radius: 20px;
+    margin-top: 60px;
+  }
+}

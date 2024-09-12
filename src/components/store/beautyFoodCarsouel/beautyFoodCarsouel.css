@@ -1,0 +1,223 @@
+.beautyproduct-banner {
+    background-image: url("../../../images/beautyproduct-first.png");
+    height: 500px;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #fff;
+}
+
+.beautyproduct-banner .beautyproduct-para{
+    margin: 20px 0;
+}
+
+.beautyproduct-button {
+    padding: 12px 30px;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+/* First-Carsouel */
+
+.beautyproduct-discounts {
+    margin: 20px auto;
+    text-align: center;
+    border: 1px solid #D3D3D3;
+    border-radius: 50px;
+    padding: 20px;
+}
+
+.beautyproduct-discounts .discounts-heading,
+.highlights-carousel .highlights-heading {
+    color: black;
+    margin-bottom: 20px;
+}
+
+.highlights-carousel {
+    margin: 20px auto;
+    text-align: center;
+}
+
+.carousel .slide {
+    background: none;
+    border-radius: 50px;
+    transform: scale(0.8);
+    transition: transform 0.5s;
+}
+
+.carousel .slide.selected {
+    transform: scale(1);
+}
+
+.carousel .slide img,
+.carousel-item img {
+    border-radius: 10px;
+    max-width: 100%;
+    max-height: 350px;
+}
+
+.carousel .carousel-text .legend1{
+    color: black;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.7rem;
+}
+
+.carousel .control-prev.control-arrow,
+.carousel .control-next.control-arrow {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    color: white;
+    border: none;
+}
+
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 5px 15px;
+    cursor: pointer;
+    z-index: 2;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.carousel-arrow:hover {
+    background-color: rgba(0, 0, 0, 0.801);
+}
+
+.carousel-arrow.prev {
+    left: 0;
+}
+
+.carousel-arrow.next {
+    right: 0;
+}
+
+.carousel .control-dots .dot {
+    background: black;
+}
+
+.carousel-caption {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.carousel-caption .discount {
+    display: block;
+    background-color: #4a4a4a;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    font-size: 0.8em;
+}
+
+/* Second-carsouel */
+.highlights-heading{
+    color: black;
+}
+
+.carousel-text{
+    margin: 30px 0 20px 0;
+}
+
+.carousel-text .carousel-red{
+    width: 200px;
+    height: 50px;
+    border-radius: 50px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #FD0002;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 330px;
+}
+
+.carousel-text .carousel-blue{
+    width: 200px;
+    height: 50px;
+    border-radius: 50px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #332C45;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 100px;
+    left: 190px;
+}
+
+.legend3{
+    text-align: left;
+    color: black;
+}
+
+.carousel-infos{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.carousel-text .carousel-infos .legend4{
+    font-size: 1.1rem;
+    margin: 5px 0;
+    text-align: left;
+}
+
+.carousel-text .carousel-infos .legend4 .bxs-star{
+    color: #FECC63;
+}
+
+.carousel-text .carousel-infos .legend4, .legend5{
+    color: #000;
+}
+
+.carousel-text .carousel-infos .legend5{
+    font-weight: bold;
+}
+
+.carousel-text .carousel-infos .legend6{
+    color: var(--text-color);
+}
+
+.carousel-text .carousel-infos .legend6 .price {
+    color: var(--text-color);
+    text-decoration: line-through;
+    margin-right: 20px;
+    
+}
+
+.carousel-text .carousel-infos .legend6 span {
+    color: #FD0002;
+}
+
+.carousel-text .carousel-infos .legend5 .bx-heart{
+    color: #F5835E;
+    font-size: 2rem;
+    position: relative;
+    bottom: 16px;
+}
+
+.carousel-slide .carousel-img{
+    width: 400px!important;
+    height: 270px;
+}

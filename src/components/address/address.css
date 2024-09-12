@@ -1,0 +1,82 @@
+.address-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 150px;
+  width: 100%;
+  text-align: center;
+  background: url("../../images/background-img.png");
+}
+
+.address-button {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.address button {
+  padding: 12px 90px;
+  background-color: #383564;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.address button:hover {
+  background-color: #383564f1;
+}
+
+
+
+.add-form{
+  padding: 35px 40px 50px 40px;
+  border-radius: 10px;
+  width: 1100px;
+  color: black;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.conA-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-form .comm {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.add-form .comm label {
+  flex: 1;
+}
+
+.add-form .comm select,
+.add-form .comm input {
+  width: 100%;
+  border-radius: 50px;
+  padding: 17px 10px;
+  margin-top: 8px;
+  border: 1px solid #ccc;
+}
+
+.add-form .comm h4 {
+  float: left;
+}
+
+.conA-form .third-inputs p{
+    text-align: center;
+    margin: 20px 0;
+}
+
+.conA-form .comm textarea{
+  width: 100%;
+  border-radius: 10px;
+  padding: 11px 10px;
+  margin-top: 8px;
+  border: 1px solid #ccc;
+}

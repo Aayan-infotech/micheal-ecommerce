@@ -1,0 +1,157 @@
+.Otp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  text-align: center;
+  background: url("../../../images/background-img.png");
+}
+
+.sign {
+  margin-top: 20px;
+  text-align: center;
+  color: white;
+}
+.form {
+  background: #fff;
+  padding: 35px 40px 0 40px;
+  border-radius: 10px;
+  width: 750px;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: black;
+  text-align: center;
+}
+
+.form h1 {
+  margin-bottom: 20px;
+}
+
+.o-form {
+  display: flex;
+  flex-direction: column;
+  margin: 0 100px;
+}
+
+.o-form h4 {
+  text-align: center;
+}
+.form-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pass-form button {
+  padding: 12px 20px;
+  position: relative;
+  top: 22px;
+  background-color: #2f2f2f;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+}
+.otp-input {
+  display: flex;
+}
+.otp-input input {
+  height: 70px;
+  width: 80px;
+  text-align: center;
+  margin: 20px 18px;
+  border: 1px solid #dcdcdc;
+  border-radius: 5px;
+}
+
+.pass-form button:hover {
+  background-color: #484848;
+}
+
+.login-link {
+  margin-top: 30px;
+  text-align: center;
+  color: black;
+}
+
+.login-link Link {
+  color: black;
+  border-bottom: 1px solid #383564;
+  font-weight: 500;
+}
+
+.fpass {
+  display: flex;
+  justify-content: center;
+  color: #383564;
+  cursor: pointer;
+}
+.pass {
+  color: #fff;
+  width: 633px;
+  margin: 10px 0 10px 60px;
+}
+
+@media screen and (max-width: 992px) {
+  .form {
+    width: 500px;
+    padding: 30px 30px 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .o-form{
+    margin: 0;
+  }
+  .pass-form button{
+    width: 30%;
+  }
+  .pass {
+    color: #fff;
+    width: 600px;
+    margin: 10px 0 10px 0px;
+  }
+  .otp-input input{
+    height: 50px;
+    width: 60px;
+    text-align: center;
+    margin: 20px 12px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 576px) {
+  .form {
+    width: 350px;
+    padding: 30px 20px 0 20px;
+  }
+  .pass {
+    color: #fff;
+    width: 400px;
+    margin: 10px 0 10px 0px;
+  }
+  .o-form{
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .form {
+    width: 280px;
+  }
+  .otp-input input{
+    height: 40px;
+    width: 50px;
+    text-align: center;
+    margin: 20px 5px;
+  }
+  .pass-form button{
+    width: 50%;
+  }
+  .pass {
+    color: #fff;
+    width: 300px;
+    margin: 10px 0 10px 0px;
+  }
+}
