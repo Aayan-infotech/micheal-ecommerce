@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import validator from "validator";
@@ -17,6 +17,7 @@ function Register() {
   });
 
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const validate = (fieldValues = formData) => {
     const newErrors = { ...errors };
@@ -59,7 +60,6 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (validate()) {
       try {
         let dataToSubmit = {
@@ -69,22 +69,37 @@ function Register() {
           password: formData.password,
           confirmPassword: formData.confirmPassword,
         };
-
         if (validator.isEmail(formData.emailOrMobile)) {
           dataToSubmit.email = formData.emailOrMobile;
         } else {
           dataToSubmit.mobileNumber = formData.emailOrMobile;
         }
-
         const response = await axios.post(
-          "http://13.200.240.28:3003/api/user/register",
+          "http://3.111.163.2:3129/api/user/register",
           dataToSubmit
         );
-
-        toast.success("User registered successfully!");
+        toast.success(response?.data?.message || "User registered successfully!", {
+          position: "top-right",
+          autoClose: 2000,
+        });
+        setFormData("");
+        // if (response?.data === 201) {
+          navigate('/login')
+        // }
       } catch (error) {
-        console.error("Error registering user:", error);
-        toast.error("Something went wrong while registering.");
+        if (error.response) {
+          const errorMessage = error.response.data?.message;
+          toast.error(errorMessage, {
+            position: "top-right",
+            autoClose: 3000,
+          });
+        } else {
+          toast.error("Network error or server is down. Please try again later.", {
+            position: "top-right",
+            autoClose: 3000,
+          });
+          console.error("Error registering user:", error);
+        }
       }
     }
   };
@@ -178,7 +193,7 @@ function Register() {
         <p className="login-link">
           Have account? <Link to="/login">Login</Link>
         </p>
-        <ToastContainer />
+        <ToastContainer /> 
       </div>
     </div>
   );

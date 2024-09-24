@@ -11,7 +11,7 @@ function SearchItems() {
     try {
       if (searchQuery.length > 0) {
         const res = await axios.post(
-          "http://13.200.240.28:3003/api/product/search",
+          "http://3.111.163.2:3129/api/product/search",
           {
             name: searchQuery,
           }

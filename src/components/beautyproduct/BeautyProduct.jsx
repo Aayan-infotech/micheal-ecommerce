@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./beautyproduct.css";
 import { Carousel } from "react-responsive-carousel";
-// import beautyFirst from "../../images/beautyprodust-second.png";
-// import beautySecond from "../../images/beautyproduct-third.jpg";
-// import beautyThird from "../../images/beautyproduct-fourth.jpg";
+import blankImage from '../../images/blank_image.jpg';
 import CarsouelSection from "./carsouelsection/carsouelsection";
 import axios from "axios";
 
@@ -16,7 +14,7 @@ function BeautyProduct() {
         const storedCategoryId = "6698d9eafc50a7cb09187427";
         if (storedCategoryId) {
           const response = await axios.get(
-            `http://13.200.240.28:3003/api/category/get/${storedCategoryId}`
+            `http://3.111.163.2:3129/api/category/get/${storedCategoryId}`
           );
           setSubcategories(response.data.subcategories);
         } else {
@@ -83,13 +81,10 @@ function BeautyProduct() {
           >
             {subcategories.map((subcategory) => (
               <div className="carousel-slide" key={subcategory._id}>
-                <img src={subcategory.image} alt={subcategory.title} />
+                <img src={subcategory?.image || blankImage} alt={subcategory.title} />
                 <div className="carousel-text">
                   <h2 className="legend1"> {subcategory.title} </h2>
-                  <p className="legend2">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry.
-                  </p>
+                  <p className="legend2">{subcategory?.description || 'N/A'} </p>
                 </div>
               </div>
             ))}

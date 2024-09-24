@@ -71,7 +71,7 @@
     background-color: #388e3c;
     border-radius: 5px;
     color: #fff;
-    width: 40%;
+    max-width: 55px;
     display: flex;
     justify-content: center;
     align-items: center;

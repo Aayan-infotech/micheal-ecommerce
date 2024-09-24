@@ -20,21 +20,19 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // Check if fields are filled
     if (!formData.emailOrUsername || !formData.password) {
       toast.error("Please enter email/username and password");
       return;
     }
-
     console.log("Sending login request:", formData);
-
     try {
-      const response = await axios.post('http://13.200.240.28:3003/api/auth/login', formData);
+      const response = await axios.post('http://3.111.163.2:3129/api/auth/login', formData);
       if(response.data.success)
       {
         const {token} = response.data;
         sessionStorage.setItem('token', token);
+        sessionStorage.setItem('userId', response.data?.data?.id);
         toast.success("Login Successful!");
         navigate('/home'); 
       }

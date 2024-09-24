@@ -1,47 +1,76 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import cartImg from "../../images/cart-img.jpg";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./wishlist.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Wishlist() {
+  const [wishlists, setWishlists] = useState([]);
+  const userId = sessionStorage.getItem("userId");
 
-  const [wishlists, setWishlists] = useState([
-    {id: 1, name: "Lorem Ispum", price: "3.19", discount: "0% Off", rating: "4.8", image: cartImg},
-    {id: 2, name: "Lorem Ispum", price: "2.39", discount: "0% Off", rating: "4.5", image: cartImg},
-    {id: 3, name: "Lorem Ispum", price: "5.79", discount: "0% Off", rating: "4.8", image: cartImg}
-  ]);
+  useEffect(() => {
+    fetchFavorites();
+  }, []);
 
-  const handleDelete = (id) => {
-    const updateWishlists = wishlists.filter(item => item.id != id);
-    setWishlists(updateWishlists);
-  }
+  const fetchFavorites = async () => {
+    try {
+      const response = await axios.get(`http://3.111.163.2:3129/api/favorite/get/${userId}`);
+      setWishlists(response.data.data.products || []);
+    } catch (error) {
+      console.log('Error fetching favorites', error);
+    }
+  };
+
+  const handleDelete = async (p_id) => {
+    try {
+      const response = await axios.delete(`http://3.111.163.2:3129/api/favorite/delete`, { data: { productId: p_id, userId: userId } });
+      const updateWishlists = wishlists.filter(item => item._id !== p_id);
+      setWishlists(updateWishlists);
+      toast.success(response?.data?.message || 'Deleted successfully!', {
+        autoClose: 1000
+      });
+      fetchFavorites();
+    } catch (error) {
+      console.log('Error deleting favorite', error);
+      toast.error('Failed to delete the item. Please try again.', {
+        autoClose: 1000
+      });
+    }
+  };
+
+
 
   return (
-    <div className="wishlist">
-      <div className="wishlist-container">
-        <div className="wishlist-banner">
-          <h1>Wishlist</h1>
-        </div>
-
-        <div className="wishlist-cart container">
-          {wishlists.map((item) =>(
-              <div className="wishlists" key={item.id}>
+    <>
+      <ToastContainer />
+      <div className="wishlist">
+        <div className="wishlist-container">
+          <div className="wishlist-banner">
+            <h1>Wishlist</h1>
+          </div>
+          <div className="wishlist-cart container">
+            {wishlists.map((item) => (
+              <div className="wishlists" key={item._id}>
                 <div className="wishlist-img">
-                  <img src={item.image} alt="Product"/>
+                  <img src={item.image} alt={item.name} />
                 </div>
                 <div className="wishlist-text">
                   <div className="c-texts">
                     <h2>{item.name}</h2>
-                    <p>{item.rating}<i class="bx bxs-star"></i></p>
+                    <p>{item?.rating || '4.5'}<i class="bx bxs-star"></i></p>
                   </div>
-                  <h3 style={{color: 'black'}}>{item.price} <span>{item.discount}</span></h3>
+                  <h3 style={{ color: 'black' }}>
+                    ${item.price}
+                    {item.discount > 0 && <span> -{item.discount}%</span>}
+                  </h3>
                 </div>
-                <i className="bx bx-trash" onClick={() => handleDelete(item.id)}></i>
+                <i className="bx bx-trash" onClick={() => handleDelete(item._id)}></i>
               </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

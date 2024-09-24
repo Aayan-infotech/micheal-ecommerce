@@ -14,7 +14,7 @@ function FrozenFoods() {
         const storedCategoryId = "6698d0a1034236d25d256698";
         if (storedCategoryId) {
           const response = await axios.get(
-            `http://13.200.240.28:3003/api/category/get/${storedCategoryId}` 
+            `http://3.111.163.2:3129/api/category/get/${storedCategoryId}` 
           );
           setSubcategories(response.data.subcategories); 
         } else {
@@ -85,10 +85,7 @@ function FrozenFoods() {
               <img src={subcategory.image} alt={subcategory.title} />
               <div className="carousel-text">
                 <h2 className="legend1"> {subcategory.title} </h2>
-                <p className="legend2">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry.
-                </p>
+                <p className="legend2">{subcategory?.description || 'N/A'} </p>
               </div>
               </div>
             ))}

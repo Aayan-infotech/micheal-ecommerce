@@ -1,12 +1,12 @@
-.highlights-heading{
+.highlights-heading {
     color: black;
 }
 
-.carousel-text{
+.carousel-text {
     margin: 30px 0 20px 0;
 }
 
-.carousel-text .carousel-red{
+.carousel-text .carousel-red {
     width: 200px;
     height: 50px;
     border-radius: 50px;
@@ -17,10 +17,10 @@
     justify-content: center;
     align-items: center;
     position: absolute;
-    bottom: 330px;
+    bottom: 355px;
 }
 
-.carousel-text .carousel-blue{
+.carousel-text .carousel-blue {
     width: 200px;
     height: 50px;
     border-radius: 50px;
@@ -35,33 +35,56 @@
     left: 190px;
 }
 
-.legend3{
+.legend3 {
     text-align: left;
     color: black;
 }
 
-.carousel-info{
+.carousel-info {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
-.carousel-text .carousel-info .legend4{
+.carousel-text .carousel-info .legend4 {
     font-size: 1.1rem;
 }
 
-.carousel-text .carousel-info .legend4 .bxs-star{
+.carousel-text .carousel-info .legend4 .bxs-star {
     color: #FECC63;
 }
 
-.carousel-text .carousel-info .legend5 .bx-heart{
+.favourite-btn {
+    color: #F5835E;
+    font-size: 2rem;
+    bottom: 16px;
+}
+
+.favourite-btn {
+    cursor: pointer;
+    color: grey;
+}
+
+.active-favorite {
+    color: red;
+}
+
+.favourited {
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+.carousel-text .carousel-info .legend5 .bx-heart {
     color: #F5835E;
     font-size: 2rem;
     position: relative;
     bottom: 16px;
 }
 
-.carousel-slide .carousel-img{
-    width: 400px!important;
+.carousel-slide .carousel-img {
+    width: 400px !important;
     height: 270px;
 }
 
@@ -99,7 +122,7 @@
     max-height: 350px;
 }
 
-.carousel .carousel-text .legend1{
+.carousel .carousel-text .legend1 {
     color: black;
     margin-top: 10px;
     margin-bottom: 20px;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
 import { Link } from "react-router-dom";
 import "./beautyFoodCarsouel.css";
+import blankImage from '../../../images/blank_image.jpg';
 
 function BeautyFoodCarsouel() {
   const [products, setProduct] = useState([]);
@@ -9,7 +10,7 @@ function BeautyFoodCarsouel() {
   useEffect(() => {
     const fetchProd = async () => {
       try {
-        const response = await fetch("http://13.200.240.28:3003/api/product/getall");
+        const response = await fetch("http://3.111.163.2:3129/api/product/getall");
         const data = await response.json();
         setProduct(data.data);
       } catch (error) {
@@ -23,7 +24,7 @@ function BeautyFoodCarsouel() {
     sessionStorage.setItem("selectProduct", JSON.stringify(product));
   }
 
-  return ( 
+  return (
     <div className="carsouelsection">
       <div className="hightlights-carousel container section">
         <h1 className="highlights-heading">Beauty Products</h1>
@@ -66,13 +67,13 @@ function BeautyFoodCarsouel() {
               products.map((products) => (
                 <Link to="/storebeautyprod" key={products._id} onClick={() => handleClick(products)}>
                   <div className="carousel-slide">
-                    <img className="carousel-img" src={products.image} alt={products.name} />
+                    <img className="carousel-img" src={products?.image || blankImage} alt={products.name} />
                     <div className="carousel-text">
                       <h2 className="legend3">{products.name}</h2>
                       <div className="carousel-infos">
                         <p className="legend4">{products.description}</p>
 
-                        
+
                         <p className="legend5">
                           <span className="actual-price">${products.price.toFixed(2)}</span>
                           {products.discount > 0 && (

@@ -12,7 +12,7 @@ function PasswordRecovery() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://13.200.240.28:3003/api/auth/send-email', { email });
+      const response = await axios.post('http://3.111.163.2:3129/api/auth/send-email', { email });
       if (response.data.success) {
         setMessage('OTP sent successfully! Check your email.');
         setError('');
