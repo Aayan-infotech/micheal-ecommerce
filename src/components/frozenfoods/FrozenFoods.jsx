@@ -14,7 +14,7 @@ function FrozenFoods() {
         const storedCategoryId = "6698d0a1034236d25d256698";
         if (storedCategoryId) {
           const response = await axios.get(
-            `http://3.111.163.2:3129/api/category/get/${storedCategoryId}` 
+            `http://44.196.192.232:3129/api/category/get/${storedCategoryId}` 
           );
           setSubcategories(response.data.subcategories); 
         } else {

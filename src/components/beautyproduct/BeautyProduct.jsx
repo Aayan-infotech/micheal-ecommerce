@@ -14,7 +14,7 @@ function BeautyProduct() {
         const storedCategoryId = "6698d9eafc50a7cb09187427";
         if (storedCategoryId) {
           const response = await axios.get(
-            `http://3.111.163.2:3129/api/category/get/${storedCategoryId}`
+            `http://44.196.192.232:3129/api/category/get/${storedCategoryId}`
           );
           setSubcategories(response.data.subcategories);
         } else {

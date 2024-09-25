@@ -14,7 +14,7 @@ function Wishlist() {
 
   const fetchFavorites = async () => {
     try {
-      const response = await axios.get(`http://3.111.163.2:3129/api/favorite/get/${userId}`);
+      const response = await axios.get(`http://44.196.192.232:3129/api/favorite/get/${userId}`);
       setWishlists(response.data.data.products || []);
     } catch (error) {
       console.log('Error fetching favorites', error);
@@ -23,7 +23,7 @@ function Wishlist() {
 
   const handleDelete = async (p_id) => {
     try {
-      const response = await axios.delete(`http://3.111.163.2:3129/api/favorite/delete`, { data: { productId: p_id, userId: userId } });
+      const response = await axios.delete(`http://44.196.192.232:3129/api/favorite/delete`, { data: { productId: p_id, userId: userId } });
       const updateWishlists = wishlists.filter(item => item._id !== p_id);
       setWishlists(updateWishlists);
       toast.success(response?.data?.message || 'Deleted successfully!', {

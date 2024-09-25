@@ -27,7 +27,7 @@ function Login() {
     }
     console.log("Sending login request:", formData);
     try {
-      const response = await axios.post('http://3.111.163.2:3129/api/auth/login', formData);
+      const response = await axios.post('http://44.196.192.232:3129/api/auth/login', formData);
       if(response.data.success)
       {
         const {token} = response.data;

@@ -10,7 +10,7 @@ function BeautyFoodCarsouel() {
   useEffect(() => {
     const fetchProd = async () => {
       try {
-        const response = await fetch("http://3.111.163.2:3129/api/product/getall");
+        const response = await fetch("http://44.196.192.232:3129/api/product/getall");
         const data = await response.json();
         setProduct(data.data);
       } catch (error) {

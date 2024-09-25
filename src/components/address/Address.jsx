@@ -60,7 +60,7 @@ function Address() {
         // const addressId = sessionStorage.getItem("addressId");
 
         const response1 = await fetch(
-          `http://3.111.163.2:3129/api/address/update/${addresss?._id}`,
+          `http://44.196.192.232:3129/api/address/update/${addresss?._id}`,
           {
             method: "PUT",
             headers: {
@@ -83,7 +83,7 @@ function Address() {
         }
       } else {
         const response = await fetch(
-          "http://3.111.163.2:3129/api/address/add",
+          "http://44.196.192.232:3129/api/address/add",
           {
             method: "POST",
             headers: {

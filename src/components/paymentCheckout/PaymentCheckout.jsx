@@ -5,13 +5,14 @@ import { Link, useLocation } from "react-router-dom";
 function PaymentCheckout() {
 
   const location = useLocation();
-  const selectedAddressId = location.state?.selectedAddressId; 
+  const { deliverySlotId, addressId } = location.state || {};
+  console.log(deliverySlotId, addressId)
 
   useEffect(() => {
-    if (selectedAddressId) {
-      console.log('Selected Address ID:', selectedAddressId);
+    if (deliverySlotId) {
+      console.log('Selected Address ID:', deliverySlotId);
     }
-  }, [selectedAddressId]);
+  }, [deliverySlotId]);
 
   return (
     <div className="paymentcheckout">

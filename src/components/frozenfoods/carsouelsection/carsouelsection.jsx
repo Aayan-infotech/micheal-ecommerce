@@ -25,7 +25,7 @@ function CarsouelSection() {
   // Fetch all products
   const fetchAllProducts = async () => {
     try {
-      const response = await axios.get('http://3.111.163.2:3129/api/product/getall');
+      const response = await axios.get('http://44.196.192.232:3129/api/product/getall');
       setGetAllProducts(response?.data?.data);
     } catch (error) {
       console.log('something went wrong', error);
@@ -35,7 +35,7 @@ function CarsouelSection() {
   // Fetch favorite products
   const fetchFavorites = async () => {
     try {
-      const response = await axios.get(`http://3.111.163.2:3129/api/favorite/get/${userId}`);
+      const response = await axios.get(`http://44.196.192.232:3129/api/favorite/get/${userId}`);
       const favoriteProducts = response?.data?.data?.products.map((product) => product._id);
       setFavorites(favoriteProducts || []);
     } catch (error) {
@@ -45,7 +45,7 @@ function CarsouelSection() {
 
   const addToFavorites = async (productId) => {
     try {
-      const response = await axios.post('http://3.111.163.2:3129/api/favorite/add', {
+      const response = await axios.post('http://44.196.192.232:3129/api/favorite/add', {
         userId: userId,
         productId: productId
       });

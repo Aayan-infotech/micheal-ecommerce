@@ -75,7 +75,7 @@ function Register() {
           dataToSubmit.mobileNumber = formData.emailOrMobile;
         }
         const response = await axios.post(
-          "http://3.111.163.2:3129/api/user/register",
+          "http://44.196.192.232:3129/api/user/register",
           dataToSubmit
         );
         toast.success(response?.data?.message || "User registered successfully!", {
