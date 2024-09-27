@@ -64,7 +64,20 @@
   padding: 6px 10px;
 }
 
-.dropdown a:hover {
+.dropdown a:hover .logout-button:hover {
+  background-color: #383564;
+  color: #fff !important;
+}
+
+.logout-button {
+  color: black;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.logout-button:hover {
   background-color: #383564;
   color: #fff !important;
 }

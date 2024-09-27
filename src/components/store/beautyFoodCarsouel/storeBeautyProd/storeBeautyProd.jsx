@@ -6,7 +6,7 @@ function StoreBeautyProd() {
   const [product, setProduct] = useState({});
 
   const storeProducts = JSON.parse(sessionStorage.getItem("selectProduct"));
-  console.log(storeProducts._id);
+  // console.log(storeProducts._id);
 
   useEffect(() => {
     const fetchProd = async () => {
@@ -15,6 +15,7 @@ function StoreBeautyProd() {
           `http://44.196.192.232:3129/api/product/get/${storeProducts._id}`
         );
         const data = await response.json();
+        console.log(data?.data, 'particular product')
         setProduct(data.data);
       } catch (error) {
         console.error("Error fetching products:", error);

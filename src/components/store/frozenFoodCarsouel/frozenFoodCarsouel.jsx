@@ -1,26 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./frozenFoodCarsouel.css";
+import axios from "axios";
 
-function FrozenFoodCarousel() {
+function FrozenFoodCarousel({ categoryType }) {
   const [products, setProduct] = useState([]);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { categoryData } = location.state || {};
+  console.log(categoryData, 'categoryData---')
 
   useEffect(() => {
-    const fetchProd = async () => {
-      try {
-        const response = await fetch("http://44.196.192.232:3129/api/product/getall");
-        const data = await response.json();
-        setProduct(data.data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-    fetchProd();
-  }, []);
+    if (categoryType.length > 0) {
+      const categoryId = categoryType[0]?._id;
+      fetchProducts(categoryId);
+    }
+  }, [categoryType]);
 
-  const handleClick = (product) => {
-    sessionStorage.setItem("selectProduct1", JSON.stringify(product));
+  const fetchProducts = async (categoryId) => {
+    try {
+      const response = await axios.get(`http://44.196.192.232:3129/api/product/categoryproducts/${categoryId}`);
+      setProduct(response?.data?.data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+
+  const handleClick = (storeProductId) => {
+    navigate(`/storefrozenfoodprod/${storeProductId}`)
+    // console.log(storeProdctuId, 'product')
+    // sessionStorage.setItem("selectProduct1", JSON.stringify(product));
   }
 
   return (
@@ -63,33 +73,33 @@ function FrozenFoodCarousel() {
           }
         >
           {
-            products.length > 0 ? (
-              products.map((product) => (
-                <Link to="/storefrozenfoodprod" key={product._id} onClick={() => handleClick(product)}>
-                  <div className="carousel-slide">
-                    <img className="carousel-img" src={product.image} alt={product.name} />
-                    <div className="carousel-text">
-                      <h2 className="legend3">{product.name}</h2>
-                      <div className="carousel-infos">
-                        <p className="legend4">{product.description}</p>
-                        <p className="legend5">
-                          <span className="actual-price">${product.price.toFixed(2)}</span>
-                          {product.discount > 0 && (
-                            <span className="discounted-price">
-                              ${(product.price * (1 - product.discount / 100)).toFixed(2)}
-                            </span>
-                          )}
-                        </p>
+            products?.length > 0 ? (
+              products?.map((product, index) => (
+                // <Link to="/storefrozenfoodprod" key={index} onClick={() => handleClick(product)}>
+                <div key={index} className="carousel-slide" onClick={() => handleClick(product?._id)} style={{ cursor: "pointer" }}>
+                  <img className="carousel-img" src={product.image} alt={product.name} />
+                  <div className="carousel-text">
+                    <h2 className="legend3">{product.name}</h2>
+                    <div className="carousel-infos">
+                      <p className="legend4">{product.description}</p>
+                      <p className="legend5">
+                        <span className="actual-price">${product.price.toFixed(2)}</span>
                         {product.discount > 0 && (
-                          <p className="legend6">
-                            <span className="price">${product.price.toFixed(2)}</span>
-                            <span>{product.discount}% Off</span>
-                          </p>
+                          <span className="discounted-price">
+                            ${(product.price * (1 - product.discount / 100)).toFixed(2)}
+                          </span>
                         )}
-                      </div>
+                      </p>
+                      {product.discount > 0 && (
+                        <p className="legend6">
+                          <span className="price">${product.price.toFixed(2)}</span>
+                          <span>{product.discount}% Off</span>
+                        </p>
+                      )}
                     </div>
                   </div>
-                </Link>
+                </div>
+                // </Link>
               ))
             ) : (
               <p>No products available</p>

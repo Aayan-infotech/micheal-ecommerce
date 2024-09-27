@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import "./carsouelsection.css";
 import axios from "axios";
 
-function CarsouelSection() {
+function CarsouelSection({ subcategories }) {
   const [getAllProducts, setGetAllProducts] = useState([]);
   const [favorites, setFavorites] = useState([]);
 
@@ -18,19 +18,19 @@ function CarsouelSection() {
   const userId = sessionStorage.getItem("userId");
 
   useEffect(() => {
-    fetchAllProducts();
+    // fetchAllProducts();
     fetchFavorites();
   }, []);
 
   // Fetch all products
-  const fetchAllProducts = async () => {
-    try {
-      const response = await axios.get('http://44.196.192.232:3129/api/product/getall');
-      setGetAllProducts(response?.data?.data);
-    } catch (error) {
-      console.log('something went wrong', error);
-    }
-  };
+  // const fetchAllProducts = async () => {
+  //   try {
+  //     const response = await axios.get('http://44.196.192.232:3129/api/product/getall');
+  //     setGetAllProducts(response?.data?.data);
+  //   } catch (error) {
+  //     console.log('something went wrong', error);
+  //   }
+  // };
 
   // Fetch favorite products
   const fetchFavorites = async () => {
@@ -114,7 +114,7 @@ function CarsouelSection() {
               )
             }
           >
-            {getAllProducts.map((product, index) => (
+            {subcategories?.map((product, index) => (
               <Link to={`/frozenfoodsCarousel/${product?._id}`} key={index}>
                 <div className="carousel-slide">
                   <img className="carousel-img" src={product?.image} alt={product?.name} />

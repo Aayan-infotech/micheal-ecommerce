@@ -66,7 +66,8 @@ function App() {
         <Route path="/trackorder" element={<TrackOrder />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/storebeautyprod" element={<StoreBeautyProd />} />
-        <Route path="/storefrozenfoodprod" element={<StoreFrozenFoodProd />} />
+        {/* <Route path="/storefrozenfoodprod" element={<StoreFrozenFoodProd />} /> */}
+        <Route path="/storefrozenfoodprod/:storeProId" element={<StoreFrozenFoodProd />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="/" element={<Home />} />
       </Routes>

@@ -7,23 +7,19 @@ function Header() {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [isUserDropdownVisible, setIsUserDropdownVisible] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [refreshNavbar, setRefreshNavbar] = useState(true); // State to force re-render
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Tracks login state
+  const [refreshNavbar, setRefreshNavbar] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
     }
   }, [refreshNavbar]);
-
-  const navigate = useNavigate();
-
-  const toggleDropdown = () => {
-    setIsDropdownVisible(!isDropdownVisible);
-  };
 
   const toggleMenu = () => {
     setIsMenuVisible(!isMenuVisible);
@@ -34,10 +30,12 @@ function Header() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("userId");
     setIsLoggedIn(false);
-    navigate("/login");
+    setIsUserDropdownVisible(false);
     setRefreshNavbar(!refreshNavbar);
+    navigate("/login");
   };
 
   return (
@@ -46,8 +44,7 @@ function Header() {
         <Link to="/home" className="logo">
           <img src={logo} alt="Logo" />
         </Link>
-        <div className="menu-icon" onClick={toggleMenu}>
-        </div>
+        <div className="menu-icon" onClick={toggleMenu}></div>
         <div className={`navigation ${isMenuVisible ? "show" : ""}`}>
           <div className="nav-item">
             <p>01</p>
@@ -57,15 +54,15 @@ function Header() {
               </Link>
             </h5>
           </div>
-          <div className="nav-item" onClick={toggleDropdown}>
+          <div className="nav-item">
             <p>02</p>
             <h5>
               <Link to="/store" style={{ color: "#2F2F2F" }}>
                 Store
               </Link>
-              <i className="bx bx-chevron-down"></i>
+              {/* <i className="bx bx-chevron-down"></i> */}
             </h5>
-            {isDropdownVisible && (
+            {/* {isDropdownVisible && (
               <div className="dropdown">
                 <a href="#frozen-food-store">
                   <Link to="/dryfoods/frozenfoods" style={{ color: "#2F2F2F" }}>
@@ -78,7 +75,7 @@ function Header() {
                   </Link>
                 </a>
               </div>
-            )}
+            )} */}
           </div>
           <div className="nav-item">
             <p>03</p>
@@ -103,6 +100,8 @@ function Header() {
               <i className="bx bx-cart-alt"></i>
             </Link>
           </button>
+
+          {/* Conditionally render the Sign In or Log Out button */}
           {isLoggedIn ? (
             <button className="signin-button" onClick={handleLogout}>
               Log Out
@@ -112,6 +111,12 @@ function Header() {
               <button className="signin-button">Sign In</button>
             </Link>
           )}
+          {/* <button
+            className="signin-button"
+            onClick={isLoggedIn ? handleLogout : () => navigate("/login")}
+          >
+            {isLoggedIn ? "Log Out" : "Sign In"}
+          </button> */}
           <i
             className="bx bx-dots-vertical-rounded"
             onClick={toggleUserDropdown}
@@ -131,11 +136,13 @@ function Header() {
                 <i className="bx bx-search"></i> Search
               </Link>
               <Link to="/notification">
-                <i class='bx bx-bell'></i> Notification
+                <i className="bx bx-bell"></i> Notification
               </Link>
-              <a href="/login">
-                <i className="bx bx-log-out"></i> Log Out
-              </a>
+              {!isLoggedIn ? isLoggedIn :
+                <div className="logout-button" onClick={handleLogout}>
+                  <i className="bx bx-log-out"></i> Log Out
+                </div>}
+
             </div>
           )}
         </div>

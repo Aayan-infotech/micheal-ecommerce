@@ -4,8 +4,10 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./login.css";
+import Loading from '../loader/Loading';
 
 function Login() {
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     emailOrUsername: '',
     password: ''
@@ -25,16 +27,16 @@ function Login() {
       toast.error("Please enter email/username and password");
       return;
     }
+    setLoading(true);
     console.log("Sending login request:", formData);
     try {
       const response = await axios.post('http://44.196.192.232:3129/api/auth/login', formData);
-      if(response.data.success)
-      {
-        const {token} = response.data;
+      if (response.data.success) {
+        const { token } = response.data;
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('userId', response.data?.data?.id);
         toast.success("Login Successful!");
-        navigate('/home'); 
+        navigate('/home');
       }
       else {
         toast.error(response.data.message || "Login failed");
@@ -42,49 +44,57 @@ function Login() {
     } catch (error) {
       console.error("Error logging in:", error.response);
       toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="login">
-      <div className="container login-contain">
-        <h1 className="sign">Login</h1>
-        <div className="form">
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="l-form">
-              <label>
-                <h4>Email/Mobile Number</h4>
-                <input
-                  type="text"
-                  name="emailOrUsername"
-                  value={formData.emailOrUsername}
-                  onChange={handleChange}
-                  placeholder="Enter your email or mobile number"
-                />
-              </label>
-              <label>
-                <h4>Password</h4>
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="***********"
-                />
-              </label>
-              <label className='fpass'>
-                <Link to="/passwordrecovery">Forgot password ?</Link>
-              </label>
+    <>
+      <ToastContainer />
+      <div className="login">
+        {loading ? (
+          <Loading />
+        ) : (
+          <div className="container login-contain">
+            <h1 className="sign">Login</h1>
+            <div className="form">
+              <form className="login-form" onSubmit={handleSubmit}>
+                <div className="l-form">
+                  <label>
+                    <h4>Email/Mobile Number</h4>
+                    <input
+                      type="text"
+                      name="emailOrUsername"
+                      value={formData.emailOrUsername}
+                      onChange={handleChange}
+                      placeholder="Enter your email or mobile number"
+                    />
+                  </label>
+                  <label>
+                    <h4>Password</h4>
+                    <input
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      placeholder="***********"
+                    />
+                  </label>
+                  <label className='fpass'>
+                    <Link to="/passwordrecovery">Forgot password ?</Link>
+                  </label>
+                </div>
+                <button type="submit">Log In</button>
+              </form>
             </div>
-            <button type="submit">Log In</button>
-          </form>
-        </div>
-        <p className="login-link">
-          Haven't any account? <Link to="/register">Signup</Link>
-        </p>
-        <ToastContainer />
+            <p className="login-link">
+              Haven't any account? <Link to="/register">Signup</Link>
+            </p>
+          </div>
+        )}
       </div>
-    </div>
+    </>
   );
 }
 

@@ -111,11 +111,13 @@
   display: flex;
   align-items: center;
   filter: drop-shadow(rgba(0, 0, 0, 0.35) 0px 5px 15px);
+  cursor: pointer;
 }
 
 .store .frozenp{
   background-color: #383564;
   margin-right: 45px;
+  cursor: pointer;
 }
 
 .store .cosemeticp{

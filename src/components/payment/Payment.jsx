@@ -6,6 +6,7 @@ import thirdPay from "../../images/third-pay.png";
 import fourthPay from "../../images/fourth-pay.png";
 import { Link } from "react-router-dom";
 
+
 function Payment() {
   // const [selectOption, setSelectOption] = useState(null);
 

@@ -1,56 +1,59 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "./storeFrozenFoodProd.css";
+import axios from "axios";
 
 function StoreFrozenFoodProd() {
   const [product, setProduct] = useState({});
-
-  const storeProducts = JSON.parse(sessionStorage.getItem("selectProduct1"));
-  console.log(storeProducts._id);
+  const { storeProId } = useParams();
 
   useEffect(() => {
-    const fetchProd = async () => {
-      try {
-        const response = await fetch(
-          `http://44.196.192.232:3129/api/product/get/${storeProducts._id}`
-        );
-        const data = await response.json();
-        setProduct(data.data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
     fetchProd();
   }, []);
+
+  const fetchProd = async () => {
+    try {
+      const response = await axios.get(
+        `http://44.196.192.232:3129/api/product/get/${storeProId}`
+      );
+      setProduct(response?.data?.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
   return (
     <div className="storeFrozenFoodProd">
       <div className="container section">
-        {product && product.name ? (
+        {product && product?.name ? (
           <div className="cart-section2">
             <div className="left-cart-sec">
-              <img src={product.image} alt="" />
+              <img src={product?.image} alt={product?.name} />
             </div>
             <div className="right-cart-sec">
-              <h2 className="cart-head">{product.name}</h2>
-              <p className="right-cart-para">{product.description}</p>
+              <h2 className="cart-head">{product?.name}</h2>
+              <p className="right-cart-para">{product?.description}</p>
               <div className="right-cart-credential">
                 <div className="right-cart-data">
                   <p className="right-cart-info1">
-                    Price: <span>{product.price}</span>
+                    Price: $<span>{product?.price}</span>
                   </p>
                   <p className="right-cart-info2">
-                    Quantity: <span>{product.stock}</span>
+                    Quantity: <span>{product?.stock}</span>
                   </p>
                 </div>
                 <div className="right-cart-navi">
                   <Link to="/cart" className="logo">
-                    <button className="right-cart-butt" type="button">
-                      Buy
-                    </button>
+                  <button className="right-cart-butt" type="button">
+                    Buy
+                  </button>
                   </Link>
                   <p className="heart-icon">
-                    <i className="bx bx-heart"></i>
+                    {product.isHighlight ? (
+                      <i className='bx bxs-heart active-favorite'></i>
+                    ) : (
+                      <i className="bx bx-heart"></i>
+                    )}
                   </p>
                 </div>
               </div>
@@ -59,7 +62,7 @@ function StoreFrozenFoodProd() {
         ) : (
           <p>Product Details not Present</p>
         )}
-        <div className="cart-about">
+        {/* <div className="cart-about">
           <h2 className="cart-head">Lorem Ipsum</h2>
           <p className="cart-about-summary">
             Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -84,7 +87,7 @@ function StoreFrozenFoodProd() {
               printing and typesetting industry.
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

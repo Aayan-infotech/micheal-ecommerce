@@ -10,6 +10,7 @@ function ShoppingBag() {
     const [quantity, setQuantity] = useState(1);
     const location = useLocation();
     const { productItem } = location.state || {};
+    console.log(productItem, 'productItem')
     const productId = productItem?.product?._id;
     const userId = sessionStorage.getItem("userId");
 
@@ -30,7 +31,7 @@ function ShoppingBag() {
     // Function to handle increasing or decreasing quantity
     const handleQuantityChange = async (action) => {
         try {
-            const response = await axios.put("http://192.168.1.12:3129/api/cart/change", {
+            const response = await axios.put("http://44.196.192.232:3129/api/cart/change", {
                 productId: productId,
                 operation: action,
                 userId: userId
@@ -76,14 +77,14 @@ function ShoppingBag() {
                             <p style={{ color: 'black', fontSize: '1.1rem', marginBottom: '10px' }}>
                                 {productItem?.product?.name}
                             </p>
-                            <img src={shoppingImg} alt="" />
+                            <img src={productItem?.product?.image || shoppingImg} alt="" />
                         </div>
                         <div className="shopping-first-text">
                             <h5>{getShortDescription(productItem?.product?.description)}</h5>
                             <p>${productItem?.product?.price}</p>
                             <div className="shopping-pricing">
                                 <button onClick={() => handleQuantityChange('decrease')}>-</button>
-                                <button>{quantity}</button>
+                                <button>{productItem?.quantity}</button>
                                 <button onClick={() => handleQuantityChange('increase')}>+</button>
                             </div>
                         </div>
@@ -92,7 +93,7 @@ function ShoppingBag() {
                         <div className="shopping-pricing-total">
                             <div className="shopping-items">
                                 <p>Your Bag</p>
-                                <p>Subtotal ({quantity} Item{quantity !== 1 ? 's' : ''}):</p>
+                                <p>Subtotal ({productItem?.quantity} Item{quantity !== 1 ? 's' : ''}):</p>
                             </div>
                             <h5>${subtotal}</h5>
                         </div>

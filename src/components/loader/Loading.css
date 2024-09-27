@@ -1,0 +1,26 @@
+/* body {
+  display: grid;
+  place-content: center;
+  background: #fff;
+} */
+
+.ring {
+  background: #fff;
+  color: white;
+  --f: 1;
+  width: 5em;
+  height: 5em;
+  transform: scale(var(--f));
+  opacity: var(--f);
+  background: radial-gradient(circle at 20% 20%, rgba(0, 0, 0, 0.1) calc((10% - 2px)), transparent calc((10% - 1px))), radial-gradient(circle at 50% 10%, black calc((10% - 2px)), transparent calc((10% - 1px))), radial-gradient(circle at 80% 20%, rgba(0, 0, 0, 0.1) calc((10% - 2px)), transparent calc((10% - 1px))), radial-gradient(circle at 90%, black calc((10% - 2px)), transparent calc((10% - 1px))), radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.1) calc((10% - 2px)), transparent calc((10% - 1px))), radial-gradient(circle at 50% 90%, black calc((10% - 2px)), transparent calc((10% - 1px))), radial-gradient(circle at 20% 80%, rgba(0, 0, 0, 0.1) calc((10% - 2px)), transparent calc((10% - 1px))), radial-gradient(circle at 10%, black calc((10% - 2px)), transparent calc((10% - 1px)));
+  animation: rotation 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+}
+.ring > .ring {
+  --f: 0.6;
+}
+
+@keyframes rotation {
+  to {
+    transform: scale(var(--f)) rotate(1turn);
+  }
+}

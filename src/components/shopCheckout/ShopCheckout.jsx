@@ -4,6 +4,7 @@ import "./shopcheckout.css";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import StripeCheckout from 'react-stripe-checkout';
 
 function ShopCheckout() {
   const [addresses, setAddresses] = useState([]);
@@ -60,7 +61,7 @@ function ShopCheckout() {
         fetchAddressDetails();
       } else {
         toast.error('Failed to delete address', {
-          autoClose: 1500,
+          autoClose: 1000,
         });
       }
     } catch (error) {
@@ -79,11 +80,29 @@ function ShopCheckout() {
     setSelectedTimePeriod('');
   };
 
-  const handleToProceedCheckout = () => {
-    const selectedSlot = deliverySlots.find(slot => slot.deliveryType === selectedDeliveryType && slot.timePeriod === selectedTimePeriod);
-    const deliverySlotId = selectedSlot ? selectedSlot._id : null;
-    navigate("/paymentcheckout", { state: { deliverySlotId, addressId: selectedAddressId } });
-  }
+  // const handleToProceedCheckout = () => {
+  //   const selectedSlot = deliverySlots.find(slot => slot?.deliveryType === selectedDeliveryType && slot?.timePeriod === selectedTimePeriod);
+  //   const deliverySlotId = selectedSlot ? selectedSlot?._id : null;
+  //   navigate("/paymentcheckout", { state: { deliverySlotId, addressId: selectedAddressId } });
+  // }
+
+  const handleToProceedCheckout = async (token) => {
+    try {
+      const response = await axios.post(
+        'http://44.196.192.232:3129/api/payment/create-payment-intent',
+        {
+          provider: 'stripe',
+          amount: 100, 
+          currency: 'inr',
+          token: token.id, 
+        }
+      );
+      console.log(response?.data?.data);  
+      navigate("/paymentcheckout");
+    } catch (error) {
+      console.log("Error during payment process:", error);
+    }
+  };
 
   return (
     <>
@@ -170,9 +189,26 @@ function ShopCheckout() {
                   </div>
                 )}
               </div>
-              <button onClick={handleToProceedCheckout} className="slot-button" disabled={!selectedAddressId || !selectedTimePeriod}>
-                Proceed
-              </button>
+              {/* <button onClick={handleToProceedCheckout} className="slot-button" disabled={!selectedAddressId || !selectedTimePeriod}>
+                Proceed To Payment
+              </button> */}
+              <StripeCheckout
+                name="MILLYS HB"
+                image="http://localhost:3000/static/media/logo.22c2717f079a705976f8.png"
+                ComponentClass="div"
+                amount={1000000}  // amount in the lowest currency unit (like paise for INR)
+                currency="USD"    // make sure this matches your payment data
+                stripeKey="pk_test_51PqTR903ec58RCFWng6UUUnIZ8R0PmQZL1xVE5Wv6jUIAiS9dxzWobfK6oysU86LJmkvd9I2Adcbbv0jYqLkNcAp00hFGx4UKj"
+                locale="IN"
+                shippingAddress
+                billingAddress={false}
+                zipCode={false}
+                token={handleToProceedCheckout}  // this function will be called after successful token creation
+              >
+                <button className="slot-button" disabled={!selectedAddressId || !selectedTimePeriod}>
+                  Proceed To Payment
+                </button>
+              </StripeCheckout>
             </div>
           </div>
         </div>
