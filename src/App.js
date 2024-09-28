@@ -57,7 +57,7 @@ function App() {
         <Route path="/shoppingbag" element={<ShoppingBag />} />
         <Route path="/address" element={<Address />} />
         <Route path="/shopcheckout" element={<ShopCheckout />} />
-        <Route path="/paymentcheckout" element={<PaymentCheckout />} />
+        <Route path="/order-summary" element={<PaymentCheckout />} />
         <Route path="/paymentmessage" element={<PaymentMessage />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/profile" element={<Profile />} />

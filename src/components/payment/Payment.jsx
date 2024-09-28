@@ -1,18 +1,59 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./payment.css";
-import firstPay from "../../images/first-pay.png";
-import secondPay from "../../images/second-pay.png";
-import thirdPay from "../../images/third-pay.png";
-import fourthPay from "../../images/fourth-pay.png";
-import { Link } from "react-router-dom";
-
+import firstPay from "../../images/first-pay.png"; // Visa
+import secondPay from "../../images/second-pay.png"; // PayPal
+import thirdPay from "../../images/third-pay.png"; // MasterCard
+import fourthPay from "../../images/fourth-pay.png"; // Apple Pay
+import StripeCheckout from 'react-stripe-checkout';
+import axios from "axios";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Payment() {
-  // const [selectOption, setSelectOption] = useState(null);
+  const [selectedMethod, setSelectedMethod] = useState(null);
 
-  // const handleOptionClick = (optionIndex) =>{
-  //   setSelectOption(optionIndex);
-  // }
+  const paymentMethods = [
+    { id: 1, name: "Visa", img: firstPay, lastFour: "2109" },
+    { id: 2, name: "PayPal", img: secondPay, lastFour: "2109" },
+    { id: 3, name: "MasterCard", img: thirdPay, lastFour: "2109" },
+    { id: 4, name: "Apple Pay", img: fourthPay, lastFour: "2109" },
+  ];
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { selectedSlot, addressId, productItem } = location.state || {};
+
+  useEffect(() => {
+    if (selectedSlot) {
+      console.log('Selected Address ID:', selectedSlot);
+    }
+  }, [selectedSlot]);
+
+  const handleMethodSelect = (id) => {
+    setSelectedMethod(id);
+  };
+
+  const totalProductPrice = productItem?.product?.price + selectedSlot?.deliveryCharge;
+
+  const handleToProceedCheckout = async (token) => {
+    try {
+      const response = await axios.post(
+        'http://44.196.192.232:3129/api/payment/create-payment-intent',
+        {
+          provider: 'stripe',
+          amount: totalProductPrice,
+          currency: 'auto',
+          token: token.id,
+          // productId:productItem?.product?._id
+          // addressId: addressId
+        }
+      );
+      console.log(response?.data?.data);
+      navigate("/order-summary");
+    } catch (error) {
+      console.log("Error during payment process:", error);
+    }
+  };
 
   return (
     <div className="payment">
@@ -24,43 +65,67 @@ function Payment() {
         <div className="pay-methods container">
           <div className="payment-methods">
             <h2 style={{ color: "black", fontWeight: "500" }}>Payment</h2>
-            <div className="payment-option selected">
-              <img src={firstPay} alt="Visa" />
-              <span>************2109</span>
-            </div>
-            <div className="payment-option">
-              <img src={secondPay} alt="PayPal" />
-              <span>************2109</span>
-            </div>
-            <div className="payment-option">
-              <img src={thirdPay} alt="MasterCard" />
-              <span>************2109</span>
-            </div>
-            <div className="payment-option">
-              <img src={fourthPay} alt="Apple Pay" height="50px" />
-              <span>************2109</span>
-            </div>
+
+            {paymentMethods.map((method) => (
+              <div
+                key={method.id}
+                className={`payment-option ${selectedMethod === method.id ? 'selected' : ''}`}
+                onClick={() => handleMethodSelect(method.id)}
+              >
+                <img src={method.img} alt={method.name} />
+                <span>************{method.lastFour}</span>
+              </div>
+            ))}
           </div>
 
           <div className="payment-summary">
             <div className="orders-summary">
               <div className="order-item">
-                <span>Order</span>
-                <span>₹ 7,000</span>
+                <span>Total Price</span>
+                <span>$ {productItem?.product?.price}</span>
               </div>
               <div className="order-item">
-                <span>Shipping</span>
-                <span>₹ 30</span>
+                <span>Delivery Charge</span>
+                <span>$ {selectedSlot?.deliveryCharge}</span>
               </div>
               <div className="order-item">
+                <span>Delivery Type</span>
+                <span>{selectedSlot?.deliveryType}</span>
+              </div>
+              <div className="order-item" style={{ fontWeight: "bold", fontSize: "25px", color: "black" }}>
                 <span>Total</span>
-                <span>₹ 7,030</span>
+                <span>$ {totalProductPrice}</span>
               </div>
             </div>
+
             <div className="payment-buttons">
-              <Link to="/paymentmessage">
-                <button>Pay</button>
-              </Link>
+              {selectedMethod === 1 ? (
+                <StripeCheckout
+                  name="MILLYS HB"
+                  image="http://localhost:3000/static/media/logo.22c2717f079a705976f8.png"
+                  ComponentClass="div"
+                  amount={totalProductPrice * 100}
+                  currency="USD"
+                  stripeKey="pk_test_51PqTR903ec58RCFWng6UUUnIZ8R0PmQZL1xVE5Wv6jUIAiS9dxzWobfK6oysU86LJmkvd9I2Adcbbv0jYqLkNcAp00hFGx4UKj"
+                  locale="en"
+                  zipCode={false}
+                  token={handleToProceedCheckout}
+                >
+                  <button className="slot-button">
+                    Proceed To Payment
+                  </button>
+                </StripeCheckout>
+              ) : selectedMethod === 2 ? (
+                <PayPalScriptProvider options={{ clientId: "test" }}>
+                  <PayPalButtons style={{ layout: "horizontal" }} />
+                </PayPalScriptProvider>
+              ) : selectedMethod === 3 ? (
+                <button onClick={() => alert('Processing payment with MasterCard')}>Pay with MasterCard</button>
+              ) : selectedMethod === 4 ? (
+                <button onClick={() => alert('Processing payment with Apple Pay')}>Pay with Apple Pay</button>
+              ) : (
+                <button disabled>Select a payment method</button>
+              )}
             </div>
           </div>
         </div>

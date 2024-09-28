@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./shoppingbag.css";
 import shoppingImg from "../../images/shopping-first.jpg";
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,9 +10,9 @@ function ShoppingBag() {
     const [quantity, setQuantity] = useState(1);
     const location = useLocation();
     const { productItem } = location.state || {};
-    console.log(productItem, 'productItem')
     const productId = productItem?.product?._id;
     const userId = sessionStorage.getItem("userId");
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (productItem?.product?.quantity) {
@@ -62,6 +62,11 @@ function ShoppingBag() {
 
     const subtotal = (productItem?.product?.price * quantity).toFixed(2);
 
+    const handleCheckout = () => {
+        navigate('/shopcheckout', { state: { productItem : productItem } });
+        // { state: { selectedSlot, addressId: selectedAddressId } }
+    }
+
     return (
         <>
             <ToastContainer />
@@ -97,8 +102,8 @@ function ShoppingBag() {
                             </div>
                             <h5>${subtotal}</h5>
                         </div>
-                        <button type="submit">
-                            <Link to="/shopcheckout" className="checkout">Checkout</Link>
+                        <button type="submit" onClick={handleCheckout}>Checkout
+                            {/* <Link to="/shopcheckout" className="checkout">Checkout</Link> */}
                         </button>
                     </div>
                 </div>

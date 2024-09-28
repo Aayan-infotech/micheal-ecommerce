@@ -13,6 +13,7 @@ function ShopCheckout() {
   const [selectedDeliveryType, setSelectedDeliveryType] = useState('');
   const [selectedTimePeriod, setSelectedTimePeriod] = useState('');
   const location = useLocation();
+  const { productItem } = location.state || {};
   const navigate = useNavigate();
   const userId = sessionStorage.getItem("userId");
 
@@ -80,29 +81,31 @@ function ShopCheckout() {
     setSelectedTimePeriod('');
   };
 
-  // const handleToProceedCheckout = () => {
-  //   const selectedSlot = deliverySlots.find(slot => slot?.deliveryType === selectedDeliveryType && slot?.timePeriod === selectedTimePeriod);
-  //   const deliverySlotId = selectedSlot ? selectedSlot?._id : null;
-  //   navigate("/paymentcheckout", { state: { deliverySlotId, addressId: selectedAddressId } });
-  // }
+  const handleToProceedCheckout = () => {
+    const selectedSlot = deliverySlots.find(slot => slot?.deliveryType === selectedDeliveryType && slot?.timePeriod === selectedTimePeriod);
+    // const deliverySlotId = selectedSlot ? selectedSlot?._id : null;
+    // console.log(selectedSlot, selectedAddressId, 'deliverySlotId')
+    // navigate("/paymentcheckout", { state: { selectedSlot, addressId: selectedAddressId } });
+    navigate("/payment", { state: { selectedSlot, addressId: selectedAddressId, productItem: productItem } });
+  }
 
-  const handleToProceedCheckout = async (token) => {
-    try {
-      const response = await axios.post(
-        'http://44.196.192.232:3129/api/payment/create-payment-intent',
-        {
-          provider: 'stripe',
-          amount: 100, 
-          currency: 'inr',
-          token: token.id, 
-        }
-      );
-      console.log(response?.data?.data);  
-      navigate("/paymentcheckout");
-    } catch (error) {
-      console.log("Error during payment process:", error);
-    }
-  };
+  // const handleToProceedCheckout = async (token) => {
+  //   try {
+  //     const response = await axios.post(
+  //       'http://44.196.192.232:3129/api/payment/create-payment-intent',
+  //       {
+  //         provider: 'stripe',
+  //         amount: 100, 
+  //         currency: 'auto',
+  //         token: token.id, 
+  //       }
+  //     );
+  //     console.log(response?.data?.data);  
+  //     navigate("/paymentcheckout");
+  //   } catch (error) {
+  //     console.log("Error during payment process:", error);
+  //   }
+  // };
 
   return (
     <>
@@ -189,26 +192,26 @@ function ShopCheckout() {
                   </div>
                 )}
               </div>
-              {/* <button onClick={handleToProceedCheckout} className="slot-button" disabled={!selectedAddressId || !selectedTimePeriod}>
+              <button onClick={handleToProceedCheckout} className="slot-button" disabled={!selectedAddressId || !selectedTimePeriod}>
                 Proceed To Payment
-              </button> */}
-              <StripeCheckout
+              </button>
+              {/* <StripeCheckout
                 name="MILLYS HB"
                 image="http://localhost:3000/static/media/logo.22c2717f079a705976f8.png"
                 ComponentClass="div"
-                amount={1000000}  // amount in the lowest currency unit (like paise for INR)
-                currency="USD"    // make sure this matches your payment data
+                amount={1000000} 
+                currency="USD" 
                 stripeKey="pk_test_51PqTR903ec58RCFWng6UUUnIZ8R0PmQZL1xVE5Wv6jUIAiS9dxzWobfK6oysU86LJmkvd9I2Adcbbv0jYqLkNcAp00hFGx4UKj"
                 locale="IN"
                 shippingAddress
                 billingAddress={false}
                 zipCode={false}
-                token={handleToProceedCheckout}  // this function will be called after successful token creation
+                token={handleToProceedCheckout} 
               >
                 <button className="slot-button" disabled={!selectedAddressId || !selectedTimePeriod}>
                   Proceed To Payment
                 </button>
-              </StripeCheckout>
+              </StripeCheckout> */}
             </div>
           </div>
         </div>
