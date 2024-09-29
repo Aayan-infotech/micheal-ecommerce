@@ -148,4 +148,11 @@
     text-decoration: underline;
     cursor: pointer;
   }
-  
+  /* frozenfoodsCarousel.css */
+.quantity-input {
+  width: 50px;
+  padding: 5px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+}

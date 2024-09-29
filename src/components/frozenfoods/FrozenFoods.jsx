@@ -14,7 +14,6 @@ function FrozenFoods() {
   const location = useLocation();
   const categoryData = location.state?.categoryData;
   const storedCategoryId = categoryData?._id;
-  console.log(categoryData?._id, 'categoryData')
 
   useEffect(() => {
     if (storedCategoryId) {

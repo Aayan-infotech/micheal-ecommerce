@@ -18,21 +18,9 @@ function CarsouelSection({ subcategories }) {
   const userId = sessionStorage.getItem("userId");
 
   useEffect(() => {
-    // fetchAllProducts();
     fetchFavorites();
   }, []);
 
-  // Fetch all products
-  // const fetchAllProducts = async () => {
-  //   try {
-  //     const response = await axios.get('http://44.196.192.232:3129/api/product/getall');
-  //     setGetAllProducts(response?.data?.data);
-  //   } catch (error) {
-  //     console.log('something went wrong', error);
-  //   }
-  // };
-
-  // Fetch favorite products
   const fetchFavorites = async () => {
     try {
       const response = await axios.get(`http://44.196.192.232:3129/api/favorite/get/${userId}`);
@@ -127,6 +115,7 @@ function CarsouelSection({ subcategories }) {
                         <i className="bx bxs-star"></i>
                       </span>{" "}
                         4.8 (1.2k)</p>
+                        {/* <button type="button" className="">Add To Cart</button> */}
                       <p
                         className="favourite-btn"
                         onClick={(e) => {
