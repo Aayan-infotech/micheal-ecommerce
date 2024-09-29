@@ -51,7 +51,7 @@ function App() {
         <Route path="/dryfoods/frozenfoods" element={<FrozenFoods />} />
         <Route path="/cosmeticsproducts" element={<BeautyProduct />} />
         <Route path="/frozenfoodscarousel/:productId" element={<FrozenFoodsCarousel />} />
-        <Route path="/beautyproductcarousel" element={<BeautyProductCarousel />} />
+        <Route path="/beautyproductcarousel/:productId" element={<BeautyProductCarousel />} />
         <Route path="/contactus" element={<ContactUs />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/shoppingbag" element={<ShoppingBag />} />

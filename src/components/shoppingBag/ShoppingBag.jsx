@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./shoppingbag.css";
 import shoppingImg from "../../images/shopping-first.jpg";
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

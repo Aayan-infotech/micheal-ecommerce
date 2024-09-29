@@ -10,10 +10,6 @@ function Wishlist() {
   const [loading, setLoading] = useState(true);
   const userId = sessionStorage.getItem("userId");
 
-  useEffect(() => {
-    fetchFavorites();
-  }, []);
-
   const fetchFavorites = async () => {
     try {
       const response = await axios.get(`http://44.196.192.232:3129/api/favorite/get/${userId}`);
@@ -24,6 +20,10 @@ function Wishlist() {
       console.log('Error fetching favorites', error);
     }
   };
+
+  useEffect(() => {
+    fetchFavorites();
+  }, [userId]);
 
   const handleDelete = async (p_id) => {
     try {

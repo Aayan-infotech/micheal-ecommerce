@@ -1,18 +1,8 @@
 import React, { useEffect } from "react";
 import "./paymentcheckout.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function PaymentCheckout() {
-
-  // const location = useLocation();
-  // const { deliverySlotId, addressId } = location.state || {};
-  // console.log(deliverySlotId, addressId, '-----------------');
-
-  // useEffect(() => {
-  //   if (deliverySlotId) {
-  //     console.log('Selected Address ID:', deliverySlotId);
-  //   }
-  // }, [deliverySlotId]);
 
   return (
     <div className="paymentcheckout">

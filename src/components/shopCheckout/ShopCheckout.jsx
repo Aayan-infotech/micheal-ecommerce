@@ -4,7 +4,6 @@ import "./shopcheckout.css";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import StripeCheckout from 'react-stripe-checkout';
 
 function ShopCheckout() {
   const [addresses, setAddresses] = useState([]);
@@ -83,29 +82,8 @@ function ShopCheckout() {
 
   const handleToProceedCheckout = () => {
     const selectedSlot = deliverySlots.find(slot => slot?.deliveryType === selectedDeliveryType && slot?.timePeriod === selectedTimePeriod);
-    // const deliverySlotId = selectedSlot ? selectedSlot?._id : null;
-    // console.log(selectedSlot, selectedAddressId, 'deliverySlotId')
-    // navigate("/paymentcheckout", { state: { selectedSlot, addressId: selectedAddressId } });
     navigate("/payment", { state: { selectedSlot, addressId: selectedAddressId, productItem: productItem } });
   }
-
-  // const handleToProceedCheckout = async (token) => {
-  //   try {
-  //     const response = await axios.post(
-  //       'http://44.196.192.232:3129/api/payment/create-payment-intent',
-  //       {
-  //         provider: 'stripe',
-  //         amount: 100, 
-  //         currency: 'auto',
-  //         token: token.id, 
-  //       }
-  //     );
-  //     console.log(response?.data?.data);  
-  //     navigate("/paymentcheckout");
-  //   } catch (error) {
-  //     console.log("Error during payment process:", error);
-  //   }
-  // };
 
   return (
     <>
@@ -195,23 +173,6 @@ function ShopCheckout() {
               <button onClick={handleToProceedCheckout} className="slot-button" disabled={!selectedAddressId || !selectedTimePeriod}>
                 Proceed To Payment
               </button>
-              {/* <StripeCheckout
-                name="MILLYS HB"
-                image="http://localhost:3000/static/media/logo.22c2717f079a705976f8.png"
-                ComponentClass="div"
-                amount={1000000} 
-                currency="USD" 
-                stripeKey="pk_test_51PqTR903ec58RCFWng6UUUnIZ8R0PmQZL1xVE5Wv6jUIAiS9dxzWobfK6oysU86LJmkvd9I2Adcbbv0jYqLkNcAp00hFGx4UKj"
-                locale="IN"
-                shippingAddress
-                billingAddress={false}
-                zipCode={false}
-                token={handleToProceedCheckout} 
-              >
-                <button className="slot-button" disabled={!selectedAddressId || !selectedTimePeriod}>
-                  Proceed To Payment
-                </button>
-              </StripeCheckout> */}
             </div>
           </div>
         </div>

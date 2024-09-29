@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import logo from "../../images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import "./header.css";
+import { useSelector } from "react-redux";
 
 function Header() {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [isUserDropdownVisible, setIsUserDropdownVisible] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Tracks login state
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [refreshNavbar, setRefreshNavbar] = useState(false);
+
+  const { items: allProducts } = useSelector((state) => state.cart);
+  const totalProducts = allProducts.length;
 
   const navigate = useNavigate();
 
@@ -98,6 +102,9 @@ function Header() {
           <button className="cart-button">
             <Link to="/cart" className="link-text">
               <i className="bx bx-cart-alt"></i>
+              {totalProducts > 0 && (
+                <span className="cart-badge">{totalProducts}</span>
+              )}
             </Link>
           </button>
 

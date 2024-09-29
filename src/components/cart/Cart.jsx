@@ -1,38 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "./cart.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import cartImg from "../../images/cart-img.jpg";
-import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loading from '../loader/Loading';
+import { getAddedCarts } from '../redux/allAddedCartsSlice';
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 function Cart() {
-  const [allProducts, setAllProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
+  const { items: allProducts, status, error } = useSelector((state) => state.cart);
   const token = sessionStorage.getItem("token");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchAllCartsAdded();
-  }, []);
-
-  const fetchAllCartsAdded = async () => {
-    try {
-      const response = await axios.get("http://44.196.192.232:3129/api/cart/get", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      setAllProducts(response?.data?.data?.products || []);
-      setLoading(false);
-    } catch (error) {
-      console.log("something went wrong", error);
-      setLoading(false);
-    }
-  };
+    dispatch(getAddedCarts());
+  }, [dispatch]);
 
   const handleCartDelete = async (card_id) => {
     try {
@@ -42,7 +27,7 @@ function Cart() {
           "Content-Type": "application/json",
         },
       });
-      fetchAllCartsAdded();
+      dispatch(getAddedCarts());
       toast.success(response?.data?.message, {
         autoClose: 2000
       });
@@ -65,12 +50,14 @@ function Cart() {
           </div>
 
           <div className="card-cart container">
-            {loading ? (
+            {status === 'loading' ? (
               <Loading />
+            ) : status === 'failed' ? (
+              <p style={{ fontSize: "25px", color: "white", fontWeight: "bold" }}>{error}</p>
             ) : (
               <>
                 {allProducts.length > 0 ? (
-                  allProducts?.map((productItem, index) => (
+                  allProducts.map((productItem, index) => (
                     <div className="cards" key={index}>
                       <div className="card-img">
                         <img
@@ -85,13 +72,7 @@ function Cart() {
                           <p>${productItem?.product?.price}</p>
                           <p>Quantity: {productItem?.quantity}</p>
                         </div>
-                        {/* <Link
-                      to="/shoppingbag"
-                      state={{ productItem }}
-                    > */}
                         <button onClick={() => handleBuyNow(productItem)}>Buy Now</button>
-                        {/* </Link> */}
-
                       </div>
                       <i
                         className="bx bx-x"

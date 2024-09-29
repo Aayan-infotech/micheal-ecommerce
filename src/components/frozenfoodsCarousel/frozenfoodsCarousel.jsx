@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "./frozenfoodsCarousel.css";
 import bannerImg from '../../images/Frozenfoods-first.png';
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../redux/addToCart';

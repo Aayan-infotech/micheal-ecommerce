@@ -104,7 +104,8 @@ function Carsouelsection({ subcategories }) {
             }
           >
             {subcategories?.map((product, index) => (
-              <Link to="/beautyproductcarousel">
+              // <Link to="/beautyproductcarousel">
+              <Link to={`/beautyproductcarousel/${product?._id}`} key={index}>
                 <div className="carousel-slide">
                   <img className="carousel-img" src={product?.image} alt={product?.name} />
                   <div className="carousel-text">

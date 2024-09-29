@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./store.css";
 import BeautyCarsouel from "../store/frozenFoodCarsouel/frozenFoodCarsouel";
 import FoodCarsouel from "../store/beautyFoodCarsouel/beautyFoodCarsouel";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loading from '../loader/Loading';
 
