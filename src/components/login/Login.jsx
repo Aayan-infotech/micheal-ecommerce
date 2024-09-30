@@ -5,6 +5,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./login.css";
 import Loading from '../loader/Loading';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../redux/liginSlice';
 
 function Login() {
   const [loading, setLoading] = useState(false);
@@ -14,40 +16,63 @@ function Login() {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!formData.emailOrUsername || !formData.password) {
+  //     toast.error("Please enter email/username and password");
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   console.log("Sending login request:", formData);
+  //   try {
+  //     const response = await axios.post('http://44.196.192.232:3129/api/auth/login', formData);
+  //     if (response.data.success) {
+  //       const { token } = response.data;
+  //       sessionStorage.setItem('token', token);
+  //       sessionStorage.setItem('userId', response.data?.data?.id);
+  //       toast.success("Login Successful!");
+  //       navigate('/home');
+  //     }
+  //     else {
+  //       toast.error(response.data.message || "Login failed");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error logging in:", error.response);
+  //     toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Check if fields are filled
     if (!formData.emailOrUsername || !formData.password) {
-      toast.error("Please enter email/username and password");
+      toast.error("Please enter email/username and password", { autoClose: 1000 });
       return;
     }
     setLoading(true);
-    console.log("Sending login request:", formData);
     try {
-      const response = await axios.post('http://44.196.192.232:3129/api/auth/login', formData);
-      if (response.data.success) {
-        const { token } = response.data;
-        sessionStorage.setItem('token', token);
-        sessionStorage.setItem('userId', response.data?.data?.id);
-        toast.success("Login Successful!");
+      const response = await dispatch(loginUser(formData)).unwrap();
+      if (response.success) {
+        toast.success(response?.message || 'Login Successful', { autoClose: 1000 });
         navigate('/home');
-      }
-      else {
-        toast.error(response.data.message || "Login failed");
+      } else {
+        toast.error(response?.message || 'Login failed', { autoClose: 1000 });
       }
     } catch (error) {
-      console.error("Error logging in:", error.response);
-      toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+      toast.error(error || 'Something went wrong. Please try again.', { autoClose: 1000 });
+    }finally {
+          setLoading(false);
+        }
   };
+  
 
   return (
     <>
