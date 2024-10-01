@@ -1,5 +1,3 @@
-// src/components/redux/loginSlice.js
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -11,7 +9,6 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await axios.post('http://44.196.192.232:3129/api/auth/login', formData);
       if (response.data.success) {
-        // Store token and userId in sessionStorage
         const { token, data: { id } } = response.data;
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('userId', id);
@@ -33,14 +30,7 @@ const loginSlice = createSlice({
     isLoading: false,
     error: null,
   },
-  reducers: {
-    // logout: (state) => {
-    //   sessionStorage.removeItem('token');
-    //   sessionStorage.removeItem('userId');
-    //   state.user = null;
-    //   state.token = null;
-    // }
-  },
+  reducers: { },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
@@ -60,7 +50,5 @@ const loginSlice = createSlice({
       });
   }
 });
-
-// export const { logout } = loginSlice.actions;
 
 export default loginSlice.reducer;

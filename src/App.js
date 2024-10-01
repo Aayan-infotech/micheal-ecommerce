@@ -31,7 +31,7 @@ import Footer from './components/footer/Footer';
 import StoreBeautyProd from './components/store/beautyFoodCarsouel/storeBeautyProd/storeBeautyProd';
 import StoreFrozenFoodProd from './components/store/frozenFoodCarsouel/storeFrozenFoodProd/storeFrozenFoodProd';
 import Notification from './components/notification/Notification';
-import ProtectedRoute from './ProtectedRoute';
+// import ProtectedRoute from './ProtectedRoute';
 
 function App() {
   const location = useLocation();
@@ -41,7 +41,7 @@ function App() {
     <div className="App">
       <Header />
       {/* <Router> */}
-        <ProtectedRoute>
+      {/* <ProtectedRoute>
           <Routes>
             <Route path="/home" element={<Home />} />
             <Route path="/store" element={<Store />} />
@@ -65,24 +65,45 @@ function App() {
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/storebeautyprod" element={<StoreBeautyProd />} />
             {/* <Route path="/storefrozenfoodprod" element={<StoreFrozenFoodProd />} /> */}
-            <Route path="/storefrozenfoodprod/:storeProId" element={<StoreFrozenFoodProd />} />
+      {/* <Route path="/storefrozenfoodprod/:storeProId" element={<StoreFrozenFoodProd />} />
             <Route path="/notification" element={<Notification />} />
             <Route path="/" element={<Home />} />
-          </Routes>
-        </ProtectedRoute>
+          </Routes> */}
+      {/* </ProtectedRoute> */}
       {/* </Router> */}
-      {/* <Routes> */}
-      {/* <Route path="/login" element={<Login />} />
+      <Routes>
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/passwordrecovery" element={<PasswordRecovery />} />
         <Route path="/otp" element={<Otp />} />
-        <Route path="/passwordreset" element={<PasswordReset />} /> */}
-      {/* <Router>
-      <AuthRoute>
-        <Routes>
-          <Route */}
+        <Route path="/passwordreset" element={<PasswordReset />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/store" element={<Store />} />
+        <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/dryfoods/frozenfoods" element={<FrozenFoods />} />
+        <Route path="/cosmeticsproducts" element={<BeautyProduct />} />
+        <Route path="/frozenfoodscarousel/:productId" element={<FrozenFoodsCarousel />} />
+        <Route path="/beautyproductcarousel/:productId" element={<BeautyProductCarousel />} />
+        <Route path="/contactus" element={<ContactUs />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/shoppingbag" element={<ShoppingBag />} />
+        <Route path="/address" element={<Address />} />
+        <Route path="/shopcheckout" element={<ShopCheckout />} />
+        <Route path="/order-summary" element={<PaymentCheckout />} />
+        <Route path="/paymentmessage" element={<PaymentMessage />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/searchitems" element={<SearchItems />} />
+        <Route path="/myorders" element={<MyOrders />} />
+        <Route path="/trackorder" element={<TrackOrder />} />
+        <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/storebeautyprod" element={<StoreBeautyProd />} />
+        {/* <Route path="/storefrozenfoodprod" element={<StoreFrozenFoodProd />} /> */}
+        <Route path="/storefrozenfoodprod/:storeProId" element={<StoreFrozenFoodProd />} />
+        <Route path="/notification" element={<Notification />} />
+        <Route path="/" element={<Home />} />
 
-      {/* </Routes> */}
+      </Routes>
       {!noFooterPaths.includes(location.pathname) && <Footer />}
     </div>
   );

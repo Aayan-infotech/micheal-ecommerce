@@ -39,6 +39,11 @@ function FrozenfoodsCarousel() {
 
     // Function to handle add to cart action
     const handleAddToCart = async () => {
+        // Check if the user is logged in
+        if (!userId) {
+            toast.error('Please log in to add items to your cart.', { autoClose: 2000 });
+            return;
+        }
         try {
             if (product && product._id) {
                 const response = await dispatch(addToCart({ userId, productId: product._id, quantity }));

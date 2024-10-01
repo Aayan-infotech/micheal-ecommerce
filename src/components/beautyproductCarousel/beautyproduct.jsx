@@ -40,6 +40,12 @@ function Beautyproduct() {
     // Function to handle add to cart action
     const handleAddToCart = async () => {
         try {
+            if (!userId) {
+                toast.error('Please log in to add products to your cart.', {
+                  autoClose: 1000
+                });
+                return; // Exit the function if the user is not logged in
+              }
             if (product && product._id) {
                 const response = await dispatch(addToCart({ userId, productId: product._id, quantity }));
                 if (response?.payload?.success) {
