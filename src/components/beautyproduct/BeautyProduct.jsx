@@ -1,31 +1,50 @@
 import React, { useEffect, useState } from "react";
 import "./beautyproduct.css";
 import { Carousel } from "react-responsive-carousel";
-import blankImage from '../../images/blank_image.jpg';
+import blankImage from "../../images/blank_image.jpg";
 import CarsouelSection from "./carsouelsection/carsouelsection";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
-import Loading from '../loader/Loading';
+import { Link, useLocation } from "react-router-dom";
+import Loading from "../loader/Loading";
 
 function BeautyProduct() {
-  const [subcategories, setSubcategories] = useState([]);
+  const [categoriesProduct, setCategoriesProduct] = useState([]);
+  const [subCategory, setSubCategory] = useState([]);
+  const [subCategoryTitle, setSsbCategoryTitle] = useState(null);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const categoryData = location.state?.categoryData;
   const storedCategoryId = categoryData?._id;
 
+  const token = sessionStorage.getItem("token");
+
   useEffect(() => {
     if (storedCategoryId) {
-      fetchSubcategories();
+      fetchCategoriesProduct();
+      fetchSubCategories();
     }
   }, [storedCategoryId]);
 
-  const fetchSubcategories = async () => {
+  const fetchSubCategories = async () => {
+    try {
+      const response = await axios.get(
+        `http://44.196.192.232:3129/api/category/get/${storedCategoryId}`
+      );
+      setSsbCategoryTitle(response?.data?.data?.title);
+      setSubCategory(response?.data?.subcategories);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error fetching subcategories:", error);
+    }
+  };
+
+  const fetchCategoriesProduct = async () => {
     try {
       const response = await axios.get(
         `http://44.196.192.232:3129/api/product/categoryproducts/${storedCategoryId}`
       );
-      setSubcategories(response?.data?.data);
+      setCategoriesProduct(response?.data?.data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -48,11 +67,15 @@ function BeautyProduct() {
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry.
               </p>
-              <button className="beautyproduct-button">Sign Up</button>
+              {!token && (
+                <Link to="/register" className="logo">
+                  <button>Sign Up</button>
+                </Link>
+              )}
             </div>
 
             <div className="beautyproduct-discounts container">
-              <h1 className="discounts-heading">Discount guaranteed!</h1>
+              <h1 className="discounts-heading">{subCategoryTitle}!</h1>
               <Carousel
                 showArrows={true}
                 infiniteLoop={true}
@@ -88,18 +111,20 @@ function BeautyProduct() {
                   )
                 }
               >
-                {subcategories?.map((subcategory) => (
-                  <div className="carousel-slide" key={subcategory._id}>
-                    <img src={subcategory?.image || blankImage} alt={subcategory.title} />
+                {subCategory?.map((sub_cat, index) => (
+                  <div className="carousel-slide" key={index}>
+                    <img
+                      src={sub_cat?.image || blankImage}
+                      alt={sub_cat.title}
+                    />
                     <div className="carousel-text">
-                      <h2 className="legend1"> {subcategory.name || 'N/A'} </h2>
-                      <p className="legend2">{subcategory?.description || 'N/A'} </p>
+                      <h2 className="legend1"> {sub_cat.title || "N/A"} </h2>
                     </div>
                   </div>
                 ))}
               </Carousel>
             </div>
-            <CarsouelSection subcategories={subcategories} />
+            <CarsouelSection categoriesProduct={categoriesProduct} />
           </div>
         </>
       )}

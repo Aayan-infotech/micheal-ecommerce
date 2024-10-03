@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import "./carsouelsection.css";
 import axios from "axios";
 
-function CarsouelSection({ subcategories }) {
+function CarsouelSection({ categoriesProduct }) {
   const [getAllProducts, setGetAllProducts] = useState([]);
   const [favorites, setFavorites] = useState([]);
 
@@ -102,7 +102,7 @@ function CarsouelSection({ subcategories }) {
               )
             }
           >
-            {subcategories?.map((product, index) => (
+            {categoriesProduct?.map((product, index) => (
               <Link to={`/frozenfoodsCarousel/${product?._id}`} key={index}>
                 <div className="carousel-slide">
                   <img className="carousel-img" src={product?.image} alt={product?.name} />

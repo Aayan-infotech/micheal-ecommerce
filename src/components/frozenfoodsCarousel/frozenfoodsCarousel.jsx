@@ -3,7 +3,7 @@ import "./frozenfoodsCarousel.css";
 import bannerImg from '../../images/Frozenfoods-first.png';
 import { useParams } from "react-router-dom";
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../redux/addToCart';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,11 +17,15 @@ function FrozenfoodsCarousel() {
     const dispatch = useDispatch();
     const userId = sessionStorage.getItem("userId");
 
+    const { items: allProducts } = useSelector((state) => state.cart);
+    // console.log(allProducts, 'allProducts');
+
     useEffect(() => {
         const fetchProductDetails = async () => {
             try {
                 const response = await axios.get(`http://44.196.192.232:3129/api/product/get/${productId}`);
                 setProduct(response?.data?.data);
+                console.log(response?.data?.data, 'response?.data?.data');
                 setLoading(false);
             } catch (err) {
                 setError('Error fetching product details');
@@ -94,13 +98,13 @@ function FrozenfoodsCarousel() {
                                         </p>
                                         <div className="right-cart-navi">
                                             {/* Quantity input */}
-                                            <input
+                                            {/* <input
                                                 type="number"
                                                 value={quantity}
                                                 min="1"
                                                 onChange={handleQuantityChange}
                                                 className="quantity-input"
-                                            />
+                                            /> */}
                                             <button className="right-cart-butt" type='button' onClick={handleAddToCart}>
                                                 Add To Cart
                                             </button>

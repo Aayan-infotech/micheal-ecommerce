@@ -94,13 +94,13 @@ const handleAddToCart = async () => {
                     </p>
                   </div>
                   <div className="right-cart-navi">
-                    <input
+                    {/* <input
                       type="number"
                       value={quantity}
                       min="1"
                       onChange={handleQuantityChange}
                       className="quantity-input"
-                    />
+                    /> */}
                     <button className="right-cart-butt" type='button' onClick={handleAddToCart}>
                       Add To Cart
                     </button>

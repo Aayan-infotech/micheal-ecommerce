@@ -2,15 +2,19 @@ import React, { useEffect } from "react";
 import "./cart.css";
 import { useNavigate } from "react-router-dom";
 import cartImg from "../../images/cart-img.jpg";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Loading from '../loader/Loading';
-import { getAddedCarts } from '../redux/allAddedCartsSlice';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Loading from "../loader/Loading";
+import { getAddedCarts } from "../redux/allAddedCartsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 function Cart() {
-  const { items: allProducts, status, error } = useSelector((state) => state.cart);
+  const {
+    items: allProducts,
+    status,
+    error,
+  } = useSelector((state) => state.cart);
   const token = sessionStorage.getItem("token");
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -21,23 +25,31 @@ function Cart() {
 
   const handleCartDelete = async (card_id) => {
     try {
-      const response = await axios.delete(`http://44.196.192.232:3129/api/cart/delete/${card_id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.delete(
+        `http://44.196.192.232:3129/api/cart/delete/${card_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       dispatch(getAddedCarts());
       toast.success(response?.data?.message, {
-        autoClose: 2000
+        autoClose: 2000,
       });
     } catch (error) {
-      console.log(error, 'error');
+      console.log(error, "error");
     }
   };
 
-  const handleBuyNow = (productItem) => {
-    navigate("/shoppingbag", { state: { productItem } });
+  // Function to handle single or multiple product purchases
+  const handleBuyNow = (productItem = null) => {
+    if (productItem) {
+      navigate("/shoppingbag", { state: { productItem } });
+    } else {
+      navigate("/shoppingbag", { state: { productItems: allProducts } });
+    }
   };
 
   return (
@@ -50,10 +62,14 @@ function Cart() {
           </div>
 
           <div className="card-cart container">
-            {status === 'loading' ? (
+            {status === "loading" ? (
               <Loading />
-            ) : status === 'failed' ? (
-              <p style={{ fontSize: "25px", color: "white", fontWeight: "bold" }}>{error}</p>
+            ) : status === "failed" ? (
+              <p
+                style={{ fontSize: "25px", color: "white", fontWeight: "bold" }}
+              >
+                {error}
+              </p>
             ) : (
               <>
                 {allProducts.length > 0 ? (
@@ -72,16 +88,33 @@ function Cart() {
                           <p>${productItem?.product?.price}</p>
                           <p>Quantity: {productItem?.quantity}</p>
                         </div>
-                        <button onClick={() => handleBuyNow(productItem)}>Buy Now</button>
+                        <button onClick={() => handleBuyNow(productItem)}>
+                          Buy Now
+                        </button>
                       </div>
                       <i
                         className="bx bx-x"
-                        onClick={() => handleCartDelete(productItem?.product?._id)}
+                        onClick={() =>
+                          handleCartDelete(productItem?.product?._id)
+                        }
                       ></i>
                     </div>
                   ))
                 ) : (
-                  <p style={{ fontSize: "25px", color: "white", fontWeight: "bold" }}>No products in the cart.</p>
+                  <p
+                    style={{
+                      fontSize: "25px",
+                      color: "white",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    No products in the cart.
+                  </p>
+                )}
+                {allProducts.length > 0 && (
+                  <div className="card-text" style={{ textAlign: "center" }}>
+                    <button onClick={() => handleBuyNow()}>Buy All</button>
+                  </div>
                 )}
               </>
             )}
@@ -91,4 +124,5 @@ function Cart() {
     </>
   );
 }
+
 export default Cart;

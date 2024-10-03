@@ -10,13 +10,17 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const token = sessionStorage.getItem("token");
+
   useEffect(() => {
     fetchAllCategoriesType();
   }, []);
 
   const fetchAllCategoriesType = async () => {
     try {
-      const response = await axios.get('http://44.196.192.232:3129/api/category/get');
+      const response = await axios.get(
+        "http://44.196.192.232:3129/api/category/get"
+      );
       setCategoryType(response?.data?.data);
       setLoading(false);
     } catch (error) {
@@ -25,11 +29,13 @@ function Home() {
     }
   };
 
-  const dryFrozenFoods = categoryType.find(category =>
-    category.title.includes("Dry Foods") || category.title.includes("Frozen Foods")
+  const dryFrozenFoods = categoryType.find(
+    (category) =>
+      category.title.includes("Dry Foods") ||
+      category.title.includes("Frozen Foods")
   );
 
-  const cosmeticsProducts = categoryType.find(category =>
+  const cosmeticsProducts = categoryType.find((category) =>
     category.title.includes("Cosmetics Products")
   );
 
@@ -41,36 +47,42 @@ function Home() {
     }
   };
 
-
   return (
     <div className="home">
       <div className="contain">
         <div className="home-top">
           <h1>All In One Place For Frozen Foods And Cosmetics</h1>
-          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-          <Link to="/register" className="logo">
-            <button>Sign Up</button>
-          </Link>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry.
+          </p>
+          {!token && (
+            <Link to="/register" className="logo">
+              <button>Sign Up</button>
+            </Link>
+          )}
         </div>
         <div className="home-bottom">
           <div className="store">
             <span className="frozen-img"></span>
-            {/* <Link to="/dryfoods/frozenfoods"> */}
-            <p className="frozenp" onClick={() => handleNavigation(dryFrozenFoods)}>
+            <p
+              className="frozenp"
+              onClick={() => handleNavigation(dryFrozenFoods)}
+            >
               <img src={fastfood} alt="" />
               Visit Store<i className="bx bx-right-arrow-alt"></i>
             </p>
-            {/* </Link> */}
           </div>
           <span></span>
           <div className="store">
             <span className="cosemetic-img"></span>
-            {/* <Link to="/cosmeticsproducts"> */}
-            <p className="cosemeticp" onClick={() => handleNavigation(cosmeticsProducts)}>
+            <p
+              className="cosemeticp"
+              onClick={() => handleNavigation(cosmeticsProducts)}
+            >
               <img src={outline} alt="" />
               Visit Store<i className="bx bx-right-arrow-alt"></i>
             </p>
-            {/* </Link> */}
           </div>
         </div>
       </div>
