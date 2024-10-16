@@ -1,0 +1,16 @@
+.product-category-card {
+  display: flex;
+  align-items: center;
+}
+.subcategory img {
+  height: 350px;
+  width: 500px;
+  border-radius: 20px;
+  object-fit: cover;
+  margin-right: 3rem;
+}
+.subcategory-details{
+    color: black;
+    font-weight: bold;
+    font-size: 3rem;
+}

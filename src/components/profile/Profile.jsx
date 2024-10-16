@@ -38,7 +38,7 @@ function Profile() {
         <form className="profile-info container" onSubmit={handleSubmit}>
           <div className="img-upload">
             <div className="img-wrapper" onClick={handleClick}>
-                {image ? (<img src={image} alt="Profile" className="uploaded-image" />) : (<p><i class="bx bxs-camera"></i></p>)}
+                {image ? (<img src={image} alt="Profile" className="uploaded-image" />) : (<p><i className="bx bxs-camera"></i></p>)}
             </div>
             <h2 style={{ color: "black" }}>Upload Image</h2>
             <input type="file" ref={fileInput} onChange={handleFileChange} style={{ display: 'none' }}/>

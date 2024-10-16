@@ -4,7 +4,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import CarsouelSection from "./carsouelsection/carsouelsection";
 import axios from "axios";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import blankImage from "../../images/blank_image.jpg";
 import Loading from "../loader/Loading";
 
@@ -18,6 +18,7 @@ function FrozenFoods() {
   const storedCategoryId = categoryData?._id;
 
   const token = sessionStorage.getItem("token");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (storedCategoryId) {
@@ -51,6 +52,12 @@ function FrozenFoods() {
       setLoading(false);
       console.error("Error fetching subcategories:", error);
     }
+  };
+
+  const handleSubCategory = (subCategoryProduct) => {
+    navigate("/sub-category", {
+      state: { subCategoryProduct: subCategoryProduct },
+    });
   };
 
   return (
@@ -113,18 +120,22 @@ function FrozenFoods() {
                 }
               >
                 {subCategory?.map((sub_cat, index) => (
-                  <div className="carousel-slide" key={index}>
+                  // <Link to={`/sub-category/${sub_cat}`} key={index}>
+                  <div
+                    className="carousel-slide"
+                    style={{cursor:"pointer"}}
+                    onClick={() => handleSubCategory(sub_cat)}
+                    key={index}
+                  >
                     <img
                       src={sub_cat?.image || blankImage}
                       alt={sub_cat?.title || "no image"}
                     />
                     <div className="carousel-text">
-                      <h2 className="legend1">
-                        {" "}
-                        {sub_cat?.title || "N/A"}{" "}
-                      </h2>
+                      <h2 className="legend1"> {sub_cat?.title || "N/A"} </h2>
                     </div>
                   </div>
+                  // </Link>
                 ))}
               </Carousel>
             </div>

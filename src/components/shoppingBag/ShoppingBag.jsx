@@ -5,16 +5,19 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
 
 function ShoppingBag() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { productItem } = location.state || {}; // For single product
-  const { productItems } = location.state || []; // For multiple products (Buy All)
-  const [quantities, setQuantities] = useState({}); // To track quantities of each product
+  const { productItem } = location.state || {}; 
+  const { productItems } = location.state || [];
+  const [quantities, setQuantities] = useState({});
+
+  // const { items: allProducts, status, error, } = useSelector((state) => state.cart);
+  // console.log(allProducts, 'allProducts');
 
   useEffect(() => {
-    // Initialize quantities for each product
     if (productItem) {
       setQuantities({ [productItem.product._id]: productItem.quantity || 1 });
     } else if (productItems) {
@@ -39,7 +42,6 @@ function ShoppingBag() {
       });
       return;
     }
-
     try {
       const response = await axios.put(
         "http://44.196.192.232:3129/api/cart/change",
@@ -49,7 +51,7 @@ function ShoppingBag() {
           userId: userId,
         }
       );
-
+      console.log(response.data, 'response.data');
       if (response.data.success) {
         setQuantities((prevQuantities) => {
           const updatedQuantity = action === "increase" ? prevQuantities[productId] + 1 : prevQuantities[productId] - 1;
@@ -91,7 +93,7 @@ function ShoppingBag() {
   const handleCheckout = () => {
     navigate("/shopcheckout", {
       state: {
-        productItems: productItem ? [productItem] : productItems, // Pass the selected products
+        productItems: productItem ? [productItem] : productItems, 
       },
     });
   };

@@ -31,6 +31,7 @@ import Footer from './components/footer/Footer';
 import StoreBeautyProd from './components/store/beautyFoodCarsouel/storeBeautyProd/storeBeautyProd';
 import StoreFrozenFoodProd from './components/store/frozenFoodCarsouel/storeFrozenFoodProd/storeFrozenFoodProd';
 import Notification from './components/notification/Notification';
+import { ProductSubcagegory } from './components/frozenfoods/ProductSubcagegory';
 // import ProtectedRoute from './ProtectedRoute';
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
         <Route path="/store" element={<Store />} />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/dryfoods/frozenfoods" element={<FrozenFoods />} />
+        <Route path="/sub-category" element={<ProductSubcagegory />} />
         <Route path="/cosmeticsproducts" element={<BeautyProduct />} />
         <Route path="/frozenfoodscarousel/:productId" element={<FrozenFoodsCarousel />} />
         <Route path="/beautyproductcarousel/:productId" element={<BeautyProductCarousel />} />

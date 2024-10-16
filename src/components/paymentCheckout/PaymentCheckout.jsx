@@ -1,109 +1,181 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./paymentcheckout.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify"; // Import ToastContainer and toast
+import "react-toastify/dist/ReactToastify.css";
+
 
 function PaymentCheckout() {
   const [isCouponApplied, setIsCouponApplied] = useState(false);
-  const [totalAmount, setTotalAmount] = useState(108); // Initial total: $94 bag + $2 delivery + $12 tax
-  const [savings, setSavings] = useState(0); // Initial savings: $0
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [savings, setSavings] = useState(0);
+  const [deliveryCharge, setDeliveryCharge] = useState(0);
+  const [finalAmount, setFinalAmount] = useState(0);
+  const [bagValue, setBagValue] = useState(0);
+  const [vouchers, setVouchers] = useState([]); // State to store vouchers
+  const [selectedVoucher, setSelectedVoucher] = useState("");
+  const [availableVouchers, setAvailableVouchers] = useState(0); // For counting available vouchers
+  const [selectedVoucherDiscount, setSelectedVoucherDiscount] = useState(null); // To store discount
 
-  const bagValue = 94;
-  const deliveryCharges = 2;
-  const tax = 12;
-  const couponDiscount = 0.05; // 5% discount
 
-  // Handle coupon application
-  const applyCoupon = () => {
-    if (!isCouponApplied) {
-      const discount = totalAmount * couponDiscount;
-      setSavings(discount.toFixed(2));
-      setTotalAmount((totalAmount - discount).toFixed(2));
-      setIsCouponApplied(true); // Coupon is now applied
+  const location = useLocation();
+  const { selectedSlot, addressId } = location.state || {};
+
+console.log(addressId, 'addressId');
+
+  const userId = sessionStorage.getItem("userId");
+
+
+  const applyCoupon = async () => {
+    if (!isCouponApplied && selectedVoucher) {
+      try {
+        console.log("Applying coupon with data:", {
+          code: selectedVoucher,
+          purchaseAmount: totalAmount,
+        });
+        const response = await axios.post("http://44.196.192.232:3129/api/voucher/apply", {
+          code: selectedVoucher,
+          purchaseAmount: totalAmount,
+        });
+        if (response.data.success) {
+          const discountValue = response.data.discountValue;
+          const discount = totalAmount * (discountValue / 100);
+          const updatedSavings = parseFloat(discount.toFixed(2));
+          const updatedTotalAmount = parseFloat((totalAmount - discount).toFixed(2));
+          setSavings(updatedSavings);
+          setTotalAmount(updatedTotalAmount);
+          setIsCouponApplied(true);
+          setSelectedVoucherDiscount(discountValue);
+          fetchOrderSummary();
+          toast.success(response?.data?.message || "Voucher applied successfully.", { autoClose: 1000 });
+        } else {
+          toast.error(response?.data?.message || "Failed to apply the voucher.", { autoClose: 1000 });
+        }
+      } catch (error) {
+        console.error("Error applying coupon:", error.response?.data || error.message);
+      }
+    }
+  };
+ 
+  useEffect(() => {
+    fetchOrderSummary();
+    fetchVouchers();
+  }, []);
+
+
+  const fetchOrderSummary = async () => {
+    try {
+      const response = await axios.get(
+        `http://192.168.1.13:3129/api/product/summary/${userId}/${selectedSlot?._id}/${addressId}`
+      );
+      const data = response?.data?.data;
+      setTotalAmount(data?.totalWithDelivery || 0);
+      setBagValue(data?.totalAmount || 0);
+      setDeliveryCharge(data?.deliveryCharge || 0);
+      setFinalAmount(data?.finalAmount || 0);
+      console.log(data, "order summary response");
+    } catch (error) {
+      console.log(error);
     }
   };
 
+
+  const fetchVouchers = async () => {
+    try {
+      const response = await axios.get("http://44.196.192.232:3129/api/voucher/get");
+      if (response.data.success) {
+        setVouchers(response.data.data);
+        setAvailableVouchers(response.data.data.length); // Set available vouchers count
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
   return (
-    <div className="paymentcheckout">
-      <div className="paymentcheckout-container">
-        <div className="paymentcheckout-banner">
-          <h1>Checkout</h1>
-        </div>
-        <div className="order-summary container">
-          <div className="order-detail">
-            <h1 className="order-summary-title">Order Summary</h1>
-            <div className="order-items">
-              <div className="order-name">
-                <h3
-                  style={{
-                    color: "black",
-                    marginBottom: "10px",
-                    fontWeight: 500,
-                  }}
-                >
-                  Bag Value
-                </h3>
-                <h3
-                  style={{
-                    color: "black",
-                    marginBottom: "10px",
-                    fontWeight: 500,
-                  }}
-                >
-                  Delivery Charges
-                </h3>
-                <h3
-                  style={{
-                    color: "black",
-                    marginBottom: "10px",
-                    fontWeight: 500,
-                  }}
-                >
-                  Tax
-                </h3>
-              </div>
-              <div className="order-price">
-                <h4 style={{ marginBottom: "10px" }}>${bagValue}</h4>
-                <h4 style={{ marginBottom: "10px" }}>${deliveryCharges}</h4>
-                <h4 style={{ marginBottom: "10px" }}>${tax}</h4>
-              </div>
-            </div>
-            <p className="order-description">
-              Lorem Ipsum is simply dummy text of the printing industry's
-              standard dummy text ever since the 1500s.
-            </p>
+    <>
+      <ToastContainer />
+      <div className="paymentcheckout">
+        <div className="paymentcheckout-container">
+          <div className="paymentcheckout-banner">
+            <h1>Order Summary</h1>
           </div>
-          <div className="order-total">
-            <div className="order-coupon">
-              <div className="coupon-about">
-                <i className="bx bxs-discount coupon-icon"></i>
-                <div className="coupon-text">
-                  <h2
-                    style={{
-                      color: isCouponApplied ? "gray" : "black",
-                      textDecoration: isCouponApplied ? "line-through" : "none",
-                    }}
-                  >
-                    Apply Voucher
-                  </h2>
-                  <p
-                    style={{
-                      color: isCouponApplied ? "gray" : "#ff0000",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    1 available - 5%
-                  </p>
+          <div className="order-summary container">
+            <div className="order-detail">
+              <h1 className="order-summary-title">Order Summary</h1>
+              <div className="order-items">
+                <div className="order-name">
+                  <h3 style={{ color: "black", marginBottom: "10px", fontWeight: 500 }}>
+                    Bag Value
+                  </h3>
+                  <h3 style={{ color: "black", marginBottom: "10px", fontWeight: 500 }}>
+                    Delivery Charges
+                  </h3>
+                  <h3 style={{ color: "black", marginBottom: "10px", fontWeight: 500 }}>
+                    Tax
+                  </h3>
                 </div>
+                <div className="order-price">
+                  <h4 style={{ marginBottom: "10px" }}>${bagValue}</h4>
+                  <h4 style={{ marginBottom: "10px" }}>${deliveryCharge}</h4>
+                  <h4 style={{ marginBottom: "10px" }}>
+                    ${(totalAmount - bagValue - deliveryCharge).toFixed(2)}
+                  </h4>
+                </div>
+              </div>
+              <p className="order-description">
+                Lorem Ipsum is simply dummy text of the printing industry's standard dummy text ever since the 1500s.
+              </p>
+            </div>
+            <div className="order-total">
+              <div className="order-coupon">
+                <div className="coupon-about">
+                  <i className="bx bxs-discount coupon-icon"></i>
+                  <div className="coupon-text">
+                    <h2
+                      style={{
+                        color: isCouponApplied ? "gray" : "black",
+                        textDecoration: isCouponApplied ? "line-through" : "none",
+                      }}
+                    >
+                      Apply Voucher
+                    </h2>
+                    <p
+                      style={{
+                        color: isCouponApplied ? "gray" : "#ff0000",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {/* {isCouponApplied ? `${selectedVoucherDiscount}% off` : "Available vouchers"} */}
+                      {isCouponApplied && selectedVoucherDiscount
+                        ? `${availableVouchers} available - ${selectedVoucherDiscount}% off`
+                        : `${availableVouchers} coupons available`}
+                    </p>
+                  </div>
+                </div>
+                <select
+                  value={selectedVoucher}
+                  onChange={(e) => setSelectedVoucher(e.target.value)}
+                  disabled={isCouponApplied}
+                  className="voucher-select"
+                >
+                  <option value="" disabled>Select a voucher</option>
+                  {vouchers.map((voucher) => (
+                    <option key={voucher._id} value={voucher.code}>
+                      {voucher.code} ({voucher.discountValue}% off)
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="coupon-select">
                 <button
                   className="select-button"
-                  
                   onClick={applyCoupon}
                   disabled={isCouponApplied}
                   style={{
-                    // textDecoration: isCouponApplied ? "line-through" : "none", 
-                    color: isCouponApplied ? "gray" : "white", 
+                    color: isCouponApplied ? "gray" : "white",
                     backgroundColor: isCouponApplied ? "#e0e0e0" : "red",
                     cursor: isCouponApplied ? "not-allowed" : "pointer",
                   }}
@@ -111,23 +183,27 @@ function PaymentCheckout() {
                   {isCouponApplied ? "Coupon Applied" : "Apply Coupon"}
                 </button>
               </div>
+              <div className="total-saving">
+                <h3>Total Savings</h3>
+                <h5>${savings}</h5>
+              </div>
+              <div className="order-total-price">
+                <h2 style={{ color: "black" }}>Total Amount Payable</h2>
+                <h2 style={{ color: "black" }}>${totalAmount.toFixed(2)}</h2>
+              </div>
             </div>
-            <div className="total-saving">
-              <h3>Total Savings</h3>
-              <h5>${savings}</h5>
-            </div>
-            <div className="order-total-price">
-              <h2 style={{ color: "black" }}>Total Amount Payable</h2>
-              <h2 style={{ color: "black" }}>${totalAmount}</h2>
-            </div>
+            <Link to="/payment">
+              <button className="payment-button">Proceed to Payment</button>
+            </Link>
           </div>
-          <Link to="/payment">
-            <button className="payment-button">Proceed to Payment</button>
-          </Link>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
+
 export default PaymentCheckout;
+
+
+

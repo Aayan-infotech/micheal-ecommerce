@@ -5,6 +5,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 function ShopCheckout() {
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
@@ -16,10 +17,12 @@ function ShopCheckout() {
   const navigate = useNavigate();
   const userId = sessionStorage.getItem("userId");
 
+
   useEffect(() => {
     fetchAddressDetails();
     fetchDeliverySlots();
   }, []);
+
 
   const fetchAddressDetails = async () => {
     try {
@@ -32,6 +35,7 @@ function ShopCheckout() {
     }
   };
 
+
   const fetchDeliverySlots = async () => {
     try {
       const response = await axios.get(
@@ -43,15 +47,18 @@ function ShopCheckout() {
     }
   };
 
+
   const handleEdit = (index) => {
     navigate("/address", {
       state: { address: addresses[index], index, allAddresses: addresses },
     });
   };
 
+
   const handleAdd = () => {
     navigate("/address", { state: { allAddresses: addresses } });
   };
+
 
   const handleDelete = async (add_id) => {
     try {
@@ -79,48 +86,53 @@ function ShopCheckout() {
     }
   };
 
+
   const handleSelectAddress = (addressId) => {
     setSelectedAddressId(addressId);
   };
+
 
   const handleDeliveryTypeChange = (event) => {
     setSelectedDeliveryType(event.target.value);
     setSelectedTimePeriod("");
   };
 
+
   const handleToProceedCheckout = async () => {
-    try {
+    // try {
       const selectedSlot = deliverySlots.find(
         (slot) =>
           slot?.deliveryType === selectedDeliveryType &&
           slot?.timePeriod === selectedTimePeriod
       );
-      const response = await axios.post(
-        "http://44.196.192.232:3129/api/product/order",
-        {
-          userId: userId,
-          deliverySlotId: selectedSlot?._id,
+    //   const response = await axios.post(
+    //     "http://44.196.192.232:3129/api/product/order",
+    //     {
+    //       userId: userId,
+    //       deliverySlotId: selectedSlot?._id,
+    //       addressId: selectedAddressId,
+    //     }
+    //   );
+    //   if (response?.data?.success) {
+    //     toast.success(response?.data?.message, {
+    //       autoClose: 1000,
+    //     });
+    //   } else {
+    //     toast.error(response?.data?.message, {
+    //       autoClose: 1000,
+    //     });
+    //   }
+    // order-summary
+      navigate("/order-summary", {
+        state: {
+          selectedSlot,
           addressId: selectedAddressId,
-        }
-      );
-      if (response?.data?.success) {
-        toast.success(response?.data?.message, {
-          autoClose: 1000,
-        });
-      } else {
-        toast.error(response?.data?.message, {
-          autoClose: 1000,
-        });
-      }
-      // navigate("/order-summary", {
-      //   state: {
-      //     selectedSlot,
-      //     addressId: selectedAddressId,
-      //     productItem: productItem,
-      //   },
-      // });
-    } catch (error) {}
+          productItem: productItem,
+        },
+      });
+    // } catch (error) {}
   };
+
 
   return (
     <>
@@ -135,6 +147,7 @@ function ShopCheckout() {
               <h2 style={{ color: "black", marginBottom: "15px" }}>
                 <i className="bx bx-location-plus"></i> Delivery Address
               </h2>
+
 
               {addresses.map((address, index) => (
                 <div key={index} className="address-card">
@@ -168,6 +181,7 @@ function ShopCheckout() {
                       onClick={() => handleEdit(index)}
                     ></i>
                   </div>
+
 
                   <i
                     className={`bx ${
@@ -251,4 +265,8 @@ function ShopCheckout() {
   );
 }
 
+
 export default ShopCheckout;
+
+
+

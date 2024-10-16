@@ -126,14 +126,14 @@ function FrozenfoodsCarousel() {
                             <div className="cart-links">
                                 <h2 className="cart-head">Additional Information</h2>
                                 <div className="cart-links-info">
-                                    <p className="cart-links-first">
+                                    {/* <p className="cart-links-first">
                                         Category: {product?.category}
                                     </p>
-                                    <h2 className="cart-head">Subcategory: {product?.subcategory}</h2>
+                                    <h2 className="cart-head">Subcategory: {product?.subcategory}</h2> */}
                                     <p className="cart-links-second">
                                         Stock: {product?.stock} available
                                     </p>
-                                    <h2 className="cart-head">Price: ${product?.price}</h2>
+                                    <h2 className="cart-head" style={{display:"flex"}}>Price: <span>${product?.price}</span></h2>
                                 </div>
                             </div>
                         </>

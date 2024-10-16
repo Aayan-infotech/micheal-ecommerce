@@ -4,7 +4,7 @@ import firstPay from "../../images/first-pay.png"; // Visa
 import secondPay from "../../images/second-pay.png"; // PayPal
 import thirdPay from "../../images/third-pay.png"; // MasterCard
 import fourthPay from "../../images/fourth-pay.png"; // Apple Pay
-import StripeCheckout from 'react-stripe-checkout';
+import StripeCheckout from "react-stripe-checkout";
 import axios from "axios";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -22,10 +22,13 @@ function Payment() {
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedSlot, addressId, productItem } = location.state || {};
+  console.log(addressId, 'addressId');
+
+  const userId = sessionStorage.getItem("userId");
 
   useEffect(() => {
     if (selectedSlot) {
-      console.log('Selected Address ID:', selectedSlot);
+      console.log("Selected Address ID:", selectedSlot);
     }
   }, [selectedSlot]);
 
@@ -33,25 +36,43 @@ function Payment() {
     setSelectedMethod(id);
   };
 
-  const totalProductPrice = productItem?.product?.price + selectedSlot?.deliveryCharge;
+  const totalProductPrice =
+    productItem?.product?.price + selectedSlot?.deliveryCharge;
+  console.log(totalProductPrice, "totalProductPrice");
 
   const handleToProceedCheckout = async (token) => {
     try {
       const response = await axios.post(
-        'http://44.196.192.232:3129/api/payment/create-payment-intent',
+        "http://192.168.1.13:3129/api/product/order",
         {
-          provider: 'stripe',
-          amount: totalProductPrice,
-          currency: 'auto',
+          userId: userId,
+          deliverySlotId: selectedSlot?._id,
+          addressId: addressId,
+          paymentMethod: "stripe",
           token: token.id,
-          // productId:productItem?.product?._id
-          // addressId: addressId
         }
       );
       console.log(response?.data?.data);
-      navigate("/order-summary");
+      navigate("/paymentmessage");
     } catch (error) {
       console.log("Error during payment process:", error);
+    }
+  };
+
+  const handleSumUpPayment = async () => {
+    try {
+      const response = await axios.post(
+        "http://44.196.192.232:3129/api/payment/create-sumup-payment",
+        {
+          amount: 200,
+          currency: "USD",
+        }
+      );
+      if (response.data.url) {
+        window.location.href = response.data.url;
+      }
+    } catch (error) {
+      console.error("Error during SumUp payment process:", error);
     }
   };
 
@@ -69,7 +90,9 @@ function Payment() {
             {paymentMethods.map((method) => (
               <div
                 key={method.id}
-                className={`payment-option ${selectedMethod === method.id ? 'selected' : ''}`}
+                className={`payment-option ${
+                  selectedMethod === method.id ? "selected" : ""
+                }`}
                 onClick={() => handleMethodSelect(method.id)}
               >
                 <img src={method.img} alt={method.name} />
@@ -79,50 +102,34 @@ function Payment() {
           </div>
 
           <div className="payment-summary">
-            <div className="orders-summary">
-              <div className="order-item">
-                <span>Total Price</span>
-                <span>$ {productItem?.product?.price}</span>
-              </div>
-              <div className="order-item">
-                <span>Delivery Charge</span>
-                <span>$ {selectedSlot?.deliveryCharge}</span>
-              </div>
-              <div className="order-item">
-                <span>Delivery Type</span>
-                <span>{selectedSlot?.deliveryType}</span>
-              </div>
-              <div className="order-item" style={{ fontWeight: "bold", fontSize: "25px", color: "black" }}>
-                <span>Total</span>
-                <span>$ {totalProductPrice}</span>
-              </div>
-            </div>
-
             <div className="payment-buttons">
               {selectedMethod === 1 ? (
                 <StripeCheckout
                   name="MILLYS HB"
                   image="http://localhost:3000/static/media/logo.22c2717f079a705976f8.png"
                   ComponentClass="div"
-                  amount={totalProductPrice * 100}
                   currency="USD"
                   stripeKey="pk_test_51PqTR903ec58RCFWng6UUUnIZ8R0PmQZL1xVE5Wv6jUIAiS9dxzWobfK6oysU86LJmkvd9I2Adcbbv0jYqLkNcAp00hFGx4UKj"
                   locale="en"
                   zipCode={false}
                   token={handleToProceedCheckout}
                 >
-                  <button className="slot-button">
-                    Proceed To Payment
-                  </button>
+                  <button className="slot-button">Proceed To Payment</button>
                 </StripeCheckout>
               ) : selectedMethod === 2 ? (
                 <PayPalScriptProvider options={{ clientId: "test" }}>
                   <PayPalButtons style={{ layout: "horizontal" }} />
                 </PayPalScriptProvider>
               ) : selectedMethod === 3 ? (
-                <button onClick={() => alert('Processing payment with MasterCard')}>Pay with MasterCard</button>
+                <button onClick={handleSumUpPayment}>
+                  Pay with MasterCard (SumUp)
+                </button>
               ) : selectedMethod === 4 ? (
-                <button onClick={() => alert('Processing payment with Apple Pay')}>Pay with Apple Pay</button>
+                <button
+                  onClick={() => alert("Processing payment with Apple Pay")}
+                >
+                  Pay with Apple Pay
+                </button>
               ) : (
                 <button disabled>Select a payment method</button>
               )}

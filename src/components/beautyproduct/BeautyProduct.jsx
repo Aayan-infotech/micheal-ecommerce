@@ -4,7 +4,7 @@ import { Carousel } from "react-responsive-carousel";
 import blankImage from "../../images/blank_image.jpg";
 import CarsouelSection from "./carsouelsection/carsouelsection";
 import axios from "axios";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Loading from "../loader/Loading";
 
 function BeautyProduct() {
@@ -17,6 +17,7 @@ function BeautyProduct() {
   const storedCategoryId = categoryData?._id;
 
   const token = sessionStorage.getItem("token");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (storedCategoryId) {
@@ -50,6 +51,12 @@ function BeautyProduct() {
       setLoading(false);
       console.error("Error fetching subcategories:", error);
     }
+  };
+
+  const handleSubCategory = (subCategoryProduct) => {
+    navigate("/sub-category", {
+      state: { subCategoryProduct: subCategoryProduct },
+    });
   };
 
   return (
@@ -112,7 +119,12 @@ function BeautyProduct() {
                 }
               >
                 {subCategory?.map((sub_cat, index) => (
-                  <div className="carousel-slide" key={index}>
+                  <div
+                    className="carousel-slide"
+                    key={index}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleSubCategory(sub_cat)}
+                  >
                     <img
                       src={sub_cat?.image || blankImage}
                       alt={sub_cat.title}

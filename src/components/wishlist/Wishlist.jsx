@@ -65,7 +65,7 @@ function Wishlist() {
                     <div className="wishlist-text">
                       <div className="c-texts">
                         <h2>{item.name}</h2>
-                        <p>{item?.rating || '4.5'}<i class="bx bxs-star"></i></p>
+                        <p>{item?.rating || '4.5'}<i className="bx bxs-star"></i></p>
                       </div>
                       <h3 style={{ color: 'black' }}>
                         ${item.price}
