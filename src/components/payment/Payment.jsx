@@ -11,6 +11,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 function Payment() {
   const [selectedMethod, setSelectedMethod] = useState(null);
+  const [isPaying, setIsPaying] = useState(false); // New state to track payment progress
 
   const paymentMethods = [
     { id: 1, name: "Visa", img: firstPay, lastFour: "2109" },
@@ -21,9 +22,7 @@ function Payment() {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { selectedSlot, addressId, productItem } = location.state || {};
-  console.log(addressId, 'addressId');
-
+  const { selectedSlot, addressId } = location.state || {};
   const userId = sessionStorage.getItem("userId");
 
   useEffect(() => {
@@ -36,14 +35,11 @@ function Payment() {
     setSelectedMethod(id);
   };
 
-  const totalProductPrice =
-    productItem?.product?.price + selectedSlot?.deliveryCharge;
-  console.log(totalProductPrice, "totalProductPrice");
-
   const handleToProceedCheckout = async (token) => {
+    setIsPaying(true); // Set loading state when payment starts
     try {
       const response = await axios.post(
-        "http://192.168.1.13:3129/api/product/order",
+        "http://44.196.192.232:3129/api/product/order",
         {
           userId: userId,
           deliverySlotId: selectedSlot?._id,
@@ -52,14 +48,16 @@ function Payment() {
           token: token.id,
         }
       );
-      console.log(response?.data?.data);
-      navigate("/paymentmessage");
+      setIsPaying(false); // Reset loading state after successful payment
+      navigate("/paymentmessage"); // Navigate to payment message component
     } catch (error) {
       console.log("Error during payment process:", error);
+      setIsPaying(false); // Reset loading state if payment fails
     }
   };
 
   const handleSumUpPayment = async () => {
+    setIsPaying(true); // Set loading state when payment starts
     try {
       const response = await axios.post(
         "http://44.196.192.232:3129/api/payment/create-sumup-payment",
@@ -71,8 +69,10 @@ function Payment() {
       if (response.data.url) {
         window.location.href = response.data.url;
       }
+      setIsPaying(false); // Reset loading state
     } catch (error) {
       console.error("Error during SumUp payment process:", error);
+      setIsPaying(false); // Reset loading state if payment fails
     }
   };
 
@@ -114,21 +114,24 @@ function Payment() {
                   zipCode={false}
                   token={handleToProceedCheckout}
                 >
-                  <button className="slot-button">Proceed To Payment</button>
+                  <button className="slot-button" disabled={isPaying}>
+                    {isPaying ? "Paying..." : "Proceed To Payment"}
+                  </button>
                 </StripeCheckout>
               ) : selectedMethod === 2 ? (
                 <PayPalScriptProvider options={{ clientId: "test" }}>
                   <PayPalButtons style={{ layout: "horizontal" }} />
                 </PayPalScriptProvider>
               ) : selectedMethod === 3 ? (
-                <button onClick={handleSumUpPayment}>
-                  Pay with MasterCard (SumUp)
+                <button onClick={handleSumUpPayment} disabled={isPaying}>
+                  {isPaying ? "Paying..." : "Pay with MasterCard (SumUp)"}
                 </button>
               ) : selectedMethod === 4 ? (
                 <button
                   onClick={() => alert("Processing payment with Apple Pay")}
+                  disabled={isPaying}
                 >
-                  Pay with Apple Pay
+                  {isPaying ? "Paying..." : "Pay with Apple Pay"}
                 </button>
               ) : (
                 <button disabled>Select a payment method</button>
