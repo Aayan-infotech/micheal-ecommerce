@@ -2,69 +2,69 @@ import React, { useEffect, useState } from "react";
 import "./paymentcheckout.css";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify"; // Import ToastContainer and toast
+import { ToastContainer, toast } from "react-toastify"; 
 import "react-toastify/dist/ReactToastify.css";
-
+import Loading from '../../components/loader/Loading';
 
 function PaymentCheckout() {
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [savings, setSavings] = useState(0);
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const [finalAmount, setFinalAmount] = useState(0);
   const [bagValue, setBagValue] = useState(0);
-  const [vouchers, setVouchers] = useState([]); // State to store vouchers
+  const [vouchers, setVouchers] = useState([]); 
   const [selectedVoucher, setSelectedVoucher] = useState("");
-  const [availableVouchers, setAvailableVouchers] = useState(0); // For counting available vouchers
-  const [selectedVoucherDiscount, setSelectedVoucherDiscount] = useState(null); // To store discount
-
+  const [availableVouchers, setAvailableVouchers] = useState(0); 
+  const [selectedVoucherDiscount, setSelectedVoucherDiscount] = useState(null); 
 
   const location = useLocation();
   const { selectedSlot, addressId } = location.state || {};
-
-console.log(addressId, 'addressId');
-
   const userId = sessionStorage.getItem("userId");
-
 
   const applyCoupon = async () => {
     if (!isCouponApplied && selectedVoucher) {
       try {
-        console.log("Applying coupon with data:", {
-          code: selectedVoucher,
-          purchaseAmount: totalAmount,
-        });
         const response = await axios.post("http://44.196.192.232:3129/api/voucher/apply", {
           code: selectedVoucher,
           purchaseAmount: totalAmount,
         });
+  
         if (response.data.success) {
-          const discountValue = response.data.discountValue;
+          const discountValue = response.data.discountValue; // Assuming this value is sent back
           const discount = totalAmount * (discountValue / 100);
           const updatedSavings = parseFloat(discount.toFixed(2));
           const updatedTotalAmount = parseFloat((totalAmount - discount).toFixed(2));
+          
           setSavings(updatedSavings);
           setTotalAmount(updatedTotalAmount);
           setIsCouponApplied(true);
           setSelectedVoucherDiscount(discountValue);
           fetchOrderSummary();
-          toast.success(response?.data?.message || "Voucher applied successfully.", { autoClose: 1000 });
+          
+          // Show success message from the response
+          toast.success(response.data.message || "Voucher applied successfully!", { autoClose: 1000 });
         } else {
-          toast.error(response?.data?.message || "Failed to apply the voucher.", { autoClose: 1000 });
+          // Show the specific error message from the response
+          toast.error(response.data.message || "Failed to apply the voucher.", { autoClose: 1000 });
         }
       } catch (error) {
-        console.error("Error applying coupon:", error.response?.data || error.message);
+        // Handle network or other errors
+        const errorMessage = error.response?.data?.message || error.message;
+        toast.error(`Error: ${errorMessage}`, { autoClose: 1000 });
+        console.error("Error applying coupon:", errorMessage);
       }
     }
-  };
+  };  
  
   useEffect(() => {
     fetchOrderSummary();
     fetchVouchers();
   }, []);
 
-
   const fetchOrderSummary = async () => {
+    setLoading(true); 
     try {
       const response = await axios.get(
         `http://192.168.1.13:3129/api/product/summary/${userId}/${selectedSlot?._id}/${addressId}`
@@ -74,25 +74,31 @@ console.log(addressId, 'addressId');
       setBagValue(data?.totalAmount || 0);
       setDeliveryCharge(data?.deliveryCharge || 0);
       setFinalAmount(data?.finalAmount || 0);
-      console.log(data, "order summary response");
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
-
   const fetchVouchers = async () => {
+    setLoading(true);
     try {
       const response = await axios.get("http://44.196.192.232:3129/api/voucher/get");
       if (response.data.success) {
         setVouchers(response.data.data);
-        setAvailableVouchers(response.data.data.length); // Set available vouchers count
+        setAvailableVouchers(response.data.data.length);
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -118,7 +124,7 @@ console.log(addressId, 'addressId');
                   </h3>
                 </div>
                 <div className="order-price">
-                  <h4 style={{ marginBottom: "10px" }}>${bagValue}</h4>
+                  <h4 style={{ marginBottom: "10px" }}>${bagValue.toFixed(3)}</h4>
                   <h4 style={{ marginBottom: "10px" }}>${deliveryCharge}</h4>
                   <h4 style={{ marginBottom: "10px" }}>
                     ${(totalAmount - bagValue - deliveryCharge).toFixed(2)}
@@ -148,7 +154,6 @@ console.log(addressId, 'addressId');
                         fontWeight: "bold",
                       }}
                     >
-                      {/* {isCouponApplied ? `${selectedVoucherDiscount}% off` : "Available vouchers"} */}
                       {isCouponApplied && selectedVoucherDiscount
                         ? `${availableVouchers} available - ${selectedVoucherDiscount}% off`
                         : `${availableVouchers} coupons available`}
@@ -202,8 +207,4 @@ console.log(addressId, 'addressId');
   );
 }
 
-
 export default PaymentCheckout;
-
-
-

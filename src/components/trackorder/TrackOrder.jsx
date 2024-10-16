@@ -1,21 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import trackImg from "../../images/first-pay.png"
+import trackImg from "../../images/first-pay.png";
 import './trackorder.css';
+import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Loading from '../../components/loader/Loading';
 
 function TrackOrder() {
-  const [orderData, setOrderData] = useState(null);
+  const [trackOrder, setTrackOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { orderId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => {
-      setOrderData({
-        image: trackImg,
-        name: 'boAt Immortal 161',
-        quantity: 1,
-        price: '₹904',
-        status: 'Pending',
-      });
-    }, 1000);
-  }, []);
+    fetchTrackOrder();
+  }, [orderId]);
+
+  const fetchTrackOrder = async () => {
+    try {
+      const response = await axios.get(`http://192.168.1.13:3129/api/product/orders/${orderId}`);
+      console.log(response?.data?.data, 'data');
+      setTrackOrder(response?.data?.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancelOrder = async () => {
+    try {
+      const response = await axios.post(`http://192.168.1.13:3129/api/product/cancel/${orderId}`);
+      console.log(response?.data, 'Cancel Order Response');
+
+      if (response?.data?.success) {
+        toast.success("Order canceled successfully!");
+        fetchTrackOrder();
+      } else {
+        toast.error("Failed to cancel order.");
+      }
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      toast.error("An error occurred while canceling the order.");
+    }
+  };
 
   return (
     <div className="trackorder">
@@ -24,26 +54,40 @@ function TrackOrder() {
           <h1>Track Order</h1>
         </div>
 
-        {orderData ? (
+        {trackOrder ? (
           <div className="order-details container">
             <div className="order-img">
-              <img src={orderData.image} alt={orderData.name} />
+              <img src={trackOrder.items[0]?.product?.image || trackImg} alt={trackOrder.items[0]?.product?.name} />
             </div>
             <div className="order-info">
-              <h2>{orderData.name}</h2>
-              <p>Quantity: <span>{orderData.quantity}</span></p>
-              <p>Price: <span>{orderData.price}</span></p>
-              <p>Status: <span>{orderData.status}</span></p>
+              <h2>{trackOrder.items[0]?.product?.name}</h2>
+              <h5 style={{ fontWeight: "none" }}>Quantity: <span>{trackOrder.items[0]?.quantity}</span></h5>
+              <h5 style={{ fontWeight: "none" }}>Price: <span>₹{trackOrder.totalAmount.toFixed(2)}</span></h5>
+              <p style={{
+                color: trackOrder.orderStatus === "Pending" || trackOrder.orderStatus === "Cancelled" ? "red"
+                  : trackOrder.orderStatus === "Approved" ? "green"
+                    : "black",
+                fontWeight: "bold",
+              }}>
+                {trackOrder.orderStatus}
+              </p>
             </div>
             <div className="order-actions">
-              <button className="cancel-order"><i className='bx bx-x-circle'></i> Cancel Order</button>
-              <button className="chat-with-us"><i className='bx bx-conversation'></i> Chat with Us</button>
+              {trackOrder?.orderStatus === 'Pending' &&
+                <button className="cancel-order" onClick={handleCancelOrder}>
+                  <i className='bx bx-x-circle'></i> Cancel Order
+                </button>
+              }
+              <button className="chat-with-us">
+                <i className='bx bx-conversation'></i> Chat with Us
+              </button>
             </div>
           </div>
         ) : (
           <p className='container order-para'>Loading order details...</p>
         )}
       </div>
+      <ToastContainer />
     </div>
   );
 }

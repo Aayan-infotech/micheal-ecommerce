@@ -66,7 +66,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/searchitems" element={<SearchItems />} />
         <Route path="/myorders" element={<MyOrders />} />
-        <Route path="/trackorder" element={<TrackOrder />} />
+        <Route path="/trackorder/:orderId" element={<TrackOrder />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/storebeautyprod" element={<StoreBeautyProd />} />
         {/* <Route path="/storefrozenfoodprod" element={<StoreFrozenFoodProd />} /> */}
