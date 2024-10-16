@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./paymentcheckout.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify"; 
 import "react-toastify/dist/ReactToastify.css";
@@ -20,7 +20,9 @@ function PaymentCheckout() {
   const [selectedVoucherDiscount, setSelectedVoucherDiscount] = useState(null); 
 
   const location = useLocation();
+  const navigate = useNavigate();
   const { selectedSlot, addressId } = location.state || {};
+  console.log(selectedSlot?._id, addressId, 'selectedSlot, addressId')
   const userId = sessionStorage.getItem("userId");
 
   const applyCoupon = async () => {
@@ -30,27 +32,21 @@ function PaymentCheckout() {
           code: selectedVoucher,
           purchaseAmount: totalAmount,
         });
-  
         if (response.data.success) {
           const discountValue = response.data.discountValue; // Assuming this value is sent back
           const discount = totalAmount * (discountValue / 100);
           const updatedSavings = parseFloat(discount.toFixed(2));
           const updatedTotalAmount = parseFloat((totalAmount - discount).toFixed(2));
-          
           setSavings(updatedSavings);
           setTotalAmount(updatedTotalAmount);
           setIsCouponApplied(true);
           setSelectedVoucherDiscount(discountValue);
           fetchOrderSummary();
-          
-          // Show success message from the response
           toast.success(response.data.message || "Voucher applied successfully!", { autoClose: 1000 });
         } else {
-          // Show the specific error message from the response
           toast.error(response.data.message || "Failed to apply the voucher.", { autoClose: 1000 });
         }
       } catch (error) {
-        // Handle network or other errors
         const errorMessage = error.response?.data?.message || error.message;
         toast.error(`Error: ${errorMessage}`, { autoClose: 1000 });
         console.error("Error applying coupon:", errorMessage);
@@ -98,6 +94,17 @@ function PaymentCheckout() {
 
   if (loading) {
     return <Loading />;
+  }
+
+  const handleToProceed = () => {
+    navigate("/payment")
+    // navigate("/payment", {
+    //   state: {
+    //     selectedSlot,
+    //     addressId: selectedAddressId,
+    //     productItem: productItem,
+    //   },
+    // });
   }
 
   return (
@@ -197,9 +204,9 @@ function PaymentCheckout() {
                 <h2 style={{ color: "black" }}>${totalAmount.toFixed(2)}</h2>
               </div>
             </div>
-            <Link to="/payment">
-              <button className="payment-button">Proceed to Payment</button>
-            </Link>
+            {/* <Link to="/payment"> */}
+              <button className="payment-button" onClick={handleToProceed}>Proceed to Payment</button>
+            {/* </Link> */}
           </div>
         </div>
       </div>

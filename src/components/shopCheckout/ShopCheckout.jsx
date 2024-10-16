@@ -99,38 +99,18 @@ function ShopCheckout() {
 
 
   const handleToProceedCheckout = async () => {
-    // try {
-      const selectedSlot = deliverySlots.find(
-        (slot) =>
-          slot?.deliveryType === selectedDeliveryType &&
-          slot?.timePeriod === selectedTimePeriod
-      );
-    //   const response = await axios.post(
-    //     "http://44.196.192.232:3129/api/product/order",
-    //     {
-    //       userId: userId,
-    //       deliverySlotId: selectedSlot?._id,
-    //       addressId: selectedAddressId,
-    //     }
-    //   );
-    //   if (response?.data?.success) {
-    //     toast.success(response?.data?.message, {
-    //       autoClose: 1000,
-    //     });
-    //   } else {
-    //     toast.error(response?.data?.message, {
-    //       autoClose: 1000,
-    //     });
-    //   }
-    // order-summary
-      navigate("/order-summary", {
-        state: {
-          selectedSlot,
-          addressId: selectedAddressId,
-          productItem: productItem,
-        },
-      });
-    // } catch (error) {}
+    const selectedSlot = deliverySlots.find(
+      (slot) =>
+        slot?.deliveryType === selectedDeliveryType &&
+        slot?.timePeriod === selectedTimePeriod
+    );
+    navigate("/order-summary", {
+      state: {
+        selectedSlot,
+        addressId: selectedAddressId,
+        productItem: productItem,
+      },
+    });
   };
 
 
@@ -184,11 +164,10 @@ function ShopCheckout() {
 
 
                   <i
-                    className={`bx ${
-                      selectedAddressId === address._id
+                    className={`bx ${selectedAddressId === address._id
                         ? "bxs-check-circle"
                         : "bx-check-circle"
-                    }`}
+                      }`}
                     style={{
                       fontSize: "25px",
                       color:
