@@ -75,6 +75,25 @@ function Payment() {
     }
   };
 
+  const handlePayPalApprove = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://44.196.192.232:3129/api/product/order",
+        {
+          userId: userId,
+          deliverySlotId: selectedSlot?._id,
+          addressId: addressId,
+          paymentMethod: "paypal",
+          paymentId: data.paymentID,
+          payerId: data.payerID,
+        }
+      );
+      navigate("/paymentmessage");
+    } catch (error) {
+      console.log("Error during PayPal payment process:", error);
+    }
+  };
+
   return (
     <div className="payment">
       <div className="payment-container">
@@ -117,7 +136,22 @@ function Payment() {
                 </StripeCheckout>
               ) : selectedMethod === 2 ? (
                 <PayPalScriptProvider options={{ clientId: "test" }}>
-                  <PayPalButtons style={{ layout: "horizontal" }} />
+                  <PayPalButtons style={{ layout: "horizontal" }}  createOrder={(data, actions) => {
+                      return actions.order.create({
+                        purchase_units: [
+                          {
+                            amount: {
+                              value: "200", // Specify amount here
+                            },
+                          },
+                        ],
+                      });
+                    }}
+                    onApprove={(data, actions) => {
+                      return actions.order.capture().then((details) => {
+                        handlePayPalApprove(data);
+                      });
+                    }}/>
                 </PayPalScriptProvider>
               ) : selectedMethod === 3 ? (
                 <button onClick={handleSumUpPayment}>
