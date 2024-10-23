@@ -28,11 +28,20 @@ function Payment() {
 
   const userId = sessionStorage.getItem("userId");
 
+  // useEffect(() => {
+  //   if (selectedSlot) {
+  //     console.log("Selected Address ID:", selectedSlot);
+  //   }
+  // }, [selectedSlot]);
   useEffect(() => {
-    if (selectedSlot) {
-      console.log("Selected Address ID:", selectedSlot);
-    }
-  }, [selectedSlot]);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   const handleMethodSelect = (id) => {
     setSelectedMethod(id);
