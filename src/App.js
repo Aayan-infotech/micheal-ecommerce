@@ -32,6 +32,9 @@ import StoreBeautyProd from './components/store/beautyFoodCarsouel/storeBeautyPr
 import StoreFrozenFoodProd from './components/store/frozenFoodCarsouel/storeFrozenFoodProd/storeFrozenFoodProd';
 import Notification from './components/notification/Notification';
 import { ProductSubcagegory } from './components/frozenfoods/ProductSubcagegory';
+import PrivacyPolicy from './components/content/PrivacyPolicy';
+import TermsConditions from './components/content/TermsConditions';
+import RefundPolicy from './components/content/RefundPolicy';
 // import ProtectedRoute from './ProtectedRoute';
 
 function App() {
@@ -73,7 +76,9 @@ function App() {
         <Route path="/storefrozenfoodprod/:storeProId" element={<StoreFrozenFoodProd />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="/" element={<Home />} />
-
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-conditions" element={<TermsConditions />} />
+        <Route path="/refund-policy" element={<RefundPolicy />} />
       </Routes>
       {!noFooterPaths.includes(location.pathname) && <Footer />}
     </div>

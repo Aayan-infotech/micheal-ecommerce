@@ -77,7 +77,7 @@ function FrozenFoods() {
               </p>
               {!token && (
                 <Link to="/register" className="logo">
-                  <button>Sign Up</button>
+                  <button className="fronzenfoods">Sign Up</button>
                 </Link>
               )}
             </div>

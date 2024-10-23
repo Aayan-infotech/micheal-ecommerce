@@ -7,9 +7,9 @@ import axios from "axios";
 
 function ContactUs() {
   const [formData, setFormData] = useState({
-    fullName: "",
-    emailOrMobile: "",
-    companyName: "",
+    name: "",
+    email: "",
+    onBehalfOf: "",
     subject: "",
     message: "",
   });
@@ -19,23 +19,23 @@ function ContactUs() {
   const validate = (fieldValues = formData) => {
     const newErrors = { ...errors };
 
-    if ("fullName" in fieldValues)
-      newErrors.fullName = fieldValues.fullName ? "" : "Please fill the name";
+    if ("name" in fieldValues)
+      newErrors.name = fieldValues.name ? "" : "Please fill the name";
 
-    if ("emailOrMobile" in fieldValues) {
-      const value = fieldValues.emailOrMobile.trim();
+    if ("email" in fieldValues) {
+      const value = fieldValues.email.trim();
       if (!value) {
-        newErrors.emailOrMobile = "Please fill the email or mobile number";
+        newErrors.email = "Please fill the email or mobile number";
       } else if (validator.isEmail(value)) {
-        newErrors.emailOrMobile = "";
+        newErrors.email = "";
       } else if (/^\d{10}$/.test(value)) {
-        newErrors.emailOrMobile = "";
+        newErrors.email = "";
       } else {
-        newErrors.emailOrMobile = "Please enter a valid email or a 10-digit mobile number";
+        newErrors.email = "Please enter a valid email or a 10-digit mobile number";
       }
     }
-    if ("companyName" in fieldValues)
-      newErrors.companyName = fieldValues.companyName ? "" : "Please fill the company name";
+    if ("onBehalfOf" in fieldValues)
+      newErrors.onBehalfOf = fieldValues.onBehalfOf ? "" : "Please fill the company name";
 
     if ("subject" in fieldValues)
       newErrors.subject = fieldValues.subject ? "" : "Please fill the subject";
@@ -58,18 +58,18 @@ function ContactUs() {
     if (validate()) {
       try {
         let dataToSubmit = {
-          fullName: formData.fullName,
-          companyName: formData.companyName,
+          name: formData.name,
+          onBehalfOf: formData.onBehalfOf,
           subject: formData.subject,
           message: formData.message,
         };
-        if (validator.isEmail(formData.emailOrMobile)) {
-          dataToSubmit.email = formData.emailOrMobile;
+        if (validator.isEmail(formData.email)) {
+          dataToSubmit.email = formData.email;
         } else {
-          dataToSubmit.mobileNumber = formData.emailOrMobile;
+          dataToSubmit.mobileNumber = formData.email;
         }
         const response = await axios.post(
-          "http://44.196.192.232:3129/api/address/add",
+          "http://44.196.192.232:3129/api/contact/contactUs",
           dataToSubmit
         );
         toast.success(response?.data?.message || "Message sent successfully!", {
@@ -77,9 +77,9 @@ function ContactUs() {
           autoClose: 2000,
         });
         setFormData({
-          fullName: "",
-          emailOrMobile: "",
-          companyName: "",
+          name: "",
+          email: "",
+          onBehalfOf: "",
           subject: "",
           message: "",
         });
@@ -123,46 +123,46 @@ function ContactUs() {
             <form className="contactus-form" onSubmit={handleSubmit}>
               <div className="con-form">
                 <div className="first-inputs comm">
-                  <label htmlFor="fullName">
+                  <label htmlFor="name">
                     <h4>Full Name *</h4>
                     <input
                       type="text"
-                      id="fullName"
-                      name="fullName"
+                      id="name"
+                      name="name"
                       placeholder="john doe"
-                      value={formData.fullName}
+                      value={formData.name}
                       onChange={handleChange}
                       required
                     />
-                    {errors.fullName && <p className="error text-start">{errors.fullName}</p>}
+                    {errors.name && <p className="error text-start">{errors.name}</p>}
                   </label>
-                  <label htmlFor="emailOrMobile">
+                  <label htmlFor="email">
                     <h4>Your Email or Mobile *</h4>
                     <input
                       type="text"
-                      id="emailOrMobile"
-                      name="emailOrMobile"
+                      id="email"
+                      name="email"
                       placeholder="example@yourmail.com or 1234567890"
-                      value={formData.emailOrMobile}
+                      value={formData.email}
                       onChange={handleChange}
                       required
                     />
-                    {errors.emailOrMobile && <p className="error">{errors.emailOrMobile}</p>}
+                    {errors.email && <p className="error">{errors.email}</p>}
                   </label>
                 </div>
                 <div className="second-inputs comm">
-                  <label htmlFor="companyName">
+                  <label htmlFor="onBehalfOf">
                     <h4>On Behalf of *</h4>
                     <input
                       type="text"
-                      id="companyName"
-                      name="companyName"
+                      id="onBehalfOf"
+                      name="onBehalfOf"
                       placeholder="your company name here"
-                      value={formData.companyName}
+                      value={formData.onBehalfOf}
                       onChange={handleChange}
                       required
                     />
-                    {errors.companyName && <p className="error">{errors.companyName}</p>}
+                    {errors.onBehalfOf && <p className="error">{errors.onBehalfOf}</p>}
                   </label>
                   <label htmlFor="subject">
                     <h4>Subject *</h4>

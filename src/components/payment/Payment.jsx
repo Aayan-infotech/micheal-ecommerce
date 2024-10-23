@@ -43,7 +43,7 @@ function Payment() {
   const handleToProceedCheckout = async (token) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.13:3129/api/product/order",
+        "http://44.196.192.232:3129/api/product/order",
         {
           userId: userId,
           deliverySlotId: selectedSlot?._id,
@@ -76,6 +76,29 @@ function Payment() {
     }
   };
 
+  const handlePaypalPayment = async (details) => {
+    const { id: paymentId, payer: { payer_id: payerId } } = details;
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3129/api/product/order",
+        {
+          userId,
+          deliverySlotId: selectedSlot?._id,
+          addressId,
+          paymentMethod: "paypal",
+          paymentId,
+          payerId,
+        }
+      );
+      console.log(response?.data?.data);
+      navigate("/paymentmessage");
+    } catch (error) {
+      console.log("Error during PayPal payment process:", error);
+    }
+  };
+
+
   return (
     <div className="payment">
       <div className="payment-container">
@@ -90,9 +113,8 @@ function Payment() {
             {paymentMethods.map((method) => (
               <div
                 key={method.id}
-                className={`payment-option ${
-                  selectedMethod === method.id ? "selected" : ""
-                }`}
+                className={`payment-option ${selectedMethod === method.id ? "selected" : ""
+                  }`}
                 onClick={() => handleMethodSelect(method.id)}
               >
                 <img src={method.img} alt={method.name} />
@@ -117,9 +139,35 @@ function Payment() {
                   <button className="slot-button">Proceed To Payment</button>
                 </StripeCheckout>
               ) : selectedMethod === 2 ? (
-                <PayPalScriptProvider options={{ clientId: "test" }}>
-                  <PayPalButtons style={{ layout: "horizontal" }} />
+                <PayPalScriptProvider
+                  options={{
+                    clientId: "AURFbdAH-s05k9iOhtSCc2KFlCh5UKQGC0h6ljkvk0BoxDaI6zlCYJrANmJHxSszowO_20GZYLh2M_R2",
+                    intent: "capture", // Ensure you're capturing the payment
+                  }}
+                >
+                  <PayPalButtons
+                    style={{ layout: "horizontal" }}
+                    createOrder={(data, actions) => {
+                      return actions.order.create({
+                        purchase_units: [
+                          {
+                            amount: {
+                              value: 200
+                            },
+                            // Skip shipping and billing details
+                            application_context: {
+                              shipping_preference: "NO_SHIPPING", // Prevents collecting shipping address
+                            },
+                          },
+                        ],
+                      });
+                    }}
+                    onApprove={(data, actions) => {
+                      return actions.order.capture().then(handlePaypalPayment); // On successful payment
+                    }}
+                  />
                 </PayPalScriptProvider>
+
               ) : selectedMethod === 3 ? (
                 <button onClick={handleSumUpPayment}>
                   Pay with MasterCard (SumUp)
