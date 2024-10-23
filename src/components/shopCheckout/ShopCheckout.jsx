@@ -4,7 +4,7 @@ import "./shopcheckout.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import Loading from "../loader/Loading";
 
 function ShopCheckout() {
   const [addresses, setAddresses] = useState([]);
@@ -12,17 +12,17 @@ function ShopCheckout() {
   const [deliverySlots, setDeliverySlots] = useState([]);
   const [selectedDeliveryType, setSelectedDeliveryType] = useState("");
   const [selectedTimePeriod, setSelectedTimePeriod] = useState("");
+  const [loading, setLoading] = useState(true);
+
   const location = useLocation();
   const { productItem } = location.state || {};
   const navigate = useNavigate();
   const userId = sessionStorage.getItem("userId");
 
-
   useEffect(() => {
     fetchAddressDetails();
     fetchDeliverySlots();
   }, []);
-
 
   const fetchAddressDetails = async () => {
     try {
@@ -30,11 +30,12 @@ function ShopCheckout() {
         `http://44.196.192.232:3129/api/address/get/${userId}`
       );
       setAddresses(response.data.data);
-    } catch (err) {
-      console.error("Error fetching address details:", err);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error fetching subcategories:", error);
     }
   };
-
 
   const fetchDeliverySlots = async () => {
     try {
@@ -42,11 +43,12 @@ function ShopCheckout() {
         `http://44.196.192.232:3129/api/deliveryslot/get`
       );
       setDeliverySlots(response.data.data);
-    } catch (err) {
-      console.error("Error fetching delivery slots:", err);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error fetching subcategories:", error);
     }
   };
-
 
   const handleEdit = (index) => {
     navigate("/address", {
@@ -54,11 +56,9 @@ function ShopCheckout() {
     });
   };
 
-
   const handleAdd = () => {
     navigate("/address", { state: { allAddresses: addresses } });
   };
-
 
   const handleDelete = async (add_id) => {
     try {
@@ -86,17 +86,14 @@ function ShopCheckout() {
     }
   };
 
-
   const handleSelectAddress = (addressId) => {
     setSelectedAddressId(addressId);
   };
-
 
   const handleDeliveryTypeChange = (event) => {
     setSelectedDeliveryType(event.target.value);
     setSelectedTimePeriod("");
   };
-
 
   const handleToProceedCheckout = async () => {
     const selectedSlot = deliverySlots.find(
@@ -113,7 +110,6 @@ function ShopCheckout() {
     });
   };
 
-
   return (
     <>
       <ToastContainer />
@@ -122,130 +118,133 @@ function ShopCheckout() {
           <div className="shopcheckout-banner">
             <h1>Checkout</h1>
           </div>
-          <div className="delivery-address container section">
-            <div className="address-side">
-              <h2 style={{ color: "black", marginBottom: "15px" }}>
-                <i className="bx bx-location-plus"></i> Delivery Address
-              </h2>
-
-
-              {addresses.map((address, index) => (
-                <div key={index} className="address-card">
-                  <div className="first-address-nav">
-                    <h3
-                      style={{
-                        color: "black",
-                        marginBottom: "10px",
-                        borderRadius: "10px",
-                      }}
-                    >
-                      Address:
-                    </h3>
-                    <h4>
-                      {address.receiverName} {address.contactNumber}
-                    </h4>
-                    <p>
-                      {address.houseNumber}, {address.area}, {address.city},{" "}
-                      {address.state}, {address.country} - {address.pinCode}
-                    </p>
-                  </div>
-                  <div className="second-address-nav">
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              <div className="delivery-address container section">
+                <div className="address-side">
+                  <h2 style={{ color: "black", marginBottom: "15px" }}>
+                    <i className="bx bx-location-plus"></i> Delivery Address
+                  </h2>
+                  {addresses.map((address, index) => (
+                    <div key={index} className="address-card">
+                      <div className="first-address-nav">
+                        <h3
+                          style={{
+                            color: "black",
+                            marginBottom: "10px",
+                            borderRadius: "10px",
+                          }}
+                        >
+                          Address:
+                        </h3>
+                        <h4>
+                          {address.receiverName} {address.contactNumber}
+                        </h4>
+                        <p>
+                          {address.houseNumber}, {address.area}, {address.city},{" "}
+                          {address.state}, {address.country} - {address.pinCode}
+                        </p>
+                      </div>
+                      <div className="second-address-nav">
+                        <i
+                          className="bx bx-trash"
+                          style={{ cursor: "pointer", marginRight: "10px" }}
+                          onClick={() => handleDelete(address?._id)}
+                        ></i>
+                        <i
+                          className="bx bx-edit"
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleEdit(index)}
+                        ></i>
+                      </div>
+                      <i
+                        className={`bx ${
+                          selectedAddressId === address._id
+                            ? "bxs-check-circle"
+                            : "bx-check-circle"
+                        }`}
+                        style={{
+                          fontSize: "25px",
+                          color:
+                            selectedAddressId === address._id
+                              ? "green"
+                              : "gray",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => handleSelectAddress(address._id)}
+                      ></i>
+                    </div>
+                  ))}
+                  <div className="add-address">
                     <i
-                      className="bx bx-trash"
-                      style={{ cursor: "pointer", marginRight: "10px" }}
-                      onClick={() => handleDelete(address?._id)}
-                    ></i>
-                    <i
-                      className="bx bx-edit"
+                      className="bx bx-plus-circle"
                       style={{ cursor: "pointer" }}
-                      onClick={() => handleEdit(index)}
+                      onClick={handleAdd}
                     ></i>
                   </div>
-
-
-                  <i
-                    className={`bx ${selectedAddressId === address._id
-                        ? "bxs-check-circle"
-                        : "bx-check-circle"
-                      }`}
-                    style={{
-                      fontSize: "25px",
-                      color:
-                        selectedAddressId === address._id ? "green" : "gray",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => handleSelectAddress(address._id)}
-                  ></i>
                 </div>
-              ))}
-              <div className="add-address">
-                <i
-                  className="bx bx-plus-circle"
-                  style={{ cursor: "pointer" }}
-                  onClick={handleAdd}
-                ></i>
-              </div>
-            </div>
-            <div className="slot-side">
-              <h2 style={{ color: "black" }}>Select Slot</h2>
-              <div className="add-slot">
-                <div className="slot-dropdown">
-                  <p>Select Delivery Type:</p>
-                  <select
-                    value={selectedDeliveryType}
-                    onChange={handleDeliveryTypeChange}
-                    style={{ padding: "10px", borderRadius: "10px" }}
-                  >
-                    <option value="">Select Delivery Type</option>
-                    {deliverySlots.map((slot) => (
-                      <option key={slot._id} value={slot.deliveryType}>
-                        {slot.deliveryType}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                {selectedDeliveryType && (
-                  <div className="time-periods">
-                    <p>Select Time Period:</p>
-                    {deliverySlots
-                      .filter(
-                        (slot) => slot.deliveryType === selectedDeliveryType
-                      )
-                      .map((slot) => (
-                        <div key={slot._id} style={{ padding: "8px" }}>
-                          <label>
-                            <input
-                              type="radio"
-                              value={slot.timePeriod}
-                              checked={selectedTimePeriod === slot.timePeriod}
-                              onChange={() =>
-                                setSelectedTimePeriod(slot.timePeriod)
-                              }
-                            />
-                            {slot.timePeriod}
-                          </label>
-                        </div>
-                      ))}
+                <div className="slot-side">
+                  <h2 style={{ color: "black" }}>Select Slot</h2>
+                  <div className="add-slot">
+                    <div className="slot-dropdown">
+                      <p>Select Delivery Type:</p>
+                      <select
+                        value={selectedDeliveryType}
+                        onChange={handleDeliveryTypeChange}
+                        style={{ padding: "10px", borderRadius: "10px" }}
+                      >
+                        <option value="">Select Delivery Type</option>
+                        {deliverySlots.map((slot) => (
+                          <option key={slot._id} value={slot.deliveryType}>
+                            {slot.deliveryType}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    {selectedDeliveryType && (
+                      <div className="time-periods">
+                        <p>Select Time Period:</p>
+                        {deliverySlots
+                          .filter(
+                            (slot) => slot.deliveryType === selectedDeliveryType
+                          )
+                          .map((slot) => (
+                            <div key={slot._id} style={{ padding: "8px" }}>
+                              <label>
+                                <input
+                                  type="radio"
+                                  value={slot.timePeriod}
+                                  checked={
+                                    selectedTimePeriod === slot.timePeriod
+                                  }
+                                  onChange={() =>
+                                    setSelectedTimePeriod(slot.timePeriod)
+                                  }
+                                />
+                                {slot.timePeriod}
+                              </label>
+                            </div>
+                          ))}
+                      </div>
+                    )}
                   </div>
-                )}
+                  <button
+                    onClick={handleToProceedCheckout}
+                    className="slot-button"
+                    disabled={!selectedAddressId || !selectedTimePeriod}
+                  >
+                    Proceed To Payment
+                  </button>
+                </div>
               </div>
-              <button
-                onClick={handleToProceedCheckout}
-                className="slot-button"
-                disabled={!selectedAddressId || !selectedTimePeriod}
-              >
-                Proceed To Payment
-              </button>
-            </div>
-          </div>
+            </>
+          )}
         </div>
       </div>
     </>
   );
 }
 
-
 export default ShopCheckout;
-
-
-

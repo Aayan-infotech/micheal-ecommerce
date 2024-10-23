@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "./payment.css";
-import firstPay from "../../images/first-pay.png"; // Visa
-import secondPay from "../../images/second-pay.png"; // PayPal
-import thirdPay from "../../images/third-pay.png"; // MasterCard
-import fourthPay from "../../images/fourth-pay.png"; // Apple Pay
+import firstPay from "../../images/first-pay.png";
+import secondPay from "../../images/second-pay.png";
+import thirdPay from "../../images/third-pay.png";
+import fourthPay from "../../images/fourth-pay.png";
 import StripeCheckout from "react-stripe-checkout";
 import axios from "axios";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useLocation, useNavigate } from "react-router-dom";
+import Loading from "../loader/Loading";
 
 function Payment() {
   const [selectedMethod, setSelectedMethod] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const paymentMethods = [
     { id: 1, name: "Visa", img: firstPay, lastFour: "2109" },
@@ -22,7 +24,7 @@ function Payment() {
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedSlot, addressId } = location.state || {};
-  console.log(selectedSlot?._id, addressId, 'selectedSlot, addressId');
+  console.log(selectedSlot?._id, addressId, "selectedSlot, addressId");
 
   const userId = sessionStorage.getItem("userId");
 
@@ -76,8 +78,10 @@ function Payment() {
   };
 
   const handlePaypalPayment = async (details) => {
-    const { id: paymentId, payer: { payer_id: payerId } } = details;
-
+    const {
+      id: paymentId,
+      payer: { payer_id: payerId },
+    } = details;
     try {
       const response = await axios.post(
         "http://localhost:3129/api/product/order",
@@ -111,8 +115,9 @@ function Payment() {
             {paymentMethods.map((method) => (
               <div
                 key={method.id}
-                className={`payment-option ${selectedMethod === method.id ? "selected" : ""
-                  }`}
+                className={`payment-option ${
+                  selectedMethod === method.id ? "selected" : ""
+                }`}
                 onClick={() => handleMethodSelect(method.id)}
               >
                 <img src={method.img} alt={method.name} />
@@ -139,8 +144,9 @@ function Payment() {
               ) : selectedMethod === 2 ? (
                 <PayPalScriptProvider
                   options={{
-                    clientId: "AURFbdAH-s05k9iOhtSCc2KFlCh5UKQGC0h6ljkvk0BoxDaI6zlCYJrANmJHxSszowO_20GZYLh2M_R2",
-                    intent: "capture", // Ensure you're capturing the payment
+                    clientId:
+                      "AURFbdAH-s05k9iOhtSCc2KFlCh5UKQGC0h6ljkvk0BoxDaI6zlCYJrANmJHxSszowO_20GZYLh2M_R2",
+                    intent: "capture",
                   }}
                 >
                   <PayPalButtons
@@ -150,22 +156,46 @@ function Payment() {
                         purchase_units: [
                           {
                             amount: {
-                              value: 200
+                              value: "200",
                             },
-                            // Skip shipping and billing details
                             application_context: {
-                              shipping_preference: "NO_SHIPPING", // Prevents collecting shipping address
+                              shipping_preference: "NO_SHIPPING",
+                              user_action: "PAY_NOW",
                             },
                           },
                         ],
                       });
                     }}
-                    onApprove={(data, actions) => {
-                      return actions.order.capture().then(handlePaypalPayment); // On successful payment
+                    onApprove={async (data, actions) => {
+                      return actions.order.capture().then(async (details) => {
+                        const {
+                          id: paymentId,
+                          payer: { payer_id: payerId },
+                        } = details;
+                        try {
+                          const response = await axios.post(
+                            "http://localhost:3129/api/product/order",
+                            {
+                              userId,
+                              deliverySlotId: selectedSlot?._id,
+                              addressId,
+                              paymentMethod: "paypal",
+                              paymentId,
+                              payerId,
+                            }
+                          );
+                          console.log(response?.data?.data);
+                          navigate("/paymentmessage");
+                        } catch (error) {
+                          console.log(
+                            "Error during PayPal payment process:",
+                            error
+                          );
+                        }
+                      });
                     }}
                   />
                 </PayPalScriptProvider>
-
               ) : selectedMethod === 3 ? (
                 <button onClick={handleSumUpPayment}>
                   Pay with MasterCard (SumUp)
