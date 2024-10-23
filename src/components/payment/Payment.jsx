@@ -21,8 +21,8 @@ function Payment() {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { selectedSlot, addressId, productItem } = location.state || {};
-  console.log(addressId, 'addressId');
+  const { selectedSlot, addressId } = location.state || {};
+  console.log(selectedSlot?._id, addressId, 'selectedSlot, addressId');
 
   const userId = sessionStorage.getItem("userId");
 
@@ -36,9 +36,9 @@ function Payment() {
     setSelectedMethod(id);
   };
 
-  const totalProductPrice =
-    productItem?.product?.price + selectedSlot?.deliveryCharge;
-  console.log(totalProductPrice, "totalProductPrice");
+  // const totalProductPrice =
+  //   productItem?.product?.price + selectedSlot?.deliveryCharge;
+  // console.log(totalProductPrice, "totalProductPrice");
 
   const handleToProceedCheckout = async (token) => {
     try {
@@ -52,7 +52,6 @@ function Payment() {
           token: token.id,
         }
       );
-      console.log(response?.data?.data);
       navigate("/paymentmessage");
     } catch (error) {
       console.log("Error during payment process:", error);
@@ -97,7 +96,6 @@ function Payment() {
       console.log("Error during PayPal payment process:", error);
     }
   };
-
 
   return (
     <div className="payment">

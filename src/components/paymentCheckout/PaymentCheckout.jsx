@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./paymentcheckout.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify"; 
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Loading from '../../components/loader/Loading';
+import Loading from "../../components/loader/Loading";
 
 function PaymentCheckout() {
   const [isCouponApplied, setIsCouponApplied] = useState(false);
@@ -14,37 +14,47 @@ function PaymentCheckout() {
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const [finalAmount, setFinalAmount] = useState(0);
   const [bagValue, setBagValue] = useState(0);
-  const [vouchers, setVouchers] = useState([]); 
+  const [vouchers, setVouchers] = useState([]);
   const [selectedVoucher, setSelectedVoucher] = useState("");
-  const [availableVouchers, setAvailableVouchers] = useState(0); 
-  const [selectedVoucherDiscount, setSelectedVoucherDiscount] = useState(null); 
+  const [availableVouchers, setAvailableVouchers] = useState(0);
+  const [selectedVoucherDiscount, setSelectedVoucherDiscount] = useState(null);
 
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedSlot, addressId } = location.state || {};
-  console.log(selectedSlot?._id, addressId, 'selectedSlot, addressId')
+  console.log(selectedSlot?._id, addressId, "selectedSlot, addressId");
   const userId = sessionStorage.getItem("userId");
 
   const applyCoupon = async () => {
     if (!isCouponApplied && selectedVoucher) {
       try {
-        const response = await axios.post("http://44.196.192.232:3129/api/voucher/apply", {
-          code: selectedVoucher,
-          purchaseAmount: totalAmount,
-        });
+        const response = await axios.post(
+          "http://44.196.192.232:3129/api/voucher/apply",
+          {
+            code: selectedVoucher,
+            purchaseAmount: totalAmount,
+          }
+        );
         if (response.data.success) {
-          const discountValue = response.data.discountValue; // Assuming this value is sent back
+          const discountValue = response.data.discountValue;
           const discount = totalAmount * (discountValue / 100);
           const updatedSavings = parseFloat(discount.toFixed(2));
-          const updatedTotalAmount = parseFloat((totalAmount - discount).toFixed(2));
+          const updatedTotalAmount = parseFloat(
+            (totalAmount - discount).toFixed(2)
+          );
           setSavings(updatedSavings);
           setTotalAmount(updatedTotalAmount);
           setIsCouponApplied(true);
           setSelectedVoucherDiscount(discountValue);
           fetchOrderSummary();
-          toast.success(response.data.message || "Voucher applied successfully!", { autoClose: 1000 });
+          toast.success(
+            response.data.message || "Voucher applied successfully!",
+            { autoClose: 1000 }
+          );
         } else {
-          toast.error(response.data.message || "Failed to apply the voucher.", { autoClose: 1000 });
+          toast.error(response.data.message || "Failed to apply the voucher.", {
+            autoClose: 1000,
+          });
         }
       } catch (error) {
         const errorMessage = error.response?.data?.message || error.message;
@@ -52,18 +62,18 @@ function PaymentCheckout() {
         console.error("Error applying coupon:", errorMessage);
       }
     }
-  };  
- 
+  };
+
   useEffect(() => {
     fetchOrderSummary();
     fetchVouchers();
   }, []);
 
   const fetchOrderSummary = async () => {
-    setLoading(true); 
+    setLoading(true);
     try {
       const response = await axios.get(
-        `http://192.168.1.13:3129/api/product/summary/${userId}/${selectedSlot?._id}/${addressId}`
+        `http://44.196.192.232:3129/api/product/summary/${userId}/${selectedSlot?._id}/${addressId}`
       );
       const data = response?.data?.data;
       setTotalAmount(data?.totalWithDelivery || 0);
@@ -80,7 +90,9 @@ function PaymentCheckout() {
   const fetchVouchers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://44.196.192.232:3129/api/voucher/get");
+      const response = await axios.get(
+        "http://44.196.192.232:3129/api/voucher/get"
+      );
       if (response.data.success) {
         setVouchers(response.data.data);
         setAvailableVouchers(response.data.data.length);
@@ -97,15 +109,13 @@ function PaymentCheckout() {
   }
 
   const handleToProceed = () => {
-    navigate("/payment")
-    // navigate("/payment", {
-    //   state: {
-    //     selectedSlot,
-    //     addressId: selectedAddressId,
-    //     productItem: productItem,
-    //   },
-    // });
-  }
+    navigate("/payment", {
+      state: {
+        selectedSlot,
+        addressId,
+      },
+    });
+  };
 
   return (
     <>
@@ -120,18 +130,38 @@ function PaymentCheckout() {
               <h1 className="order-summary-title">Order Summary</h1>
               <div className="order-items">
                 <div className="order-name">
-                  <h3 style={{ color: "black", marginBottom: "10px", fontWeight: 500 }}>
+                  <h3
+                    style={{
+                      color: "black",
+                      marginBottom: "10px",
+                      fontWeight: 500,
+                    }}
+                  >
                     Bag Value
                   </h3>
-                  <h3 style={{ color: "black", marginBottom: "10px", fontWeight: 500 }}>
+                  <h3
+                    style={{
+                      color: "black",
+                      marginBottom: "10px",
+                      fontWeight: 500,
+                    }}
+                  >
                     Delivery Charges
                   </h3>
-                  <h3 style={{ color: "black", marginBottom: "10px", fontWeight: 500 }}>
+                  <h3
+                    style={{
+                      color: "black",
+                      marginBottom: "10px",
+                      fontWeight: 500,
+                    }}
+                  >
                     Tax
                   </h3>
                 </div>
                 <div className="order-price">
-                  <h4 style={{ marginBottom: "10px" }}>${bagValue.toFixed(3)}</h4>
+                  <h4 style={{ marginBottom: "10px" }}>
+                    ${bagValue.toFixed(3)}
+                  </h4>
                   <h4 style={{ marginBottom: "10px" }}>${deliveryCharge}</h4>
                   <h4 style={{ marginBottom: "10px" }}>
                     ${(totalAmount - bagValue - deliveryCharge).toFixed(2)}
@@ -139,7 +169,8 @@ function PaymentCheckout() {
                 </div>
               </div>
               <p className="order-description">
-                Lorem Ipsum is simply dummy text of the printing industry's standard dummy text ever since the 1500s.
+                Lorem Ipsum is simply dummy text of the printing industry's
+                standard dummy text ever since the 1500s.
               </p>
             </div>
             <div className="order-total">
@@ -150,7 +181,9 @@ function PaymentCheckout() {
                     <h2
                       style={{
                         color: isCouponApplied ? "gray" : "black",
-                        textDecoration: isCouponApplied ? "line-through" : "none",
+                        textDecoration: isCouponApplied
+                          ? "line-through"
+                          : "none",
                       }}
                     >
                       Apply Voucher
@@ -173,7 +206,9 @@ function PaymentCheckout() {
                   disabled={isCouponApplied}
                   className="voucher-select"
                 >
-                  <option value="" disabled>Select a voucher</option>
+                  <option value="" disabled>
+                    Select a voucher
+                  </option>
                   {vouchers.map((voucher) => (
                     <option key={voucher._id} value={voucher.code}>
                       {voucher.code} ({voucher.discountValue}% off)
@@ -204,9 +239,9 @@ function PaymentCheckout() {
                 <h2 style={{ color: "black" }}>${totalAmount.toFixed(2)}</h2>
               </div>
             </div>
-            {/* <Link to="/payment"> */}
-              <button className="payment-button" onClick={handleToProceed}>Proceed to Payment</button>
-            {/* </Link> */}
+            <button className="payment-button" onClick={handleToProceed}>
+              Proceed to Payment
+            </button>
           </div>
         </div>
       </div>

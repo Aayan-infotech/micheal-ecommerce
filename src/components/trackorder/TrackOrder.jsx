@@ -19,7 +19,7 @@ function TrackOrder() {
 
   const fetchTrackOrder = async () => {
     try {
-      const response = await axios.get(`http://192.168.1.13:3129/api/product/orders/${orderId}`);
+      const response = await axios.get(`http://44.196.192.232:3129/api/product/orders/${orderId}`);
       console.log(response?.data?.data, 'data');
       setTrackOrder(response?.data?.data);
     } catch (error) {
@@ -31,7 +31,7 @@ function TrackOrder() {
 
   const handleCancelOrder = async () => {
     try {
-      const response = await axios.post(`http://192.168.1.13:3129/api/product/cancel/${orderId}`);
+      const response = await axios.post(`http://44.196.192.232:3129/api/product/cancel/${orderId}`);
       console.log(response?.data, 'Cancel Order Response');
 
       if (response?.data?.success) {
