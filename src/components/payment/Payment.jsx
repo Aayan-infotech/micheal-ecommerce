@@ -9,6 +9,7 @@ import axios from "axios";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loading from "../loader/Loading";
+import { PayPalButton } from 'react-paypal-button-v2';
 
 function Payment() {
   const [selectedMethod, setSelectedMethod] = useState(null);
@@ -124,9 +125,8 @@ function Payment() {
             {paymentMethods.map((method) => (
               <div
                 key={method.id}
-                className={`payment-option ${
-                  selectedMethod === method.id ? "selected" : ""
-                }`}
+                className={`payment-option ${selectedMethod === method.id ? "selected" : ""
+                  }`}
                 onClick={() => handleMethodSelect(method.id)}
               >
                 <img src={method.img} alt={method.name} />
@@ -155,7 +155,7 @@ function Payment() {
                   options={{
                     clientId:
                       "AURFbdAH-s05k9iOhtSCc2KFlCh5UKQGC0h6ljkvk0BoxDaI6zlCYJrANmJHxSszowO_20GZYLh2M_R2",
-                    intent: "capture",
+                    intent: "sale",
                   }}
                 >
                   <PayPalButtons
@@ -177,13 +177,15 @@ function Payment() {
                     }}
                     onApprove={async (data, actions) => {
                       return actions.order.capture().then(async (details) => {
+                        console.log(details, 'details');
+
                         const {
                           id: paymentId,
                           payer: { payer_id: payerId },
                         } = details;
                         try {
                           const response = await axios.post(
-                            "http://localhost:3129/api/product/order",
+                            "http://44.196.192.232:3129/api/product/order",
                             {
                               userId,
                               deliverySlotId: selectedSlot?._id,
