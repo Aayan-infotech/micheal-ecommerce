@@ -81,14 +81,14 @@ function Header() {
         </div>
 
         <div className="nav-actions">
-          <button className="cart-button">
-            <Link to="/cart" className="link-text">
+          <Link to="/cart" className="link-text">
+            <button className="cart-button">
               <i className="bx bx-cart-alt"></i>
               {totalProducts > 0 && (
                 <span className="cart-badge">{totalProducts}</span>
               )}
-            </Link>
-          </button>
+            </button>
+          </Link>
 
           {isLoggedIn ? (
             <>
