@@ -22,7 +22,7 @@ function PasswordReset() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://44.196.192.232:3129/api/auth/reset-password', { token, newPassword });
+      const response = await axios.post('http://44.196.64.110:3129/api/auth/reset-password', { token, newPassword });
       if (response.data.success) {
         setMessage('Password reset successfully! You can now log in.');
         setError('');

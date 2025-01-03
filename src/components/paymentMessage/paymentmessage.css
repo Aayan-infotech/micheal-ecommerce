@@ -6,7 +6,8 @@
 }
 
 .pay-message img {
-  height: 350px;
+  margin-top: 10px;
+  /* height: 350px; */
   width: 250px;
 }
 

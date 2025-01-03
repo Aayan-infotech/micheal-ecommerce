@@ -24,16 +24,10 @@ function Payment() {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { selectedSlot, addressId } = location.state || {};
-  console.log(selectedSlot?._id, addressId, "selectedSlot, addressId");
+  const { selectedSlot, addressId, getVoucher } = location.state || {};
 
   const userId = sessionStorage.getItem("userId");
 
-  // useEffect(() => {
-  //   if (selectedSlot) {
-  //     console.log("Selected Address ID:", selectedSlot);
-  //   }
-  // }, [selectedSlot]);
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -48,20 +42,17 @@ function Payment() {
     setSelectedMethod(id);
   };
 
-  // const totalProductPrice =
-  //   productItem?.product?.price + selectedSlot?.deliveryCharge;
-  // console.log(totalProductPrice, "totalProductPrice");
-
   const handleToProceedCheckout = async (token) => {
     try {
       const response = await axios.post(
-        "http://44.196.192.232:3129/api/product/order",
+        "http://44.196.64.110:3129/api/product/order",
         {
           userId: userId,
           deliverySlotId: selectedSlot?._id,
           addressId: addressId,
           paymentMethod: "stripe",
           token: token.id,
+          voucherCode:getVoucher?.code
         }
       );
       navigate("/paymentmessage");
@@ -73,7 +64,7 @@ function Payment() {
   const handleSumUpPayment = async () => {
     try {
       const response = await axios.post(
-        "http://44.196.192.232:3129/api/payment/create-sumup-payment",
+        "http://44.196.64.110:3129/api/payment/create-sumup-payment",
         {
           amount: 200,
           currency: "USD",
@@ -154,7 +145,7 @@ function Payment() {
                 <PayPalScriptProvider
                   options={{
                     clientId:
-                      "AURFbdAH-s05k9iOhtSCc2KFlCh5UKQGC0h6ljkvk0BoxDaI6zlCYJrANmJHxSszowO_20GZYLh2M_R2",
+                      "ARIN0VXEZukePCK2S-yeejyx-02RqIYg864DpeaxY0juKGp-yuXDXoVuHCiOiJshiwslRRENxWHJBp7V",
                     intent: "sale",
                   }}
                 >
@@ -185,7 +176,7 @@ function Payment() {
                         } = details;
                         try {
                           const response = await axios.post(
-                            "http://44.196.192.232:3129/api/product/order",
+                            "http://44.196.64.110:3129/api/product/order",
                             {
                               userId,
                               deliverySlotId: selectedSlot?._id,

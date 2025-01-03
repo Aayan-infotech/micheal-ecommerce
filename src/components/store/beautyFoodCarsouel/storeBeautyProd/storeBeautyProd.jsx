@@ -12,7 +12,7 @@ function StoreBeautyProd() {
     const fetchProd = async () => {
       try {
         const response = await fetch(
-          `http://44.196.192.232:3129/api/product/get/${storeProducts._id}`
+          `http://44.196.64.110:3129/api/product/get/${storeProducts._id}`
         );
         const data = await response.json();
         console.log(data?.data, 'particular product')

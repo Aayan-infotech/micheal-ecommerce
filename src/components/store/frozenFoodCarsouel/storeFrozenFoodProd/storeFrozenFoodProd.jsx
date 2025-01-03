@@ -17,7 +17,7 @@ function StoreFrozenFoodProd() {
   const fetchProd = async () => {
     try {
       const response = await axios.get(
-        `http://44.196.192.232:3129/api/product/get/${storeProId}`
+        `http://44.196.64.110:3129/api/product/get/${storeProId}`
       );
       setProduct(response?.data?.data);
     } catch (error) {
@@ -44,7 +44,7 @@ const handleAddToCart = async () => {
     }
     if (product && product._id) {
       
-      const response = await axios.post('http://44.196.192.232:3129/api/cart/add', {
+      const response = await axios.post('http://44.196.64.110:3129/api/cart/add', {
         userId,
         productId: product._id,
         quantity
@@ -89,18 +89,18 @@ const handleAddToCart = async () => {
                     <p className="right-cart-info1">
                       Price: $<span>{product?.price}</span>
                     </p>
-                    <p className="right-cart-info2">
+                    {/* <p className="right-cart-info2">
                       Quantity: <span>{product?.stock}</span>
-                    </p>
+                    </p> */}
                   </div>
                   <div className="right-cart-navi">
-                    {/* <input
+                    <input
                       type="number"
                       value={quantity}
                       min="1"
                       onChange={handleQuantityChange}
                       className="quantity-input"
-                    /> */}
+                    />
                     <button className="right-cart-butt" type='button' onClick={handleAddToCart}>
                       Add To Cart
                     </button>

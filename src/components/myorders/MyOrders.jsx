@@ -4,7 +4,7 @@ import moment from "moment";
 import "./myorder.css";
 import { useNavigate } from "react-router-dom";
 import cartImg from "../../images/cart-img.jpg";
-import Loading from '../../components/loader/Loading';
+import Loading from "../../components/loader/Loading";
 
 function MyOrders() {
   const [orderHistory, setOrderHistory] = useState([]);
@@ -15,7 +15,10 @@ function MyOrders() {
   useEffect(() => {
     const fetchOrderHistory = async () => {
       try {
-        const response = await axios.get(`http://44.196.192.232:3129/api/product/order-history/${userId}`);
+        const response = await axios.get(
+          `http://44.196.64.110:3129/api/product/order-history/${userId}`
+        );
+        console.log(response?.data?.data, "abinash");
         if (response.data.success) {
           setOrderHistory(response.data.data);
         }
@@ -48,15 +51,24 @@ function MyOrders() {
           ) : (
             orderHistory.map((order, index) => (
               <div className="myorders" key={index}>
-                <div onClick={() => handleTrackOrder(order)} className="order-history-cart">
+                <div
+                  onClick={() => handleTrackOrder(order)}
+                  className="order-history-cart"
+                >
                   <div className="myOrders-first">
                     <div className="myOrder-inner">
                       <div className="myorders-img">
-                        <img src={cartImg} alt="Product" />
+                        <img
+                          src={order?.items[0]?.product?.image}
+                          alt={order?.items[0]?.product?.name || cartImg}
+                        />
                       </div>
+
                       <div className="myorders-text">
                         <div className="c-text">
-                          <h2 className="order-head">{order.items[0].product.name}</h2>
+                          <h2 className="order-head">
+                            {order.items[0].product.name}
+                          </h2>
                           <p>
                             Quantity: <span>{order.items[0].quantity}</span>
                           </p>
@@ -64,19 +76,30 @@ function MyOrders() {
                       </div>
                     </div>
                     <div className="orders-price">
-                      <h2 className="order-head">${order.totalAmount.toFixed(3)}</h2>
+                      <h2 className="order-head">
+                        ${order?.totalAmount.toFixed(3)}
+                      </h2>
                     </div>
                     <div className="order-summarys">
-                      <h2 style={{ color: "black", fontWeight: 500 }}> Delivery expected by </h2>
-                      <h4 style={{ color: "black", fontWeight: 500 }}>
-                        {moment(order.expectedDeliveryDate).format("YYYY-MM-DD hh:mm A")}
-                      </h4>
-                      <p style={{
-                        color: order.orderStatus === "Pending" || order.orderStatus === "Cancelled" ? "red"
-                          : order.orderStatus === "Approved" ? "green"
-                            : "black",
-                        fontWeight: "bold",
-                      }}>
+                      <h2 style={{ color: "black", fontWeight: 500 }}>
+                        {" "}
+                        Delivery expected by{" "}
+                      </h2>
+                      <h5 style={{ color: "black", fontWeight: 500 }}>
+                        {order?.deliverySlot?.date} <br/> {order?.deliverySlot?.timePeriod}
+                      </h5>
+                      <p
+                        style={{
+                          color:
+                            order.orderStatus === "Pending" ||
+                            order.orderStatus === "Cancelled"
+                              ? "red"
+                              : order.orderStatus === "Approved"
+                              ? "green"
+                              : "black",
+                          fontWeight: "bold",
+                        }}
+                      >
                         {order.orderStatus}
                       </p>
                     </div>

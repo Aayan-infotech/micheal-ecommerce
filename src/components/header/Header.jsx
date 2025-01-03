@@ -123,9 +123,9 @@ function Header() {
               <Link to="/notification">
                 <i className="bx bx-bell"></i> Notification
               </Link>
-              <div className="logout-button" onClick={handleLogout}>
+              {/* <div className="logout-button" onClick={handleLogout}>
                 <i className="bx bx-log-out"></i> Log Out
-              </div>
+              </div> */}
             </div>
           )}
         </div>

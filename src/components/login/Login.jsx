@@ -23,34 +23,6 @@ function Login() {
     setFormData({ ...formData, [name]: value });
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (!formData.emailOrUsername || !formData.password) {
-  //     toast.error("Please enter email/username and password");
-  //     return;
-  //   }
-  //   setLoading(true);
-  //   console.log("Sending login request:", formData);
-  //   try {
-  //     const response = await axios.post('http://44.196.192.232:3129/api/auth/login', formData);
-  //     if (response.data.success) {
-  //       const { token } = response.data;
-  //       sessionStorage.setItem('token', token);
-  //       sessionStorage.setItem('userId', response.data?.data?.id);
-  //       toast.success("Login Successful!");
-  //       navigate('/home');
-  //     }
-  //     else {
-  //       toast.error(response.data.message || "Login failed");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error logging in:", error.response);
-  //     toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.emailOrUsername || !formData.password) {
@@ -73,7 +45,6 @@ function Login() {
         }
   };
   
-
   return (
     <>
       <ToastContainer />

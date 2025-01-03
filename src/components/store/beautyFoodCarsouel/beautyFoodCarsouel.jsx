@@ -18,7 +18,7 @@ function BeautyFoodCarsouel({categoryType}) {
 
   const fetchProducts = async (categoryId) => {
     try {
-      const response = await axios.get(`http://44.196.192.232:3129/api/product/categoryproducts/${categoryId}`);
+      const response = await axios.get(`http://44.196.64.110:3129/api/product/categoryproducts/${categoryId}`);
       console.log(response?.data?.data, '--------beatury food')
       setProduct(response.data?.data);
     } catch (error) {

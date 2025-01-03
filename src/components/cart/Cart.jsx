@@ -26,7 +26,7 @@ function Cart() {
   const handleCartDelete = async (card_id) => {
     try {
       const response = await axios.delete(
-        `http://44.196.192.232:3129/api/cart/delete/${card_id}`,
+        `http://44.196.64.110:3129/api/cart/delete/${card_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -43,7 +43,6 @@ function Cart() {
     }
   };
 
-  // Function to handle single or multiple product purchases
   const handleBuyNow = (productItem = null) => {
     if (productItem) {
       navigate("/shoppingbag", { state: { productItem } });
@@ -73,33 +72,35 @@ function Cart() {
             ) : (
               <>
                 {allProducts.length > 0 ? (
-                  allProducts.map((productItem, index) => (
-                    <div className="cards" key={index}>
-                      <div className="card-img">
-                        <img
-                          src={productItem?.product?.image || cartImg}
-                          alt={productItem?.product?.name}
-                        />
-                      </div>
-                      <div className="card-text">
-                        <div className="c-text">
-                          <h2>{productItem?.product?.name}</h2>
-                          <p>{productItem?.product?.description}</p>
-                          <p>${productItem?.product?.price}</p>
-                          <p>Quantity: {productItem?.quantity}</p>
+                  <>
+                    {allProducts.map((productItem, index) => (
+                      <div className="cards" key={index}>
+                        <div className="card-img">
+                          <img
+                            src={productItem?.product?.image || cartImg}
+                            alt={productItem?.product?.name}
+                          />
                         </div>
-                        <button onClick={() => handleBuyNow(productItem)}>
-                          Buy Now
-                        </button>
+                        <div className="card-text">
+                          <div className="c-text">
+                            <h2>{productItem?.product?.name}</h2>
+                            <p>{productItem?.product?.description}</p>
+                            <p>${productItem?.product?.price}</p>
+                            <p>Quantity: {productItem?.quantity}</p>
+                          </div>
+                        </div>
+                        <i
+                          className="bx bx-x"
+                          onClick={() =>
+                            handleCartDelete(productItem?.product?._id)
+                          }
+                        ></i>
                       </div>
-                      <i
-                        className="bx bx-x"
-                        onClick={() =>
-                          handleCartDelete(productItem?.product?._id)
-                        }
-                      ></i>
+                    ))}
+                    <div className="card-text" style={{ textAlign: "center", marginTop: "20px" }}>
+                      <button onClick={() => handleBuyNow()}>Buy All</button>
                     </div>
-                  ))
+                  </>
                 ) : (
                   <p
                     style={{
@@ -111,11 +112,6 @@ function Cart() {
                     No products in the cart.
                   </p>
                 )}
-                {allProducts.length > 0 && (
-                  <div className="card-text" style={{ textAlign: "center" }}>
-                    <button onClick={() => handleBuyNow()}>Buy All</button>
-                  </div>
-                )}
               </>
             )}
           </div>
@@ -126,3 +122,4 @@ function Cart() {
 }
 
 export default Cart;
+

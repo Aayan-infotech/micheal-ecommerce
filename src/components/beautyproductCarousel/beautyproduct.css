@@ -18,7 +18,7 @@
   height: 350px;
   width: 500px;
   border-radius: 20px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .left-cart-para {
