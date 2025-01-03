@@ -138,7 +138,7 @@ function App() {
               boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
             }}
           >
-            <h2>Session Expired</h2>
+            <h2>Login Session Time Expired</h2>
             <p>Your session has expired. Please log in again to continue.</p>
             <button
               onClick={handleContinueToLogin}
