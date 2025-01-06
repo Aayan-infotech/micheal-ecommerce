@@ -13,22 +13,20 @@ RUN npm install --legacy-peer-deps
 # Copy the rest of the project files
 COPY . .
 
-# Build the project for production (output will be in the "dist" directory)
+# Build the project for production (output will be in the "build" directory)
 RUN npm run build
 
-# Stage 2: Run the production build
-FROM node:18-alpine
-
-# Set the working directory for the production environment
-WORKDIR /app
+# Stage 2: Serve the application using Nginx
+FROM nginx:alpine
 
 # Copy the build output from the previous stage
-COPY --from=build /app/build ./build
-# Install a simple HTTP server to serve the static files
-RUN npm install -g serve
+COPY --from=build /app/build /usr/share/nginx/html
 
-# Expose port 3000 to access the app
-EXPOSE 5598
+# Copy a custom Nginx configuration file (ensure this file is present in your project)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Run the app using 'serve' on port 3000
-CMD ["serve", "-s", "build", "-l", "5598"]
+# Expose port 80 to access the app
+EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
