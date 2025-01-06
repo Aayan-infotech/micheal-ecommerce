@@ -9,7 +9,7 @@ import axios from "axios";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loading from "../loader/Loading";
-import { PayPalButton } from 'react-paypal-button-v2';
+import { PayPalButton } from "react-paypal-button-v2";
 
 function Payment() {
   const [selectedMethod, setSelectedMethod] = useState(null);
@@ -24,7 +24,7 @@ function Payment() {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { selectedSlot, addressId, getVoucher } = location.state || {};
+  const { selectedSlot, addressId, getVoucher, totalAmount } = location.state || {};
 
   const userId = sessionStorage.getItem("userId");
 
@@ -52,7 +52,7 @@ function Payment() {
           addressId: addressId,
           paymentMethod: "stripe",
           token: token.id,
-          voucherCode:getVoucher?.code
+          voucherCode: getVoucher?.code,
         }
       );
       navigate("/paymentmessage");
@@ -116,8 +116,9 @@ function Payment() {
             {paymentMethods.map((method) => (
               <div
                 key={method.id}
-                className={`payment-option ${selectedMethod === method.id ? "selected" : ""
-                  }`}
+                className={`payment-option ${
+                  selectedMethod === method.id ? "selected" : ""
+                }`}
                 onClick={() => handleMethodSelect(method.id)}
               >
                 <img src={method.img} alt={method.name} />
@@ -145,7 +146,7 @@ function Payment() {
                 <PayPalScriptProvider
                   options={{
                     clientId:
-                      "ARIN0VXEZukePCK2S-yeejyx-02RqIYg864DpeaxY0juKGp-yuXDXoVuHCiOiJshiwslRRENxWHJBp7V",
+                      "AURFbdAH-s05k9iOhtSCc2KFlCh5UKQGC0h6ljkvk0BoxDaI6zlCYJrANmJHxSszowO_20GZYLh2M_R2",
                     intent: "sale",
                   }}
                 >
@@ -156,11 +157,8 @@ function Payment() {
                         purchase_units: [
                           {
                             amount: {
-                              value: "200",
-                            },
-                            application_context: {
-                              shipping_preference: "NO_SHIPPING",
-                              user_action: "PAY_NOW",
+                              currency_code: "USD",
+                              value: totalAmount.toFixed(2),
                             },
                           },
                         ],
@@ -168,8 +166,6 @@ function Payment() {
                     }}
                     onApprove={async (data, actions) => {
                       return actions.order.capture().then(async (details) => {
-                        console.log(details, 'details');
-
                         const {
                           id: paymentId,
                           payer: { payer_id: payerId },
@@ -182,17 +178,14 @@ function Payment() {
                               deliverySlotId: selectedSlot?._id,
                               addressId,
                               paymentMethod: "paypal",
-                              paymentId,
-                              payerId,
+                              // paymentId,
+                              // payerId,
+                              voucherCode: getVoucher?.code,
                             }
                           );
-                          console.log(response?.data?.data);
                           navigate("/paymentmessage");
                         } catch (error) {
-                          console.log(
-                            "Error during PayPal payment process:",
-                            error
-                          );
+                          console.log(error, "abinash");
                         }
                       });
                     }}

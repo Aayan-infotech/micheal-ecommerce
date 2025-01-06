@@ -108,6 +108,7 @@ function PaymentCheckout() {
       state: {
         selectedSlot,
         addressId,
+        totalAmount,
         getVoucher
       },
     });
