@@ -24,7 +24,7 @@ function Carsouelsection({ categoriesProduct }) {
 
   const fetchFavorites = async () => {
     try {
-      const response = await axios.get(`http://44.196.64.110:3129/api/favorite/get/${userId}`);
+      const response = await axios.get(`https://www.millysshop.se/api/favorite/get/${userId}`);
       const favoriteProducts = response?.data?.data?.products.map((product) => product._id);
       setFavorites(favoriteProducts || []);
     } catch (error) {
@@ -34,7 +34,7 @@ function Carsouelsection({ categoriesProduct }) {
 
   const addToFavorites = async (productId) => {
     try {
-      const response = await axios.post('http://44.196.64.110:3129/api/favorite/add', {
+      const response = await axios.post('https://www.millysshop.se/api/favorite/add', {
         userId: userId,
         productId: productId
       });

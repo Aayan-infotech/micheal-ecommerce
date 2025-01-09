@@ -12,7 +12,7 @@ function PasswordRecovery() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://44.196.64.110:3129/api/auth/send-email', { email });
+      const response = await axios.post('https://www.millysshop.se/api/auth/send-email', { email });
       if (response.data.success) {
         setMessage('OTP sent successfully! Check your email.');
         setError('');

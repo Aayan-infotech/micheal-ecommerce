@@ -19,7 +19,7 @@ function TrackOrder() {
 
   const fetchTrackOrder = async () => {
     try {
-      const response = await axios.get(`http://44.196.64.110:3129/api/product/order-details/${orderId}`);
+      const response = await axios.get(`https://www.millysshop.se/api/product/order-details/${orderId}`);
       console.log(response?.data?.data, 'data');
       setTrackOrder(response?.data?.data);
     } catch (error) {
@@ -31,7 +31,7 @@ function TrackOrder() {
 
   const handleCancelOrder = async () => {
     try {
-      const response = await axios.post(`http://44.196.64.110:3129/api/product/cancel/${orderId}`);
+      const response = await axios.post(`https://www.millysshop.se/api/product/cancel/${orderId}`);
       console.log(response?.data, 'Cancel Order Response');
 
       if (response?.data?.success) {

@@ -22,11 +22,11 @@ function PasswordReset() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://44.196.64.110:3129/api/auth/reset-password', { token, newPassword });
+      const response = await axios.post('https://www.millysshop.se/api/auth/reset-password', { token, newPassword });
       if (response.data.success) {
         setMessage('Password reset successfully! You can now log in.');
         setError('');
-        setTimeout(() => navigate('/login'), 2000); // Redirect to login after 2 seconds
+        setTimeout(() => navigate('/login'), 2000); 
       } else {
         setMessage('');
         setError(response.data.message || 'Failed to reset password');

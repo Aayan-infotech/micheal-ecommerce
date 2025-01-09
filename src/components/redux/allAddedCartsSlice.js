@@ -7,7 +7,7 @@ export const getAddedCarts = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     const token = sessionStorage.getItem('token'); 
     try {
-      const response = await axios.get('http://44.196.64.110:3129/api/cart/get', {
+      const response = await axios.get('https://www.millysshop.se/api/cart/get', {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',

@@ -17,7 +17,7 @@ function StoreFrozenFoodProd() {
   const fetchProd = async () => {
     try {
       const response = await axios.get(
-        `http://44.196.64.110:3129/api/product/get/${storeProId}`
+        `https://www.millysshop.se/api/product/get/${storeProId}`
       );
       setProduct(response?.data?.data);
     } catch (error) {
@@ -44,7 +44,7 @@ const handleAddToCart = async () => {
     }
     if (product && product._id) {
       
-      const response = await axios.post('http://44.196.64.110:3129/api/cart/add', {
+      const response = await axios.post('https://www.millysshop.se/api/cart/add', {
         userId,
         productId: product._id,
         quantity

@@ -12,8 +12,7 @@ function Footer() {
           <div className="about">
             <img className="footer__logo" src={Logo} alt="" height="80px" width="200px" />
             <p className="footer__intro">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              Ut enim ad minim veniam.
+            MIllysHB is your ultimate online destination for premium cosmetics and high-quality dry and frozen foods, offering convenience, quality, and style in every purchase.
             </p>
           </div>
 

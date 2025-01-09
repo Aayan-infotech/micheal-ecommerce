@@ -81,14 +81,16 @@ function Header() {
         </div>
 
         <div className="nav-actions">
-          <Link to="/cart" className="link-text">
-            <button className="cart-button">
-              <i className="bx bx-cart-alt"></i>
-              {totalProducts > 0 && (
-                <span className="cart-badge">{totalProducts}</span>
-              )}
-            </button>
-          </Link>
+          {isLoggedIn && (
+            <Link to="/cart" className="link-text">
+              <button className="cart-button">
+                <i className="bx bx-cart-alt"></i>
+                {totalProducts > 0 && (
+                  <span className="cart-badge">{totalProducts}</span>
+                )}
+              </button>
+            </Link>
+          )}
 
           {isLoggedIn ? (
             <>
@@ -101,32 +103,32 @@ function Header() {
               <button className="signin-button">Sign In</button>
             </Link>
           )}
-
-          <i
-            className="bx bx-dots-vertical-rounded"
-            onClick={toggleUserDropdown}
-          ></i>
-          {isUserDropdownVisible && (
-            <div className="user-dropdown">
-              <Link to="/profile">
-                <i className="bx bx-user-circle"></i> My Profile
-              </Link>
-              <Link to="/myorders">
-                <i className="bx bx-package"></i> My Orders
-              </Link>
-              <Link to="/wishlist">
-                <i className="bx bx-heart"></i> Wishlist Page
-              </Link>
-              <Link to="/searchitems">
-                <i className="bx bx-search"></i> Search
-              </Link>
-              <Link to="/notification">
-                <i className="bx bx-bell"></i> Notification
-              </Link>
-              {/* <div className="logout-button" onClick={handleLogout}>
-                <i className="bx bx-log-out"></i> Log Out
-              </div> */}
-            </div>
+          {isLoggedIn && (
+            <>
+              <i
+                className="bx bx-dots-vertical-rounded"
+                onClick={toggleUserDropdown}
+              ></i>
+              {isUserDropdownVisible && (
+                <div className="user-dropdown">
+                  <Link to="/profile">
+                    <i className="bx bx-user-circle"></i> My Profile
+                  </Link>
+                  <Link to="/myorders">
+                    <i className="bx bx-package"></i> My Orders
+                  </Link>
+                  <Link to="/wishlist">
+                    <i className="bx bx-heart"></i> Wishlist Page
+                  </Link>
+                  <Link to="/searchitems">
+                    <i className="bx bx-search"></i> Search
+                  </Link>
+                  <Link to="/notification">
+                    <i className="bx bx-bell"></i> Notification
+                  </Link>
+                </div>
+              )}
+            </>
           )}
         </div>
       </nav>
