@@ -26,7 +26,7 @@ function PasswordReset() {
       if (response.data.success) {
         setMessage('Password reset successfully! You can now log in.');
         setError('');
-        setTimeout(() => navigate('/login'), 2000); // Redirect to login after 2 seconds
+        setTimeout(() => navigate('/login'), 2000); 
       } else {
         setMessage('');
         setError(response.data.message || 'Failed to reset password');
