@@ -72,8 +72,7 @@ function FrozenFoods() {
               <h1>For</h1>
               <h1>Frozen Foods.</h1>
               <p className="frozenfoods-para">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
+              Discover premium cosmetics and high-quality dry & frozen foods, all in one place
               </p>
               {!token && (
                 <Link to="/register" className="logo">

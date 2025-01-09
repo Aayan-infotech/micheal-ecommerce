@@ -45,7 +45,7 @@ function Otp() {
       <div className="container pass-contain">
         <h1 className="sign">OTP</h1>
         <p className='pass'>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        Discover premium cosmetics and high-quality dry & frozen foods, all in one place
         </p>
         <div className="form">
           <form className="pass-form" onSubmit={handleSubmit}>

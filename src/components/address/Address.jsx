@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./address.css";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Address() {
   const navigate = useNavigate();
@@ -18,30 +18,67 @@ function Address() {
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
-
-  // const token = sessionStorage.getItem("token");
-  // const truncateToken = token.slice(0, 25);
-  const address = location.state.address;
-  const addresss = location.state.address;
+  const address = location.state?.address;
   const userId = sessionStorage.getItem("userId");
 
   useEffect(() => {
-    if (addresss) {
-      setName(address?.receiverName || '');
-      setHouseNo(address?.houseNumber || '');
-      setMobileNumber(address?.contactNumber || '');
-      setPinCode(address?.pinCode || '');
-      setCity(address?.city || '');
-      setState(address?.state || '');
-      setCountry(address?.country || '');
-      setAddress(address?.area || '');
+    if (address) {
+      setName(address.receiverName || "");
+      setHouseNo(address.houseNumber || "");
+      setMobileNumber(address.contactNumber || "");
+      setPinCode(address.pinCode || "");
+      setCity(address.city || "");
+      setState(address.state || "");
+      setCountry(address.country || "");
+      setAddress(address.area || "");
       setIsEditing(true);
-      setEditIndex(addresss?._id);
+      setEditIndex(address._id);
     }
-  }, [addresss]);
+  }, [address]);
+
+  const validateForm = () => {
+    const phoneRegex = /^[0-9]{10}$/;
+    const pinRegex = /^[0-9]{5,6}$/;
+
+    if (!name.trim()) {
+      toast.error("Name is required");
+      return false;
+    }
+    if (!phoneRegex.test(mobileNumber)) {
+      toast.error("Mobile number must be 10 digits");
+      return false;
+    }
+    if (!houseNo.trim()) {
+      toast.error("House number is required");
+      return false;
+    }
+    if (!pinRegex.test(pinCode)) {
+      toast.error("Pin code must be 5-6 digits");
+      return false;
+    }
+    if (!country.trim()) {
+      toast.error("Country is required");
+      return false;
+    }
+    if (!state.trim()) {
+      toast.error("State is required");
+      return false;
+    }
+    if (!city.trim()) {
+      toast.error("City is required");
+      return false;
+    }
+    if (!address1.trim()) {
+      toast.error("Address is required");
+      return false;
+    }
+    return true;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) return;
 
     const newAddress = {
       userId: userId,
@@ -57,10 +94,8 @@ function Address() {
 
     try {
       if (isEditing) {
-        // const addressId = sessionStorage.getItem("addressId");
-
         const response1 = await fetch(
-          `https://www.millysshop.se/api/address/update/${addresss?._id}`,
+          `https://www.millysshop.se/api/address/update/${address?._id}`,
           {
             method: "PUT",
             headers: {
@@ -72,12 +107,11 @@ function Address() {
         const result2 = await response1.json();
 
         if (result2.success) {
-          const updatedAddresses = [...(location.state?.allAddresses || [])];
-          updatedAddresses[editIndex] = newAddress;
-
           navigate("/shopcheckout", {
             state: {
-              addresses: updatedAddresses,
+              addresses: [...(location.state?.allAddresses || [])].map((addr) =>
+                addr._id === address._id ? newAddress : addr
+              ),
             },
           });
         }
@@ -94,7 +128,6 @@ function Address() {
         );
         const result = await response.json();
         if (result.success) {
-          // sessionStorage.setItem("addressId", result.data._id);
           navigate("/shopcheckout", {
             state: {
               addresses: [...(location.state?.allAddresses || []), newAddress],
@@ -103,13 +136,13 @@ function Address() {
         }
       }
     } catch (error) {
-      console.error("Error adding/updating address:", error);
+      toast.error("Error adding/updating address: " + error.message);
     }
   };
 
   return (
     <>
-      ToastContainer
+      <ToastContainer />
       <div className="address">
         <div className="address-container">
           <div className="address-banner">
@@ -133,7 +166,7 @@ function Address() {
                   <label>
                     <h4>Mobile Number</h4>
                     <input
-                      type="text"
+                      type="tel"
                       placeholder="Enter Mobile Number"
                       value={mobileNumber}
                       onChange={(e) => setMobileNumber(e.target.value)}
@@ -163,43 +196,34 @@ function Address() {
                     />
                   </label>
                   <label>
-                    <h4>City</h4>
-                    <select
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                      required
-                    >
-                      <option value="">Select City</option>
-                      <option value="Bangalore">Bangalore</option>
-                      <option value="Mumbai">Mumbai</option>
-                      <option value="Chennai">Chennai</option>
-                    </select>
-                  </label>
-                  <label>
-                    <h4>State</h4>
-                    <select
-                      value={state}
-                      onChange={(e) => setState(e.target.value)}
-                      required
-                    >
-                      <option value="">Select State</option>
-                      <option value="KA">Karnataka</option>
-                      <option value="MH">Maharashtra</option>
-                      <option value="TN">Tamil Nadu</option>
-                    </select>
-                  </label>
-                  <label>
-                    <h4>State</h4>
-                    <select
+                    <h4>Country</h4>
+                    <input
+                      type="text"
+                      placeholder="Enter Country Name"
                       value={country}
                       onChange={(e) => setCountry(e.target.value)}
                       required
-                    >
-                      <option value="">Select Country</option>
-                      <option value="india">India</option>
-                      <option value="russia">Russia</option>
-                      <option value="china">China</option>
-                    </select>
+                    />
+                  </label>
+                  <label>
+                    <h4>State</h4>
+                    <input
+                      type="text"
+                      placeholder="Enter State Name"
+                      value={state}
+                      onChange={(e) => setState(e.target.value)}
+                      required
+                    />
+                  </label>
+                  <label>
+                    <h4>City</h4>
+                    <input
+                      type="text"
+                      placeholder="Enter City Name"
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      required
+                    />
                   </label>
                 </div>
                 <div className="second-inputs comm">
@@ -215,12 +239,7 @@ function Address() {
                     ></textarea>
                   </label>
                 </div>
-                <div className="third-inputs">
-                  <p>
-                    Lorem Ipsum is simply dummy text of the printing industry's
-                    standard dummy text ever since the 1500s.
-                  </p>
-                </div>
+                <div className="third-inputs"></div>
                 <div className="address-button">
                   <button type="submit">{isEditing ? "Update" : "Save"}</button>
                 </div>
