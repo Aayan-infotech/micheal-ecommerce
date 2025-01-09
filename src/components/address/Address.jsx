@@ -60,7 +60,7 @@ function Address() {
         // const addressId = sessionStorage.getItem("addressId");
 
         const response1 = await fetch(
-          `http://44.196.64.110:3129/api/address/update/${addresss?._id}`,
+          `https://www.millysshop.se/api/address/update/${addresss?._id}`,
           {
             method: "PUT",
             headers: {
@@ -83,7 +83,7 @@ function Address() {
         }
       } else {
         const response = await fetch(
-          "http://44.196.64.110:3129/api/address/add",
+          "https://www.millysshop.se/api/address/add",
           {
             method: "POST",
             headers: {

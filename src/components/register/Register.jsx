@@ -75,7 +75,7 @@ function Register() {
           dataToSubmit.mobileNumber = formData.emailOrMobile;
         }
         const response = await axios.post(
-          "http://44.196.64.110:3129/api/user/register",
+          "https://www.millysshop.se/api/user/register",
           dataToSubmit
         );
         toast.success(response?.data?.message || "User registered successfully!", {

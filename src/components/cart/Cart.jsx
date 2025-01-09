@@ -26,7 +26,7 @@ function Cart() {
   const handleCartDelete = async (card_id) => {
     try {
       const response = await axios.delete(
-        `http://44.196.64.110:3129/api/cart/delete/${card_id}`,
+        `https://www.millysshop.se/api/cart/delete/${card_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

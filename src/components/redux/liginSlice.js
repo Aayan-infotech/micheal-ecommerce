@@ -7,7 +7,7 @@ export const loginUser = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://44.196.64.110:3129/api/auth/login",
+        "https://www.millysshop.se/api/auth/login",
         formData
       );
       if (response.data.success) {

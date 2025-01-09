@@ -69,7 +69,7 @@ function ContactUs() {
           dataToSubmit.mobileNumber = formData.email;
         }
         const response = await axios.post(
-          "http://44.196.64.110:3129/api/contact/contactUs",
+          "https://www.millysshop.se/api/contact/contactUs",
           dataToSubmit
         );
         toast.success(response?.data?.message || "Message sent successfully!", {
@@ -115,8 +115,8 @@ function ContactUs() {
           <div className="contactus-banner">
             <h1>Get in Touch</h1>
             <div className="contactus-doc">
-              <p>contact@technologycal</p>
-              <p>(011) 6543 8974 210</p>
+              <p>mike.export@yahoo.com</p>
+              <p>+46 73 507 72 76</p>
             </div>
           </div>
           <div className="forms">

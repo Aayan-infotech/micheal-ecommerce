@@ -4,7 +4,7 @@
   align-items: center;
   flex-direction: column;
   height: 300px;
-  width: 100vw;
+  width: 100%;
   text-align: center;
   background: url("../../images/background-img.png");
 }

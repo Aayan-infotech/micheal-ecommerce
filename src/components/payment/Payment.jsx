@@ -24,7 +24,8 @@ function Payment() {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { selectedSlot, addressId, getVoucher, totalAmount } = location.state || {};
+  const { selectedSlot, addressId, getVoucher, totalAmount } =
+    location.state || {};
 
   const userId = sessionStorage.getItem("userId");
 
@@ -45,7 +46,7 @@ function Payment() {
   const handleToProceedCheckout = async (token) => {
     try {
       const response = await axios.post(
-        "http://44.196.64.110:3129/api/product/order",
+        "https://www.millysshop.se/api/product/order",
         {
           userId: userId,
           deliverySlotId: selectedSlot?._id,
@@ -64,7 +65,7 @@ function Payment() {
   const handleSumUpPayment = async () => {
     try {
       const response = await axios.post(
-        "http://44.196.64.110:3129/api/payment/create-sumup-payment",
+        "https://www.millysshop.se/api/payment/create-sumup-payment",
         {
           amount: 200,
           currency: "USD",
@@ -99,6 +100,32 @@ function Payment() {
       navigate("/paymentmessage");
     } catch (error) {
       console.log("Error during PayPal payment process:", error);
+    }
+  };
+
+  const handleApprove = async (data, actions) => {
+    try {
+      // Capture the order after approval
+      const details = await actions.order.capture();
+      console.log("Payment details:", details);
+
+      // Send the order ID to the backend for validation
+      const response = await axios.post(
+        "https://www.millysshop.se/api/paypal/create-payment",
+        {
+          id: details.id,
+        }
+      );
+      if (response.data.success) {
+        console.log("Payment verified successfully:", response.data);
+        alert("Payment successful and verified!");
+      } else {
+        console.error("Payment verification failed:", response.data.message);
+        alert("Payment verification failed.");
+      }
+    } catch (error) {
+      console.error("Error during payment process:", error);
+      alert("An error occurred during the payment process. Please try again.");
     }
   };
 
@@ -144,13 +171,13 @@ function Payment() {
                 </StripeCheckout>
               ) : selectedMethod === 2 ? (
                 <PayPalScriptProvider
-                  options={{
-                    clientId:
-                      "AURFbdAH-s05k9iOhtSCc2KFlCh5UKQGC0h6ljkvk0BoxDaI6zlCYJrANmJHxSszowO_20GZYLh2M_R2",
-                    intent: "sale",
-                  }}
+                // options={{
+                //   clientId:
+                //     "ARIN0VXEZukePCK2S-yeejyx-02RqIYg864DpeaxY0juKGp-yuXDXoVuHCiOiJshiwslRRENxWHJBp7V",
+                //   intent: "sale",
+                // }}
                 >
-                  <PayPalButtons
+                  {/* <PayPalButtons
                     style={{ layout: "horizontal" }}
                     createOrder={(data, actions) => {
                       return actions.order.create({
@@ -172,7 +199,7 @@ function Payment() {
                         } = details;
                         try {
                           const response = await axios.post(
-                            "http://44.196.64.110:3129/api/product/order",
+                            "https://www.millysshop.se/api/product/order",
                             {
                               userId,
                               deliverySlotId: selectedSlot?._id,
@@ -188,6 +215,25 @@ function Payment() {
                           console.log(error, "abinash");
                         }
                       });
+                    }}
+                  /> */}
+                  <PayPalButtons
+                    createOrder={(data, actions) => {
+                      return actions.order.create({
+                        purchase_units: [
+                          {
+                            amount: {
+                              currency_code: "USD",
+                              value: "10.00",
+                            },
+                          },
+                        ],
+                      });
+                    }}
+                    onApprove={handleApprove}
+                    onError={(err) => {
+                      console.error("PayPal error:", err);
+                      alert("An error occurred with PayPal. Please try again.");
                     }}
                   />
                 </PayPalScriptProvider>

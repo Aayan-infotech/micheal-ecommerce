@@ -25,7 +25,7 @@ function PaymentCheckout() {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://44.196.64.110:3129/api/product/summary/${userId}/${selectedSlot?._id}`
+        `https://www.millysshop.se/api/product/summary/${userId}/${selectedSlot?._id}`
       );
       const data = response?.data?.data;
       setGetVoucher(data?.voucher);
@@ -46,7 +46,7 @@ function PaymentCheckout() {
     setLoading(true);
     try {
       const response = await axios.get(
-        "http://44.196.64.110:3129/api/voucher/get"
+        "https://www.millysshop.se/api/voucher/get"
       );
       if (response.data.success) {
         setVouchers(response.data.data);
@@ -62,7 +62,7 @@ function PaymentCheckout() {
   const applyCoupon = async (voucher) => {
     try {
       const response = await axios.put(
-        `http://44.196.64.110:3129/api/voucher/apply/${voucher?._id}/${userId}`,
+        `https://www.millysshop.se/api/voucher/apply/${voucher?._id}/${userId}`,
         {
           code: voucher.code,
           purchaseAmount: totalAmount,

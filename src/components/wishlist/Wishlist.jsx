@@ -14,7 +14,7 @@ function Wishlist() {
   const fetchFavorites = async () => {
     try {
       const response = await axios.get(
-        `http://44.196.64.110:3129/api/favorite/get/${userId}`
+        `https://www.millysshop.se/api/favorite/get/${userId}`
       );
       console.log(response?.data?.data, "abinash");
       if (response.data.success && response.data.data.products.length > 0) {
@@ -41,7 +41,7 @@ function Wishlist() {
   const handleDelete = async (p_id) => {
     try {
       const response = await axios.delete(
-        `http://44.196.64.110:3129/api/favorite/delete`,
+        `https://www.millysshop.se/api/favorite/delete`,
         { data: { productId: p_id, userId: userId } }
       );
       const updateWishlists = wishlists.filter((item) => item._id !== p_id);

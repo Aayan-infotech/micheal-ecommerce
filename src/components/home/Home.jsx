@@ -19,7 +19,7 @@ function Home() {
   const fetchAllCategoriesType = async () => {
     try {
       const response = await axios.get(
-        "http://44.196.64.110:3129/api/category/get"
+        "https://www.millysshop.se/api/category/get"
       );
       setCategoryType(response?.data?.data);
       setLoading(false);
@@ -53,8 +53,7 @@ function Home() {
         <div className="home-top">
           <h1>All In One Place For Frozen Foods And Cosmetics</h1>
           <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
+          Discover premium cosmetics and high-quality dry & frozen foods, all in one place 
           </p>
           {!token && (
             <Link to="/register" className="logo">

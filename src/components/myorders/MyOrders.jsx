@@ -16,7 +16,7 @@ function MyOrders() {
     const fetchOrderHistory = async () => {
       try {
         const response = await axios.get(
-          `http://44.196.64.110:3129/api/product/order-history/${userId}`
+          `https://www.millysshop.se/api/product/order-history/${userId}`
         );
         console.log(response?.data?.data, "abinash");
         if (response.data.success) {

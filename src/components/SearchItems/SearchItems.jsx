@@ -11,7 +11,7 @@ function SearchItems() {
     try {
       if (searchQuery.length > 0) {
         const res = await axios.post(
-          "http://44.196.64.110:3129/api/product/search",
+          "https://www.millysshop.se/api/product/search",
           {
             name: searchQuery,
           }

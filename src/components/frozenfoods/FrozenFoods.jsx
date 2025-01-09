@@ -30,7 +30,7 @@ function FrozenFoods() {
   const fetchSubCategories = async () => {
     try {
       const response = await axios.get(
-        `http://44.196.64.110:3129/api/category/get/${storedCategoryId}`
+        `https://www.millysshop.se/api/category/get/${storedCategoryId}`
       );
       setSsbCategoryTitle(response?.data?.data?.title);
       setSubCategory(response?.data?.subcategories);
@@ -44,7 +44,7 @@ function FrozenFoods() {
   const fetchCategoriesProduct = async () => {
     try {
       const response = await axios.get(
-        `http://44.196.64.110:3129/api/product/categoryproducts/${storedCategoryId}`
+        `https://www.millysshop.se/api/product/categoryproducts/${storedCategoryId}`
       );
       setCategoriesProduct(response?.data?.data);
       setLoading(false);
