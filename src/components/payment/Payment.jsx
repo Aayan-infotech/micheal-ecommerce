@@ -2,14 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./payment.css";
 import firstPay from "../../images/first-pay.png";
 import secondPay from "../../images/second-pay.png";
-import thirdPay from "../../images/third-pay.png";
-import fourthPay from "../../images/fourth-pay.png";
 import StripeCheckout from "react-stripe-checkout";
 import axios from "axios";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loading from "../loader/Loading";
-import { PayPalButton } from "react-paypal-button-v2";
 
 function Payment() {
   const [selectedMethod, setSelectedMethod] = useState(null);
@@ -18,8 +15,6 @@ function Payment() {
   const paymentMethods = [
     { id: 1, name: "Visa", img: firstPay, lastFour: "2109" },
     { id: 2, name: "PayPal", img: secondPay, lastFour: "2109" },
-    { id: 3, name: "MasterCard", img: thirdPay, lastFour: "2109" },
-    { id: 4, name: "Apple Pay", img: fourthPay, lastFour: "2109" },
   ];
 
   const location = useLocation();
@@ -44,6 +39,7 @@ function Payment() {
   };
 
   const handleToProceedCheckout = async (token) => {
+    setLoading(true);
     try {
       const response = await axios.post(
         "https://www.millysshop.se/api/product/order",
@@ -59,57 +55,14 @@ function Payment() {
       navigate("/paymentmessage");
     } catch (error) {
       console.log("Error during payment process:", error);
-    }
-  };
-
-  const handleSumUpPayment = async () => {
-    try {
-      const response = await axios.post(
-        "https://www.millysshop.se/api/payment/create-sumup-payment",
-        {
-          amount: 200,
-          currency: "USD",
-        }
-      );
-      if (response.data.url) {
-        window.location.href = response.data.url;
-      }
-    } catch (error) {
-      console.error("Error during SumUp payment process:", error);
-    }
-  };
-
-  const handlePaypalPayment = async (details) => {
-    const {
-      id: paymentId,
-      payer: { payer_id: payerId },
-    } = details;
-    try {
-      const response = await axios.post(
-        "http://localhost:3129/api/product/order",
-        {
-          userId,
-          deliverySlotId: selectedSlot?._id,
-          addressId,
-          paymentMethod: "paypal",
-          paymentId,
-          payerId,
-        }
-      );
-      console.log(response?.data?.data);
-      navigate("/paymentmessage");
-    } catch (error) {
-      console.log("Error during PayPal payment process:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleApprove = async (data, actions) => {
     try {
-      // Capture the order after approval
       const details = await actions.order.capture();
-      console.log("Payment details:", details);
-
-      // Send the order ID to the backend for validation
       const response = await axios.post(
         "https://www.millysshop.se/api/paypal/create-payment",
         {
@@ -120,14 +73,16 @@ function Payment() {
         console.log("Payment verified successfully:", response.data);
         alert("Payment successful and verified!");
       } else {
-        console.error("Payment verification failed:", response.data.message);
         alert("Payment verification failed.");
       }
     } catch (error) {
-      console.error("Error during payment process:", error);
       alert("An error occurred during the payment process. Please try again.");
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="payment">
@@ -177,46 +132,6 @@ function Payment() {
                 //   intent: "sale",
                 // }}
                 >
-                  {/* <PayPalButtons
-                    style={{ layout: "horizontal" }}
-                    createOrder={(data, actions) => {
-                      return actions.order.create({
-                        purchase_units: [
-                          {
-                            amount: {
-                              currency_code: "USD",
-                              value: totalAmount.toFixed(2),
-                            },
-                          },
-                        ],
-                      });
-                    }}
-                    onApprove={async (data, actions) => {
-                      return actions.order.capture().then(async (details) => {
-                        const {
-                          id: paymentId,
-                          payer: { payer_id: payerId },
-                        } = details;
-                        try {
-                          const response = await axios.post(
-                            "https://www.millysshop.se/api/product/order",
-                            {
-                              userId,
-                              deliverySlotId: selectedSlot?._id,
-                              addressId,
-                              paymentMethod: "paypal",
-                              // paymentId,
-                              // payerId,
-                              voucherCode: getVoucher?.code,
-                            }
-                          );
-                          navigate("/paymentmessage");
-                        } catch (error) {
-                          console.log(error, "abinash");
-                        }
-                      });
-                    }}
-                  /> */}
                   <PayPalButtons
                     createOrder={(data, actions) => {
                       return actions.order.create({
@@ -237,16 +152,6 @@ function Payment() {
                     }}
                   />
                 </PayPalScriptProvider>
-              ) : selectedMethod === 3 ? (
-                <button onClick={handleSumUpPayment}>
-                  Pay with MasterCard (SumUp)
-                </button>
-              ) : selectedMethod === 4 ? (
-                <button
-                  onClick={() => alert("Processing payment with Apple Pay")}
-                >
-                  Pay with Apple Pay
-                </button>
               ) : (
                 <button disabled>Select a payment method</button>
               )}

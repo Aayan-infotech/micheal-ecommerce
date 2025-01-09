@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./passwordreset.css";
 
 function PasswordReset() {
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
   // const location = useLocation();
   // const token = new URLSearchParams(location.search).get('token');
@@ -16,24 +16,27 @@ function PasswordReset() {
     e.preventDefault();
 
     if (newPassword !== confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post('https://www.millysshop.se/api/auth/reset-password', { token, newPassword });
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "https://www.millysshop.se/api/auth/reset-password",
+        { token, newPassword }
+      );
       if (response.data.success) {
-        setMessage('Password reset successfully! You can now log in.');
-        setError('');
-        setTimeout(() => navigate('/login'), 2000); 
+        setMessage("Password reset successfully! You can now log in.");
+        setError("");
+        setTimeout(() => navigate("/login"), 2000);
       } else {
-        setMessage('');
-        setError(response.data.message || 'Failed to reset password');
+        setMessage("");
+        setError(response.data.message || "Failed to reset password");
       }
     } catch (error) {
-      setMessage('');
-      setError('An error occurred while resetting the password');
+      setMessage("");
+      setError("An error occurred while resetting the password");
     }
   };
 
@@ -41,8 +44,9 @@ function PasswordReset() {
     <div className="passwordreset">
       <div className="container pass-contain">
         <h1 className="sign">Password Reset</h1>
-        <p className='pass'>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        <p className="pass">
+          Discover premium cosmetics and high-quality dry & frozen foods, all in
+          one place
         </p>
         <div className="form">
           <form className="pass-form" onSubmit={handleSubmit}>

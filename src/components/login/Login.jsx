@@ -84,7 +84,7 @@ function Login() {
                 <button type="submit">Log In</button>
               </form>
             </div>
-            <p className="login-link">
+            <p className="login-link" style={{color:"white", fontWeight:"bold"}}>
               Haven't any account? <Link to="/register">Signup</Link>
             </p>
           </div>

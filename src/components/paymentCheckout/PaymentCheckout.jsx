@@ -164,7 +164,7 @@ function PaymentCheckout() {
                   </h3>
                   <h4>${deliveryCharge}</h4>
                 </div>
-                <div
+                {/* <div
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
@@ -182,12 +182,8 @@ function PaymentCheckout() {
                     Tax
                   </h3>
                   <h4>{taxSanctionedAmount.toFixed(2)} %</h4>
-                </div>
+                </div> */}
               </div>
-              <p className="order-description">
-                Lorem Ipsum is simply dummy text of the printing industry's
-                standard dummy text ever since the 1500s.
-              </p>
             </div>
             <div className="order-total">
               <h3 style={{ marginBottom: "10px", color: "black" }}>

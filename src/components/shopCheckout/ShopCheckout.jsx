@@ -96,6 +96,12 @@ function ShopCheckout() {
   };
 
   const handleToProceedCheckout = async () => {
+    if (!selectedAddressId || !selectedTimePeriod) {
+      toast.error("Please select both delivery address and delivery slot.", {
+        autoClose: 2000,
+      });
+      return;
+    }
     const selectedSlot = deliverySlots.find(
       (slot) =>
         slot?.deliveryType === selectedDeliveryType &&
@@ -109,6 +115,7 @@ function ShopCheckout() {
       },
     });
   };
+  
 
   return (
     <>
