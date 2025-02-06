@@ -69,7 +69,7 @@ function ContactUs() {
           dataToSubmit.mobileNumber = formData.email;
         }
         const response = await axios.post(
-          "https://www.millysshop.se/api/contact/contactUs",
+          "https://ecom.atulrajput.tech/api/contact/contactUs",
           dataToSubmit
         );
         toast.success(response?.data?.message || "Message sent successfully!", {

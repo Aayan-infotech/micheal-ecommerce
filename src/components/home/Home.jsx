@@ -19,7 +19,7 @@ function Home() {
   const fetchAllCategoriesType = async () => {
     try {
       const response = await axios.get(
-        "https://www.millysshop.se/api/category/get"
+        "https://ecom.atulrajput.tech/api/category/get"
       );
       setCategoryType(response?.data?.data);
       setLoading(false);

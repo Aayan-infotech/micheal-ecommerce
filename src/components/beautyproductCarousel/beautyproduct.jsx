@@ -20,7 +20,7 @@ function Beautyproduct() {
     useEffect(() => {
         const fetchProductDetails = async () => {
             try {
-                const response = await axios.get(`https://www.millysshop.se/api/product/get/${productId}`);
+                const response = await axios.get(`https://ecom.atulrajput.tech/api/product/get/${productId}`);
                 setProduct(response?.data?.data);
                 setLoading(false);
             } catch (err) {

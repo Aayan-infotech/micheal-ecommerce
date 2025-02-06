@@ -11,7 +11,7 @@ function SearchItems() {
     try {
       if (searchQuery.length > 0) {
         const res = await axios.post(
-          "https://www.millysshop.se/api/product/search",
+          "https://ecom.atulrajput.tech/api/product/search",
           {
             name: searchQuery,
           }

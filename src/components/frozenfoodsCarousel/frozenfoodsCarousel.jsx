@@ -23,7 +23,7 @@ function FrozenfoodsCarousel() {
     useEffect(() => {
         const fetchProductDetails = async () => {
             try {
-                const response = await axios.get(`https://www.millysshop.se/api/product/get/${productId}`);
+                const response = await axios.get(`https://ecom.atulrajput.tech/api/product/get/${productId}`);
                 setProduct(response?.data?.data);
                 console.log(response?.data?.data, 'response?.data?.data');
                 setLoading(false);

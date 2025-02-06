@@ -95,7 +95,7 @@ function Address() {
     try {
       if (isEditing) {
         const response1 = await fetch(
-          `https://www.millysshop.se/api/address/update/${address?._id}`,
+          `https://ecom.atulrajput.tech/api/address/update/${address?._id}`,
           {
             method: "PUT",
             headers: {
@@ -117,7 +117,7 @@ function Address() {
         }
       } else {
         const response = await fetch(
-          "https://www.millysshop.se/api/address/add",
+          "https://ecom.atulrajput.tech/api/address/add",
           {
             method: "POST",
             headers: {

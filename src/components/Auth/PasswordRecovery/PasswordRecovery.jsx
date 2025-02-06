@@ -13,7 +13,7 @@ function PasswordRecovery() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://www.millysshop.se/api/auth/send-email",
+        "https://ecom.atulrajput.tech/api/auth/send-email",
         { email }
       );
       if (response.data.success) {

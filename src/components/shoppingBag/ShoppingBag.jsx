@@ -44,7 +44,7 @@ function ShoppingBag() {
     }
     try {
       const response = await axios.put(
-        "https://www.millysshop.se/api/cart/change",
+        "https://ecom.atulrajput.tech/api/cart/change",
         {
           productId: productId,
           operation: action,

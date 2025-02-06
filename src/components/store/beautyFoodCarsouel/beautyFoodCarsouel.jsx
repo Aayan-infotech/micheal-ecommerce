@@ -18,7 +18,7 @@ function BeautyFoodCarsouel({categoryType}) {
 
   const fetchProducts = async (categoryId) => {
     try {
-      const response = await axios.get(`https://www.millysshop.se/api/product/categoryproducts/${categoryId}`);
+      const response = await axios.get(`https://ecom.atulrajput.tech/api/product/categoryproducts/${categoryId}`);
       console.log(response?.data?.data, '--------beatury food')
       setProduct(response.data?.data);
     } catch (error) {

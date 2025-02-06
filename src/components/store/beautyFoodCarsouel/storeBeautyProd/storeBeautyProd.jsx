@@ -12,7 +12,7 @@ function StoreBeautyProd() {
     const fetchProd = async () => {
       try {
         const response = await fetch(
-          `https://www.millysshop.se/api/product/get/${storeProducts._id}`
+          `https://ecom.atulrajput.tech/api/product/get/${storeProducts._id}`
         );
         const data = await response.json();
         console.log(data?.data, 'particular product')

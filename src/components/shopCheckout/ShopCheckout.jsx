@@ -27,7 +27,7 @@ function ShopCheckout() {
   const fetchAddressDetails = async () => {
     try {
       const response = await axios.get(
-        `https://www.millysshop.se/api/address/get/${userId}`
+        `https://ecom.atulrajput.tech/api/address/get/${userId}`
       );
       setAddresses(response.data.data);
       setLoading(false);
@@ -40,7 +40,7 @@ function ShopCheckout() {
   const fetchDeliverySlots = async () => {
     try {
       const response = await axios.get(
-        `https://www.millysshop.se/api/deliveryslot/get`
+        `https://ecom.atulrajput.tech/api/deliveryslot/get`
       );
       setDeliverySlots(response.data.data);
       setLoading(false);
@@ -63,7 +63,7 @@ function ShopCheckout() {
   const handleDelete = async (add_id) => {
     try {
       const response = await axios.delete(
-        `https://www.millysshop.se/api/address/delete/${add_id}`
+        `https://ecom.atulrajput.tech/api/address/delete/${add_id}`
       );
       if (response.data.success) {
         toast.success(response?.data?.message, {

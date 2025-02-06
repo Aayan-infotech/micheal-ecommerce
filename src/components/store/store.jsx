@@ -18,7 +18,7 @@ function Store() {
 
   const fetchAllCategoriesType = async () => {
     try {
-      const response = await axios.get('https://www.millysshop.se/api/category/get');
+      const response = await axios.get('https://ecom.atulrajput.tech/api/category/get');
       console.log(response?.data?.data, 'response?.data?.data');
       setTitle(response?.data?.message);
       setCategoryType(response?.data?.data);
