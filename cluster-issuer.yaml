@@ -4,10 +4,10 @@ metadata:
   name: letsencrypt-prod
 spec:
   acme:
-    email: michael.odoemelam@gmail.com # Replace with your email
+    email: atulrajput.work@gmail.com
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: letsencrypt-prod-key
+      name: atulecom
     solvers:
     - http01:
         ingress:
