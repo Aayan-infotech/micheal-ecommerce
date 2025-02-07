@@ -1,70 +1,239 @@
-# Getting Started with Create React App
+# Kubernetes Deployment Guide for E-commerce Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
+This guide explains how to deploy a full-stack e-commerce application on a Kubernetes cluster using separate deployments for the backend and frontend, along with an Ingress for routing and SSL configuration using Cert-Manager.
 
-## Available Scripts
+## Prerequisites
+- Kubernetes cluster (EKS, AKS, GKE, or Minikube)
+- kubectl installed and configured
+- Nginx Ingress Controller installed
+- Cert-Manager installed for SSL certificate management
+- Docker images for backend and frontend available in a container registry (Docker Hub in this case)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 1. Deploying the Backend
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Why We Need This:
+The backend handles API requests and connects to the database, serving business logic for the application.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Backend Deployment (k8s-deploy.yml):
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micheal-back-deployment
+  labels:
+    app: micheal-back
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: micheal-back
+  template:
+    metadata:
+      labels:
+        app: micheal-back
+    spec:
+      containers:
+        - name: micheal-back
+          image: amazingatul/ecom-backend:m2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3129
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: micheal-back-service
+spec:
+  selector:
+    app: micheal-back
+  ports:
+    - protocol: TCP
+      port: 3129
+      targetPort: 3129
+  type: ClusterIP
+```
 
-### `npm test`
+### Apply the Deployment:
+```sh
+kubectl apply -f k8s-deploy.yml
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 2. Deploying the Frontend
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Why We Need This:
+The frontend is the user interface that interacts with the backend via API calls.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Frontend Deployment (k8s-deploy.yml):
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micheal-web-deployment
+  labels:
+    app: micheal-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: micheal-web
+  template:
+    metadata:
+      labels:
+        app: micheal-web
+    spec:
+      containers:
+        - name: micheal-web
+          image: amazingatul/ecom-web:m1
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: micheal-web-service
+spec:
+  selector:
+    app: micheal-web
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Apply the Deployment:
+```sh
+kubectl apply -f k8s-deploy.yml
+```
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 3. Configuring Ingress for Routing
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Why We Need This:
+Ingress routes incoming traffic to the appropriate services based on path rules and enables HTTPS via TLS certificates.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Ingress Configuration (ingress.yml):
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: micheal-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: ecom.atulrajput.tech
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: micheal-web-service
+            port:
+              number: 80
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: micheal-back-service
+            port:
+              number: 3129
+  tls:
+  - hosts:
+    - ecom.atulrajput.tech
+    secretName: atulecom
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Apply the Ingress:
+```sh
+kubectl apply -f ingress.yml
+```
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 4. Configuring ClusterIssuer for SSL
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Why We Need This:
+Cert-Manager automates the issuance and renewal of SSL certificates from Let's Encrypt, securing the website with HTTPS.
 
-### Code Splitting
+### ClusterIssuer Configuration (cluster-issuer.yaml):
+```yaml
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    email: atulrajput.work@gmail.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: atulecom
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Apply the ClusterIssuer:
+```sh
+kubectl apply -f cluster-issuer.yaml
+```
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 5. Verifying Deployment
+### Check Pods and Services:
+```sh
+kubectl get pods
+kubectl get svc
+```
+### Check Ingress:
+```sh
+kubectl get ingress
+```
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 6. Debugging Common Issues
 
-### Advanced Configuration
+### 6.1 Ingress Not Working
+- Ensure Nginx Ingress Controller is installed:
+  ```sh
+  kubectl get pods -n kube-system | grep ingress
+  ```
+- Verify that the Ingress resource is created correctly:
+  ```sh
+  kubectl describe ingress micheal-ingress
+  ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### 6.2 SSL Certificate Not Issued
+- Check Cert-Manager logs:
+  ```sh
+  kubectl logs -n cert-manager -l app=cert-manager
+  ```
+- Verify that ClusterIssuer is created:
+  ```sh
+  kubectl get clusterissuer
+  ```
 
-### Deployment
+### 6.3 Backend or Frontend Not Accessible
+- Ensure services are running:
+  ```sh
+  kubectl get svc
+  ```
+- Verify that the correct ports are exposed in the service.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## Conclusion
+This documentation provides a step-by-step process to deploy an e-commerce application on Kubernetes, including backend and frontend deployments, Ingress for routing, and SSL configuration using Cert-Manager.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
