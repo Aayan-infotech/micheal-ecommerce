@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micheal-back-deployment
+  labels:
+    app: micheal-back
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: micheal-back
+  template:
+    metadata:
+      labels:
+        app: micheal-back
+    spec:
+      containers:
+        - name: micheal-back
+          image: amazingatul/ecom-backend:m2
+          imagePullPolicy: Always  # Ensures Kubernetes pulls the image from Docker Hub every time
+          ports:
+            - containerPort: 3129
+      restartPolicy: Always  # Ensures pod restarts if it crashes
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: micheal-back-service
+spec:
+  selector:
+    app: micheal-back
+  ports:
+    - protocol: TCP
+      port: 3129
+      targetPort: 3129
+  type: ClusterIP
