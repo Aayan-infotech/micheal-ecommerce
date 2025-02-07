@@ -3,29 +3,28 @@ kind: Ingress
 metadata:
   name: micheal-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-#    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt-prod  # Specify the ClusterIssuer
 spec:
-  ingressClassName: nginx  # Use the NGINX Ingress class
+  ingressClassName: nginx
   rules:
-  - host: a97a6b21b4c5a4d2bb600c908287385f-2090702616.us-east-1.elb.amazonaws.com  # Replace with your custom domain
+  - host: ecom.atulrajput.tech
     http:
       paths:
-      - path: /  # Route traffic to the frontend service
+      - path: /
         pathType: Prefix
         backend:
           service:
-            name: micheal-web-service  # Frontend service name
+            name: micheal-web-service
             port:
               number: 80
-      - path: /api  # Route traffic to the backend service
+      - path: /api
         pathType: Prefix
         backend:
           service:
-            name: micheal-back-service  # Backend service name
+            name: micheal-back-service
             port:
               number: 3129
- # tls:
- # - hosts:
-  #  - www.millysshop.se  # Add the domain here for TLS
-   # secretName: micheal-tls  # Secret where the TLS certificate will be stored
+  tls:
+  - hosts:
+    - ecom.atulrajput.tech  # Domain for the SSL certificate
+    secretName: atulecom  # Secret to store the TLS certificate
