@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: micheal-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod  # Specify the ClusterIssuer
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: ecom.atulrajput.tech
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: micheal-web-service
+            port:
+              number: 80
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: micheal-back-service
+            port:
+              number: 3129
+  tls:
+  - hosts:
+    - ecom.atulrajput.tech  # Domain for the SSL certificate
+    secretName: atulecom  # Secret to store the TLS certificate
