@@ -17,10 +17,17 @@ spec:
       containers:
         - name: micheal-back
           image: amazingatul/ecom-backend:m2
-          imagePullPolicy: Always  # Ensures Kubernetes pulls the image from Docker Hub every time
+          imagePullPolicy: Always  
           ports:
             - containerPort: 3129
-      restartPolicy: Always  # Ensures pod restarts if it crashes
+          resources:
+            requests:
+              cpu: "0.3"  
+              memory: "256Mi"  
+            limits:
+              cpu: "0.8"  
+              memory: "512Mi" 
+      restartPolicy: Always  
 
 ---
 apiVersion: v1

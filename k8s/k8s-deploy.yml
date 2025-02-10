@@ -19,6 +19,13 @@ spec:
           image: amazingatul/ecom-web:m1
           ports:
             - containerPort: 80
+          resources:
+            limits:
+              cpu: "0.5"  
+              memory: "512Mi"  
+            requests:
+              cpu: "0.2"  
+              memory: "256Mi" 
 ---
 apiVersion: v1
 kind: Service
