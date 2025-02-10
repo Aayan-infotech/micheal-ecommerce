@@ -22,11 +22,11 @@ spec:
             - containerPort: 3129
           resources:
             requests:
-              cpu: "0.3"  
-              memory: "256Mi"  
+              cpu: "500m"  
+              memory: "512Mi"  
             limits:
-              cpu: "0.8"  
-              memory: "512Mi" 
+              cpu: "1000m"  
+              memory: "1024Mi" 
       restartPolicy: Always  
 
 ---
