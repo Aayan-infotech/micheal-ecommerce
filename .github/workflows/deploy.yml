@@ -41,6 +41,13 @@ jobs:
           docker tag amazingatul/ecom-web amazingatul/ecom-web:$NEW_TAG
           docker tag amazingatul/ecom-web amazingatul/ecom-web:latest
 
+      # 6️⃣ Security Scan with Trivy (Fail if High Vulnerabilities)
+      - name: Scan Docker Image with Trivy
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy image --exit-code 1 --severity HIGH,CRITICAL amazingatul/ecom-web:$NEW_TAG
+
+
       # 6️⃣ Push the image to Docker Hub
       - name: Push Docker Image
         run: |
