@@ -6,7 +6,6 @@ COPY package.json package-lock.json ./
 
 RUN npm install --legacy-peer-deps
 
-# Copy the rest of the project files
 COPY . .
 
 # Build the project for production (output will be in the "build" directory)
