@@ -49,10 +49,15 @@ jobs:
 
       # 7️⃣ Update Kubernetes Manifest (`k8s-deploy.yml`) with the New Image Tag
       - name: Update Image Tag in k8s-deploy.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           sed -i 's|image: amazingatul/ecom-web:.*|image: amazingatul/ecom-web:'$NEW_TAG'|' k8s/k8s-deploy.yml
           git config --global user.email "ci@github.com"
           git config --global user.name "GitHub Actions"
           git add k8s/k8s-deploy.yml
           git commit -m "Update image to $NEW_TAG"
-          git push origin main  # Push changes back to GitHub
+          
+          # Authenticate and push the change
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
+          git push origin main
