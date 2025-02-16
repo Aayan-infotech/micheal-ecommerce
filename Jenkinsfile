@@ -61,7 +61,7 @@ pipeline {
                     ❌ **Build Failed!**
                     🔍 **Jenkins Logs:** <a href="${env.BUILD_URL}/console">View Logs</a>
                     """,
-                    to: "atulrajput.work@gmail.com,developer@example.com",
+                    to: "atulrajput.work@gmail.com",
                     replyTo: "no-reply@example.com",
                     from: "${EMAIL_USERNAME}"
                 )
