@@ -53,7 +53,9 @@ pipeline {
             steps {
                 script {
                     def latestTag = sh(script: "curl -s https://hub.docker.com/v2/repositories/amazingatul/ecom-web/tags/ | jq -r '.results[].name' | grep -E '^m[0-9]+$' | sort -V | tail -n1", returnStdout: true).trim()
-                    def newTag = latestTag ? "m$(( ${latestTag.substring(1) as int} + 1 ))" : "m1"
+                    def latestNumber = latestTag ? latestTag.substring(1).toInteger() + 1 : 1
+                    def newTag = "m${latestNumber}"
+
                     sh """
                     docker tag ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:${newTag}
                     docker tag ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:latest
@@ -61,6 +63,7 @@ pipeline {
                     docker push ${DOCKER_IMAGE}:${newTag}
                     docker push ${DOCKER_IMAGE}:latest
                     """
+
                     env.NEW_TAG = newTag  // Save new tag for next step
                 }
             }
@@ -68,9 +71,7 @@ pipeline {
 
         stage('Run New Docker Container') {
             steps {
-                sh """
-                    docker run -d -p 80:80 ${DOCKER_IMAGE}:latest
-                """
+                sh "docker run -d -p 80:80 ${DOCKER_IMAGE}:latest"
             }
         }
     }
