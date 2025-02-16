@@ -59,7 +59,7 @@ pipeline {
                     sh """
                     docker tag ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:${newTag}
                     docker tag ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:latest
-                    echo '${DOCKER_HUB_CREDENTIALS_PSW}' | docker login -u '${DOCKER_HUB_CREDENTIALS_USR}' --password-stdin
+                    echo '\${DOCKER_HUB_CREDENTIALS_PSW}' | docker login -u '\${DOCKER_HUB_CREDENTIALS_USR}' --password-stdin
                     docker push ${DOCKER_IMAGE}:${newTag}
                     docker push ${DOCKER_IMAGE}:latest
                     """
