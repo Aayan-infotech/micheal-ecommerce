@@ -30,7 +30,7 @@ pipeline {
         stage('Stop & Remove Old Container') {
             steps {
                 script {
-                    def containerId = sh(script: "docker ps -q --filter 'publish=80'", returnStdout: true).trim()
+                    def containerId = sh(script: "docker ps -q --filter expose=80", returnStdout: true).trim()
                     if (containerId) {
                         sh "echo 'Stopping and removing old container...'"
                         sh "docker stop ${containerId} || true"
@@ -46,7 +46,7 @@ pipeline {
             steps {
                 sh """
                 docker build -t ${DOCKER_IMAGE}:latest .
-                docker run -d -p 80:80 ${DOCKER_IMAGE}:latest
+                docker run -d -p 80:80 --name ecom-web ${DOCKER_IMAGE}:latest
                 """
             }
         }
@@ -59,19 +59,11 @@ pipeline {
                     subject: "🚨 Jenkins Build Failed: Micheal-Web",
                     body: """
                     ❌ **Build Failed!**
-                    🔍 **Jenkins Logs:** ${env.BUILD_URL}/console
+                    🔍 **Jenkins Logs:** <a href="${env.BUILD_URL}/console">View Logs</a>
                     """,
                     to: "atulrajput.work@gmail.com,developer@example.com",
                     replyTo: "no-reply@example.com",
-                    from: "${EMAIL_USERNAME}",
-                    mimeType: 'text/html',
-                    smtpHost: "smtp.gmail.com",
-                    smtpPort: "587",
-                    useSsl: false,
-                    charset: "UTF-8",
-                    attachLog: true,
-                    username: "${EMAIL_USERNAME}",
-                    password: "${EMAIL_PASSWORD}"
+                    from: "${EMAIL_USERNAME}"
                 )
             }
         }
