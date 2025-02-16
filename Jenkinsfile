@@ -52,19 +52,18 @@ pipeline {
         stage('Push Image to Docker Hub') {
             steps {
                 script {
-                    // Corrected the grep command by escaping the $ with a backslash
-                    def latestTag = sh(script: "curl -s https://hub.docker.com/v2/repositories/amazingatul/ecom-web/tags/ | jq -r '.results[].name' | grep -E '^m[0-9]+\\$' | sort -V | tail -n1", returnStdout: true).trim()
+                    def latestTag = sh(script: "curl -s https://hub.docker.com/v2/repositories/amazingatul/ecom-web/tags/ | jq -r '.results[].name' | grep -E '^m[0-9]+$' | sort -V | tail -n1", returnStdout: true).trim()
                     def latestNumber = latestTag ? latestTag.substring(1).toInteger() + 1 : 1
                     def newTag = "m${latestNumber}"
 
-                    // Corrected Docker login command to use shell variables without Groovy interpolation
-                    sh """
-                    docker tag ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:${newTag}
-                    docker tag ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:latest
-                    echo "\$DOCKER_HUB_CREDENTIALS_PSW" | docker login -u "\$DOCKER_HUB_CREDENTIALS_USR" --password-stdin
-                    docker push ${DOCKER_IMAGE}:${newTag}
-                    docker push ${DOCKER_IMAGE}:latest
-                    """
+                    // ✅ Fix: Use single quotes to avoid Groovy interpolation issues
+                    sh '''
+                    docker tag ''' + DOCKER_IMAGE + ''':latest ''' + DOCKER_IMAGE + ''':' + newTag + '''
+                    docker tag ''' + DOCKER_IMAGE + ''':latest ''' + DOCKER_IMAGE + ''':latest
+                    echo "$DOCKER_HUB_CREDENTIALS_PSW" | docker login -u "$DOCKER_HUB_CREDENTIALS_USR" --password-stdin
+                    docker push ''' + DOCKER_IMAGE + ''':' + newTag + '''
+                    docker push ''' + DOCKER_IMAGE + ''':latest
+                    '''
 
                     env.NEW_TAG = newTag  // Save new tag for next step
                 }
