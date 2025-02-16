@@ -1,4 +1,4 @@
-name: CI/CD Pipeline (GitHub Actions + ArgoCD)
+name: CI/CD Pipeline (GitHub Actions + Kubernetes)
 
 on:
   push:
@@ -31,18 +31,18 @@ jobs:
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      # 5️⃣ Generate Next Image Tag (m1 → m2 → m3 ...)
-      - name: Get Latest Tag and Increment
+      # 5️⃣ Generate Next Image Tag (stage-v1 → stage-v2 → stage-v3 … and latest is prodv1)
+      - name: Get Latest Stage Tag and Increment
         id: tag
         run: |
-          LATEST_TAG=$(curl -s https://hub.docker.com/v2/repositories/amazingatul/ecom-web/tags/ | jq -r '.results[].name' | grep -E '^m[0-9]+$' | sort -V | tail -n1)
-          if [ -z "$LATEST_TAG" ]; then
-            NEW_TAG="m1"
+          LATEST_STAGE_TAG=$(curl -s https://hub.docker.com/v2/repositories/amazingatul/ecom-web/tags/ | jq -r '.results[].name' | grep -E '^stage-v[0-9]+$' | sort -V | tail -n1 | awk -F'v' '{print $2}')
+          if [ -z "$LATEST_STAGE_TAG" ]; then
+            NEW_STAGE_TAG="stage-v1"
           else
-            NEW_TAG="m$(( ${LATEST_TAG:1} + 1 ))"
+            NEW_STAGE_TAG="stage-v$((LATEST_STAGE_TAG + 1))"
           fi
-          echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
-          echo "New tag will be: $NEW_TAG"
+          echo "NEW_STAGE_TAG=$NEW_STAGE_TAG" >> $GITHUB_ENV
+          echo "STAGE_TAG=$NEW_STAGE_TAG"
 
       # 6️⃣ Build the Docker image
       - name: Build Docker Image
@@ -51,31 +51,39 @@ jobs:
       # 7️⃣ Tag the Docker image
       - name: Tag Docker Image
         run: |
-          docker tag amazingatul/ecom-web amazingatul/ecom-web:$NEW_TAG
-          docker tag amazingatul/ecom-web amazingatul/ecom-web:latest
+          docker tag amazingatul/ecom-web amazingatul/ecom-web:$NEW_STAGE_TAG
+          docker tag amazingatul/ecom-web amazingatul/ecom-web:prodv1
 
       # 8️⃣ Security Scan with Trivy (Fail if High Vulnerabilities)
       - name: Scan Docker Image with Trivy
         run: |
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
-            aquasec/trivy image --exit-code 1 --severity HIGH,CRITICAL amazingatul/ecom-web:$NEW_TAG
+            aquasec/trivy image --exit-code 1 --severity HIGH,CRITICAL amazingatul/ecom-web:$NEW_STAGE_TAG
 
       # 9️⃣ Push the image to Docker Hub
       - name: Push Docker Image
         run: |
-          docker push amazingatul/ecom-web:$NEW_TAG
-          docker push amazingatul/ecom-web:latest
+          docker push amazingatul/ecom-web:$NEW_STAGE_TAG
+          docker push amazingatul/ecom-web:prodv1
 
-      # 🔟 Update Kubernetes Manifest (`k8s-deploy.yml`) with the New Image Tag
+      # 🔟 Remove Old Images (Keep only last 4 stage versions + latest prodv1)
+      - name: Cleanup Old Docker Images
+        run: |
+          OLD_IMAGES=$(docker images amazingatul/ecom-web --format "{{.Tag}}" | grep 'stage-v' | sort -V | head -n -4)
+          for tag in $OLD_IMAGES; do
+            docker rmi amazingatul/ecom-web:$tag || true
+          done
+
+      # 🔥 Update Kubernetes Manifest (`k8s-deploy.yml`) with Only Latest `prodv1` Tag
       - name: Update Image Tag in k8s-deploy.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          sed -i 's|image: amazingatul/ecom-web:.*|image: amazingatul/ecom-web:'$NEW_TAG'|' k8s/k8s-deploy.yml
+          sed -i 's|image: amazingatul/ecom-web:.*|image: amazingatul/ecom-web:prodv1|' k8s/k8s-deploy.yml
           git config --global user.email "ci@github.com"
           git config --global user.name "GitHub Actions"
           git add k8s/k8s-deploy.yml
-          git commit -m "Update image to $NEW_TAG"
+          git commit -m "Update image to prodv1"
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
           git push origin main
 
