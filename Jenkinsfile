@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "amazingatul/ecom-web"
-        EMAIL_USERNAME = credentials('email-username')
-        EMAIL_PASSWORD = credentials('email-password')
+        EMAIL_USERNAME = "development.aayaninfotech@gmail.com"
+        EMAIL_PASSWORD = "defe qhhm kgmu ztkf"
     }
 
     stages {
@@ -63,7 +63,7 @@ pipeline {
                     """,
                     to: "atulrajput.work@gmail.com,developer@example.com",
                     replyTo: "no-reply@example.com",
-                    from: "development.aayaninfotech@gmail.com",
+                    from: "${EMAIL_USERNAME}",
                     mimeType: 'text/html',
                     smtpHost: "smtp.gmail.com",
                     smtpPort: "587",
