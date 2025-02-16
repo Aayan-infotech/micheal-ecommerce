@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: micheal-web
-          image: amazingatul/ecom-web:m10
+          image: amazingatul/ecom-web:m11
           ports:
             - containerPort: 80
           resources:
