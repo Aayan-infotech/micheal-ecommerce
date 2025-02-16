@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "amazingatul/ecom-web"
-        DOCKER_HUB_CREDENTIALS = credentials('dockerhub')
         EMAIL_USERNAME = credentials('email-username')
         EMAIL_PASSWORD = credentials('email-password')
     }
@@ -43,36 +42,12 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build & Run Docker Container') {
             steps {
-                sh "docker build -t ${DOCKER_IMAGE}:latest ."
-            }
-        }
-
-        stage('Push Image to Docker Hub') {
-            steps {
-                script {
-                    def latestTag = sh(script: "curl -s https://hub.docker.com/v2/repositories/amazingatul/ecom-web/tags/ | jq -r '.results[].name' | grep -E '^m[0-9]+$' | sort -V | tail -n1", returnStdout: true).trim()
-                    def latestNumber = latestTag ? latestTag.substring(1).toInteger() + 1 : 1
-                    def newTag = "m${latestNumber}"
-
-                    // ✅ Fix: Use single quotes to avoid Groovy interpolation issues
-                    sh '''
-                    docker tag ''' + DOCKER_IMAGE + ''':latest ''' + DOCKER_IMAGE + ''':' + newTag + '''
-                    docker tag ''' + DOCKER_IMAGE + ''':latest ''' + DOCKER_IMAGE + ''':latest
-                    echo "$DOCKER_HUB_CREDENTIALS_PSW" | docker login -u "$DOCKER_HUB_CREDENTIALS_USR" --password-stdin
-                    docker push ''' + DOCKER_IMAGE + ''':' + newTag + '''
-                    docker push ''' + DOCKER_IMAGE + ''':latest
-                    '''
-
-                    env.NEW_TAG = newTag  // Save new tag for next step
-                }
-            }
-        }
-
-        stage('Run New Docker Container') {
-            steps {
-                sh "docker run -d -p 80:80 ${DOCKER_IMAGE}:latest"
+                sh """
+                docker build -t ${DOCKER_IMAGE}:latest .
+                docker run -d -p 80:80 ${DOCKER_IMAGE}:latest
+                """
             }
         }
     }
