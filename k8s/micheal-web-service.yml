@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: micheal-web-service
+spec:
+  selector:
+    app: micheal-web-green
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP

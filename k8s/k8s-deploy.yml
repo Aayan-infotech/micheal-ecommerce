@@ -26,16 +26,3 @@ spec:
             requests:
               cpu: "0.2"  
               memory: "256Mi" 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: micheal-web-service
-spec:
-  selector:
-    app: micheal-web
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-  type: ClusterIP

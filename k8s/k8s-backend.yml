@@ -29,16 +29,3 @@ spec:
               memory: "1024Mi" 
       restartPolicy: Always  
 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: micheal-back-service
-spec:
-  selector:
-    app: micheal-back
-  ports:
-    - protocol: TCP
-      port: 3129
-      targetPort: 3129
-  type: ClusterIP

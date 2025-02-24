@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: micheal-back-service
+spec:
+  selector:
+    app: micheal-back-green
+  ports:
+    - protocol: TCP
+      port: 3129
+      targetPort: 3129
+  type: ClusterIP
