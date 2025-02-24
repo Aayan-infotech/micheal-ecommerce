@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micheal-web-deployment-green
+  labels:
+    app: micheal-web-green
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: micheal-web-green
+  template:
+    metadata:
+      labels:
+        app: micheal-web-green
+    spec:
+      containers:
+        - name: micheal-web
+          image: amazingatul/ecom-web:stage-v8  
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "0.5"  
+              memory: "512Mi"  
+            requests:
+              cpu: "0.2"  
+              memory: "256Mi" 
