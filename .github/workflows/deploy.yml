@@ -79,13 +79,22 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          echo "Checking current image reference in k8s-deploy.yml:"
+          cat k8s/k8s-deploy.yml | grep "image: amazingatul/ecom-web" || echo "No match found!"
+
+          # Update image tag in deployment file
           sed -i 's|image: amazingatul/ecom-web:.*|image: amazingatul/ecom-web:prodv1|' k8s/k8s-deploy.yml
+
+          echo "Checking updated image reference in k8s-deploy.yml:"
+          cat k8s/k8s-deploy.yml | grep "image: amazingatul/ecom-web" || echo "No match found!"
+
+          # Git configurations
           git config --global user.email "ci@github.com"
           git config --global user.name "GitHub Actions"
+
+          # Add changes, check if there's something to commit, and push only if needed
           git add k8s/k8s-deploy.yml
-          git commit -m "Update image to prodv1"
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
-          git push origin main
+          git diff --quiet && echo "No changes to commit" || (git commit -m "Update image to prodv1" && git push origin main)
 
       # 🔥 Send Email Notification on Failure
       - name: Send Email on Failure
@@ -98,7 +107,7 @@ jobs:
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "🚨 Deployment Failed"
           body: |
-            ❌ Oops latest deployment has failed.
+            ❌ Oops, the latest deployment has failed.
             🔍 Logs: Attached below.
             🔗 GitHub Actions Run: ${{ env.GITHUB_RUN_URL }}
           to: "atulrajput.work@gmail.com"
