@@ -7,8 +7,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: micheal-back-deployment  # Target your backend deployment
-  minReplicas: 2
-  maxReplicas: 5
+  minReplicas: 0
+  maxReplicas: 0
   metrics:
     - type: Resource
       resource:
