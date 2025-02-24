@@ -4,7 +4,7 @@ metadata:
   name: micheal-web-service
 spec:
   selector:
-    app: micheal-web-green
+    app: micheal-web-deployment-green
   ports:
     - protocol: TCP
       port: 80

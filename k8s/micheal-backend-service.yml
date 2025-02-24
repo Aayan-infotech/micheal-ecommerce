@@ -4,7 +4,7 @@ metadata:
   name: micheal-back-service
 spec:
   selector:
-    app: micheal-back-green
+    app: micheal-back-deployment-green
   ports:
     - protocol: TCP
       port: 3129
