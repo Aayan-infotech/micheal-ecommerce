@@ -14,9 +14,36 @@ spec:
       labels:
         app: micheal-back-green
     spec:
+      volumes:
+        - name: secret-volume
+          emptyDir: {}
+
+      initContainers:
+        - name: fetch-secrets
+          image: amazon/aws-cli:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - aws secretsmanager get-secret-value --secret-id ecom-backend-secrets --query SecretString --output text > /secrets/config.json;
+          env:
+            - name: AWS_REGION
+              value: "us-east-1"
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: access_key
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: secret_key
+          volumeMounts:
+            - name: secret-volume
+              mountPath: "/secrets"
+
       containers:
         - name: micheal-back
-          image: amazingatul/ecom-backend:prodv1  # UPDATED IMAGE
+          image: amazingatul/ecom-backend:prodv1  
           imagePullPolicy: Always  
           ports:
             - containerPort: 3129
@@ -27,4 +54,8 @@ spec:
             limits:
               cpu: "1000m"  
               memory: "1024Mi" 
-      restartPolicy: Always  
+          volumeMounts:
+            - name: secret-volume
+              mountPath: "/secrets"
+
+      restartPolicy: Always
