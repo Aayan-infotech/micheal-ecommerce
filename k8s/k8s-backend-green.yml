@@ -20,50 +20,17 @@ spec:
         app: micheal-back-green
     spec:
       volumes:
-        - name: aws-credentials-volume
-          secret:
-            secretName: aws-credentials
-        - name: app-credentials-volume
+        - name: app-logs
           emptyDir: {}
-
-      initContainers:
-        - name: setup-aws-credentials
-          image: busybox
-          command: ["/bin/sh", "-c"]
-          args:
-            - "echo 'Copying AWS credentials...';
-              cp /secrets/access_key /secrets/secret_key /app-credentials/;
-              ls -l /app-credentials/;
-              echo 'Init container completed successfully'"
-          volumeMounts:
-            - name: aws-credentials-volume
-              mountPath: "/secrets"
-              readOnly: true
-            - name: app-credentials-volume
-              mountPath: "/app-credentials"
 
       containers:
         - name: micheal-back
           image: amazingatul/ecom-backend:prodv1
           ports:
             - containerPort: 3129
-          env:
-            - name: AWS_ACCESS_KEY_ID
-              valueFrom:
-                secretKeyRef:
-                  name: aws-credentials
-                  key: access_key
-            - name: AWS_SECRET_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: aws-credentials
-                  key: secret_key
-            - name: AWS_REGION
-              value: "us-east-1"
           volumeMounts:
-            - name: app-credentials-volume
-              mountPath: "/app-credentials"
-              readOnly: true
+            - name: app-logs
+              mountPath: "/var/log/app"
           resources:
             requests:
               cpu: "500m"
@@ -71,3 +38,16 @@ spec:
             limits:
               cpu: "1000m"
               memory: "1024Mi"
+
+        - name: fluentd-sidecar
+          image: fluent/fluentd:v1.14.6
+          volumeMounts:
+            - name: app-logs
+              mountPath: "/var/log/app"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "200m"
+              memory: "512Mi"
