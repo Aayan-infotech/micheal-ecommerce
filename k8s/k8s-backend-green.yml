@@ -6,6 +6,11 @@ metadata:
     app: micheal-back-green
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
       app: micheal-back-green
@@ -15,18 +20,34 @@ spec:
         app: micheal-back-green
     spec:
       volumes:
-        - name: secret-volume
+        - name: aws-credentials-volume
+          secret:
+            secretName: aws-credentials
+        - name: app-credentials-volume
           emptyDir: {}
 
       initContainers:
-        - name: fetch-secrets
-          image: amazon/aws-cli:latest
+        - name: setup-aws-credentials
+          image: busybox
           command: ["/bin/sh", "-c"]
           args:
-            - aws secretsmanager get-secret-value --secret-id ecom-backend-secrets --query SecretString --output text > /secrets/config.json;
+            - "echo 'Copying AWS credentials...';
+              cp /secrets/access_key /secrets/secret_key /app-credentials/;
+              ls -l /app-credentials/;
+              echo 'Init container completed successfully'"
+          volumeMounts:
+            - name: aws-credentials-volume
+              mountPath: "/secrets"
+              readOnly: true
+            - name: app-credentials-volume
+              mountPath: "/app-credentials"
+
+      containers:
+        - name: micheal-back
+          image: amazingatul/ecom-backend:prodv1
+          ports:
+            - containerPort: 3129
           env:
-            - name: AWS_REGION
-              value: "us-east-1"
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
@@ -37,25 +58,16 @@ spec:
                 secretKeyRef:
                   name: aws-credentials
                   key: secret_key
+            - name: AWS_REGION
+              value: "us-east-1"
           volumeMounts:
-            - name: secret-volume
-              mountPath: "/secrets"
-
-      containers:
-        - name: micheal-back
-          image: amazingatul/ecom-backend:prodv1  
-          imagePullPolicy: Always  
-          ports:
-            - containerPort: 3129
+            - name: app-credentials-volume
+              mountPath: "/app-credentials"
+              readOnly: true
           resources:
             requests:
-              cpu: "500m"  
-              memory: "512Mi"  
+              cpu: "500m"
+              memory: "512Mi"
             limits:
-              cpu: "1000m"  
-              memory: "1024Mi" 
-          volumeMounts:
-            - name: secret-volume
-              mountPath: "/secrets"
-
-      restartPolicy: Always
+              cpu: "1000m"
+              memory: "1024Mi"
