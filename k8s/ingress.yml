@@ -27,4 +27,4 @@ spec:
   tls:
   - hosts:
     - ecom.atulrajput.tech  # Domain for the SSL certificate
-    secretName: atulecom  # Secret to store the TLS certificate
+    secretName: atulecom
