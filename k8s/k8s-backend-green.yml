@@ -77,7 +77,7 @@ spec:
               memory: "1024Mi"
 
         - name: fluentd-sidecar
-          image: fluent/fluentd:latest
+          image: fluent/fluentd:v1.17.1-debian-1.1
           volumeMounts:
             - name: app-logs
               mountPath: "/var/log/app"
