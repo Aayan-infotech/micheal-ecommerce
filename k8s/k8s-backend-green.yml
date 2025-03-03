@@ -25,6 +25,8 @@ spec:
             secretName: aws-credentials
         - name: app-credentials-volume
           emptyDir: {}
+        - name: app-logs
+          emptyDir: {}
 
       initContainers:
         - name: setup-aws-credentials
@@ -47,7 +49,6 @@ spec:
           image: amazingatul/ecom-backend:prodv1
           ports:
             - containerPort: 3129
-            - containerPort: 9100  # 🔹 Prometheus metrics port
           env:
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
@@ -61,8 +62,12 @@ spec:
                   key: secret_key
             - name: AWS_REGION
               value: "us-east-1"
-            - name: PROMETHEUS_METRICS_PORT  # 🔹 Expose this if required
-              value: "9100"
+          volumeMounts:
+            - name: app-credentials-volume
+              mountPath: "/app-credentials"
+              readOnly: true
+            - name: app-logs
+              mountPath: "/var/log/app"
           resources:
             requests:
               cpu: "500m"
@@ -71,20 +76,15 @@ spec:
               cpu: "1000m"
               memory: "1024Mi"
 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: micheal-back-green-service
-spec:
-  selector:
-    app: micheal-back-green
-  ports:
-    - name: http
-      protocol: TCP
-      port: 80
-      targetPort: 3129
-    - name: metrics  # 🔹 Prometheus scraping endpoint
-      protocol: TCP
-      port: 9100
-      targetPort: 9100
+        - name: fluentd-sidecar
+          image: fluent/fluentd:v1.14.6
+          volumeMounts:
+            - name: app-logs
+              mountPath: "/var/log/app"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "200m"
+              memory: "512Mi"
