@@ -76,6 +76,26 @@ spec:
               cpu: "1000m"
               memory: "1024Mi"
 
+          # Probes Added Here!
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: 3129
+            failureThreshold: 10
+            periodSeconds: 3
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3129
+            periodSeconds: 5
+
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3129
+            periodSeconds: 10
+
         - name: fluentd-sidecar
           image: fluent/fluentd:v1.16.3
           volumeMounts:
