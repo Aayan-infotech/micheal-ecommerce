@@ -102,9 +102,9 @@ spec:
             - name: app-logs
               mountPath: "/var/log/app"
           resources:
-            requests:
-              cpu: "100m"
-              memory: "256Mi"
             limits:
-              cpu: "200m"
-              memory: "512Mi"
+              cpu: "0.5"  
+              memory: "512Mi"  
+            requests:
+              cpu: "0.2"  
+              memory: "256Mi"
