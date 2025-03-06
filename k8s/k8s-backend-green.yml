@@ -76,14 +76,6 @@ spec:
               cpu: "1000m"
               memory: "1024Mi"
 
-          # Probes Added Here!
-          startupProbe:
-            httpGet:
-              path: /healthz
-              port: 3129
-            failureThreshold: 10
-            periodSeconds: 3
-
           livenessProbe:
             httpGet:
               path: /healthz

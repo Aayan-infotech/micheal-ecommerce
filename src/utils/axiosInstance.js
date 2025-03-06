@@ -6,7 +6,7 @@ import { logout } from '../components/redux/liginSlice';
 import Store from '../components/store/store';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://www.millysshop.se/api',
+  baseURL: 'https://ecom.atulrajput.tech/api',
 });
 
 // Add a response interceptor

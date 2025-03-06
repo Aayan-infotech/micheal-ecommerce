@@ -42,7 +42,7 @@ function Payment() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://www.millysshop.se/api/product/order",
+        "https://ecom.atulrajput.tech/api/product/order",
         {
           userId: userId,
           deliverySlotId: selectedSlot?._id,
@@ -64,7 +64,7 @@ function Payment() {
     try {
       const details = await actions.order.capture();
       const response = await axios.post(
-        "https://www.millysshop.se/api/paypal/create-payment",
+        "https://ecom.atulrajput.tech/api/paypal/create-payment",
         {
           id: details.id,
         }
