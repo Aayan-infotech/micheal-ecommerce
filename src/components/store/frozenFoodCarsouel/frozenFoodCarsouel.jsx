@@ -9,7 +9,6 @@ function FrozenFoodCarousel({ categoryType }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { categoryData } = location.state || {};
-  console.log(categoryData, 'categoryData---')
 
   useEffect(() => {
     if (categoryType.length > 0) {
@@ -29,8 +28,6 @@ function FrozenFoodCarousel({ categoryType }) {
 
   const handleClick = (storeProductId) => {
     navigate(`/storefrozenfoodprod/${storeProductId}`)
-    // console.log(storeProdctuId, 'product')
-    // sessionStorage.setItem("selectProduct1", JSON.stringify(product));
   }
 
   return (

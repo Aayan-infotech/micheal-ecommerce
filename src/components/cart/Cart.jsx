@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./cart.css";
 import { useNavigate } from "react-router-dom";
 import cartImg from "../../images/cart-img.jpg";
@@ -16,32 +16,57 @@ function Cart() {
     error,
   } = useSelector((state) => state.cart);
   const token = sessionStorage.getItem("token");
+  const userId = sessionStorage.getItem("userId");
+  const [localCart, setLocalCart] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAddedCarts());
-  }, [dispatch]);
+    if (userId) {
+      dispatch(getAddedCarts());
+    } else {
+      const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+      setLocalCart(storedCart);
+    }
+  }, [dispatch, userId]);
 
   const handleCartDelete = async (card_id) => {
-    try {
-      const response = await axios.delete(
-        `https://ecom.atulrajput.tech/api/cart/delete/${card_id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
+    if (userId) {
+      try {
+        const response = await axios.delete(
+          `https://ecom.atulrajput.tech/api/cart/delete/${card_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        dispatch(getAddedCarts());
+        toast.success(response?.data?.message, {
+          autoClose: 2000,
+        });
+      } catch (error) {
+        console.log(error, "error");
+      }
+    } else {
+      const updatedCart = localCart.filter(
+        (item) => item.productId !== card_id
       );
-      dispatch(getAddedCarts());
-      toast.success(response?.data?.message, {
-        autoClose: 2000,
-      });
-    } catch (error) {
-      console.log(error, "error");
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      setLocalCart(updatedCart);
+      window.location.reload();
+      toast.success("Item removed from cart", { autoClose: 1000 });
     }
   };
+
+  const cartItems = userId ? allProducts : localCart;
+  console.log(cartItems, "cartItems");
+  // const totalPrice = cartItems.reduce(
+  //   (acc, item) => acc + item.price * item.quantity,
+  //   0
+  // );
 
   const handleBuyNow = (productItem = null) => {
     if (productItem) {
@@ -71,33 +96,55 @@ function Cart() {
               </p>
             ) : (
               <>
-                {allProducts.length > 0 ? (
+                {cartItems.length > 0 ? (
                   <>
-                    {allProducts.map((productItem, index) => (
+                    {cartItems.map((productItem, index) => (
                       <div className="cards" key={index}>
                         <div className="card-img">
                           <img
-                            src={productItem?.product?.image || cartImg}
-                            alt={productItem?.product?.name}
+                            src={
+                              productItem?.image ||
+                              productItem?.product?.image ||
+                              cartImg
+                            }
+                            alt={
+                              productItem?.name || productItem?.product?.name
+                            }
+                            onError={(e) => (e.target.src = cartImg)}
                           />
                         </div>
                         <div className="card-text">
                           <div className="c-text">
-                            <h2>{productItem?.product?.name}</h2>
-                            <p>{productItem?.product?.description}</p>
-                            <p>${productItem?.product?.price}</p>
+                            <h2>
+                              {productItem?.name || productItem?.product?.name}
+                            </h2>
+                            <p>
+                              {productItem?.description ||
+                                productItem?.product?.description}
+                            </p>
+                            <p>
+                              $
+                              {productItem?.price ||
+                                productItem?.product?.price}
+                            </p>
                             <p>Quantity: {productItem?.quantity}</p>
                           </div>
                         </div>
                         <i
                           className="bx bx-x"
                           onClick={() =>
-                            handleCartDelete(productItem?.product?._id)
+                            handleCartDelete(
+                              productItem?.productId ||
+                                productItem?.product?._id
+                            )
                           }
                         ></i>
                       </div>
                     ))}
-                    <div className="card-text" style={{ textAlign: "center", marginTop: "20px" }}>
+                    <div
+                      className="card-text"
+                      style={{ textAlign: "center", marginTop: "20px" }}
+                    >
                       <button onClick={() => handleBuyNow()}>Buy All</button>
                     </div>
                   </>
@@ -122,4 +169,3 @@ function Cart() {
 }
 
 export default Cart;
-

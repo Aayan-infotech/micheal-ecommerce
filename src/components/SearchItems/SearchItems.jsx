@@ -5,28 +5,44 @@ import "./searchitems.css";
 function SearchItems() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    try {
-      if (searchQuery.length > 0) {
-        const res = await axios.post(
-          "https://ecom.atulrajput.tech/api/product/search",
-          {
-            name: searchQuery,
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedQuery(searchQuery);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchQuery]);
+
+  useEffect(() => {
+    const fetchResults = async () => {
+      if (debouncedQuery.length > 0) {
+        setIsFirstLoad(false);
+        try {
+          const res = await axios.post(
+            "https://ecom.atulrajput.tech/api/product/search",
+            { name: debouncedQuery }
+          );
+
+          if (res.status === 200) {
+            console.log(res?.data?.data);
+            setSearchResults(res?.data?.data);
           }
-        );
-
-        if (res.status === 200) {
-          console.log(res?.data?.data);
-          setSearchResults(res?.data?.data);
+        } catch (error) {
+          console.log(error);
         }
+      } else {
+        setSearchResults([]);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
+    };
+
+    fetchResults();
+  }, [debouncedQuery]);
+
   return (
     <div className="searchitems">
       <div className="searchitems-container">
@@ -36,26 +52,37 @@ function SearchItems() {
         <div className="searchitems-data">
           <div className="searchitems-nav"></div>
           <div className="searchitems-card container sec">
-            <form className="searchfield" onSubmit={handleSearch}>
-              <input type="text" placeholder="Search any product..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+            <form className="searchfield" onSubmit={(e) => e.preventDefault()}>
+              <input
+                type="text"
+                placeholder="Search any product..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
               <button type="submit" style={{ background: "transparent" }}>
                 <i className="bx bx-search"></i>
               </button>
             </form>
 
             <div className="search-results">
-              {searchResults.length > 0
-                ? searchResults.map((item) => (
-                    <div key={item._id} className="search-item">
-                      <img src={item.image} alt={item.name} />
-                      <div className="item-details">
-                        <h3>{item.name}</h3>
-                        <p>{item.description}</p>
-                        <span>${item.price}</span>
-                      </div>
+              {isFirstLoad ? (
+                <div className="initial-message">
+                  <p>Search for your favorite products!</p>
+                </div>
+              ) : searchResults.length > 0 ? (
+                searchResults.map((item) => (
+                  <div key={item._id} className="search-item">
+                    <img src={item.image} alt={item.name} />
+                    <div className="item-details">
+                      <h3>{item.name}</h3>
+                      <p>{item.description}</p>
+                      <span>${item.price}</span>
                     </div>
-                  ))
-                : searchQuery && <p></p>}
+                  </div>
+                ))
+              ) : (
+                searchQuery && <p>No results found.</p>
+              )}
             </div>
           </div>
         </div>

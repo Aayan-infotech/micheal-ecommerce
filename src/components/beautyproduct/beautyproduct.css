@@ -1,6 +1,6 @@
 .beautyproduct-banner {
     background-image: url(../../images//beautyproduct-first.png);
-    height: 500px;
+    height: 350px;
     background-color: black;
     display: flex;
     justify-content: center;
@@ -11,6 +11,9 @@
 
 .beautyproduct-banner .beautyproduct-para{
     margin: 20px 0;
+}
+.container-box{
+    padding: 20px;
 }
 
 .beautyproduct-button {

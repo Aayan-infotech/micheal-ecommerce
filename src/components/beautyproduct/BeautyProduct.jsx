@@ -76,67 +76,86 @@ function BeautyProduct() {
               </p>
               {!token && (
                 <Link to="/register" className="logo">
-                  <button>Sign Up</button>
+                  <button
+                    type="submit"
+                    style={{
+                      padding: "15px 25px",
+                      backgroundColor: "black",
+                      color: "white",
+                      fontWeight: "bold",
+                      borderRadius: "30px",
+                    }}
+                  >
+                    Sign Up
+                  </button>
                 </Link>
               )}
             </div>
-
-            <div className="beautyproduct-discounts container">
-              <h1 className="discounts-heading">{subCategoryTitle}!</h1>
-              <Carousel
-                showArrows={true}
-                infiniteLoop={true}
-                showThumbs={false}
-                showStatus={false}
-                autoPlay={true}
-                interval={3000}
-                centerMode={true}
-                centerSlidePercentage={60}
-                showIndicators={false}
-                renderArrowPrev={(onClickHandler, hasPrev, label) =>
-                  hasPrev && (
-                    <button
-                      type="button"
-                      className="carousel-arrow prev"
-                      onClick={onClickHandler}
-                      title={label}
+            <div className="container-box">
+              <div className="beautyproduct-discounts">
+                <h1 className="discounts-heading">{subCategoryTitle}!</h1>
+                <Carousel
+                  showArrows={true}
+                  infiniteLoop={true}
+                  showThumbs={false}
+                  showStatus={false}
+                  autoPlay={true}
+                  interval={3000}
+                  centerMode={true}
+                  centerSlidePercentage={60}
+                  showIndicators={false}
+                  renderArrowPrev={(onClickHandler, hasPrev, label) =>
+                    hasPrev && (
+                      <button
+                        type="button"
+                        className="carousel-arrow prev"
+                        onClick={onClickHandler}
+                        title={label}
+                      >
+                        &lt;
+                      </button>
+                    )
+                  }
+                  renderArrowNext={(onClickHandler, hasNext, label) =>
+                    hasNext && (
+                      <button
+                        type="button"
+                        className="carousel-arrow next"
+                        onClick={onClickHandler}
+                        title={label}
+                      >
+                        &gt;
+                      </button>
+                    )
+                  }
+                >
+                  {subCategory?.map((sub_cat, index) => (
+                    <div
+                      className="carousel-slide"
+                      key={index}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleSubCategory(sub_cat)}
                     >
-                      &lt;
-                    </button>
-                  )
-                }
-                renderArrowNext={(onClickHandler, hasNext, label) =>
-                  hasNext && (
-                    <button
-                      type="button"
-                      className="carousel-arrow next"
-                      onClick={onClickHandler}
-                      title={label}
-                    >
-                      &gt;
-                    </button>
-                  )
-                }
-              >
-                {subCategory?.map((sub_cat, index) => (
-                  <div
-                    className="carousel-slide"
-                    key={index}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => handleSubCategory(sub_cat)}
-                  >
-                    <img
-                      src={sub_cat?.image || blankImage}
-                      alt={sub_cat.title}
-                    />
-                    <div className="carousel-text">
-                      <h2 className="legend1"> {sub_cat.title || "N/A"} </h2>
+                      <img
+                        src={sub_cat?.image || blankImage}
+                        alt={sub_cat.title}
+                        style={{
+                          width: "100%",
+                          maxHeight: "450px",
+                          height: "100%",
+                          objectFit: "cover",
+                          borderRadius: "10px",
+                        }}
+                      />
+                      <div className="carousel-text">
+                        <h2 className="legend1"> {sub_cat.title || "N/A"} </h2>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </Carousel>
+                  ))}
+                </Carousel>
+              </div>
+              <CarsouelSection categoriesProduct={categoriesProduct} />
             </div>
-            <CarsouelSection categoriesProduct={categoriesProduct} />
           </div>
         </>
       )}

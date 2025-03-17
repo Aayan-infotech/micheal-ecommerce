@@ -66,7 +66,7 @@ function Carsouelsection({ categoriesProduct }) {
     <>
       <ToastContainer />
       <div className="carsouelsection">
-        <div className="hightlights-carousel container section">
+        <div className="hightlights-carousel section">
           <h1 className="highlights-heading">Highlights of {currentMonth}</h1>
           <Carousel
             showArrows={true}
@@ -104,7 +104,6 @@ function Carsouelsection({ categoriesProduct }) {
             }
           >
             {categoriesProduct?.map((product, index) => (
-              // <Link to="/beautyproductcarousel">
               <Link to={`/beautyproductcarousel/${product?._id}`} key={index}>
                 <div className="carousel-slide">
                   <img className="carousel-img" src={product?.image} alt={product?.name} />
@@ -113,10 +112,10 @@ function Carsouelsection({ categoriesProduct }) {
                     <p className="carousel-blue">{product?.discount}% off your order</p>
                     <h2 className="legend3">{product?.name}</h2>
                     <div className="carousel-info">
-                      <p className="legend4">1.5 km |  <span>
+                      {/* <p className="legend4">1.5 km |  <span>
                         <i className="bx bxs-star"></i>
                       </span>{" "}
-                        4.8 (1.2k)</p>
+                        4.8 (1.2k)</p> */}
                       <p
                         className="favourite-btn"
                         onClick={(e) => {
@@ -146,81 +145,6 @@ function Carsouelsection({ categoriesProduct }) {
               </Link>
             ))}
           </Carousel>
-          {/* <Carousel
-            showArrows={true}
-            infiniteLoop={true}
-            showThumbs={false}
-            showStatus={false}
-            autoPlay={true}
-            interval={3000}
-            centerMode={true}
-            centerSlidePercentage={33.33}
-            showIndicators={false}
-            renderArrowPrev={(onClickHandler, hasPrev, label) =>
-              hasPrev && (
-                <button
-                  type="button"
-                  className="carousel-arrow prev"
-                  onClick={onClickHandler}
-                  title={label}
-                >
-                  &lt;
-                </button>
-              )
-            }
-            renderArrowNext={(onClickHandler, hasNext, label) =>
-              hasNext && (
-                <button
-                  type="button"
-                  className="carousel-arrow next"
-                  onClick={onClickHandler}
-                  title={label}
-                >
-                  &gt;
-                </button>
-              )
-            }
-          >
-            <Link to="/beautyproductcarousel">
-              <div className="carousel-slide">
-                <img className="carousel-img" src={product?.image} alt={product?.name} />
-                <div className="carousel-text">
-                  <p className="carousel-red">{product?.discount}% off your order</p>
-                  <p className="carousel-blue">{product?.discount}% off your order</p>
-                  <h2 className="legend3">{product?.name}</h2>
-                  <div className="carousel-info">
-                    <p className="legend4">1.5 km |  <span>
-                      <i className="bx bxs-star"></i>
-                    </span>{" "}
-                      4.8 (1.2k)</p>
-                    <p
-                      className="favourite-btn"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        addToFavorites(product?._id);
-                      }}
-                    >
-                      <p
-                        className="favourite-btn"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          addToFavorites(product?._id);
-                        }}
-                      >
-                        {favorites.includes(product._id) ? (
-                          <i className='bx bxs-heart active-favorite'></i>
-                        ) : (
-                          <i className='bx bx-heart'></i>
-                        )}
-                      </p>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </Carousel> */}
         </div>
       </div>
     </>

@@ -66,22 +66,22 @@ function App() {
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        const currentTime = Math.floor(Date.now() / 1000)
+        const currentTime = Math.floor(Date.now() / 1000);
         if (decodedToken.exp < currentTime) {
           console.log("Token has expired.");
           setIsTokenExpired(true);
           sessionStorage.removeItem("token");
-          setToken(null); 
+          setToken(null);
         } else {
           console.log("Token is still valid.");
         }
       } catch (error) {
         console.error("Invalid token format:", error.message);
         sessionStorage.removeItem("token");
-        setToken(null); 
+        setToken(null);
       }
     }
-  }, [token]); 
+  }, [token]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -92,7 +92,7 @@ function App() {
 
           if (decodedToken.exp < currentTime) {
             console.log("Token has expired.");
-            setIsTokenExpired(true); 
+            setIsTokenExpired(true);
             sessionStorage.removeItem("token");
             setToken(null);
           }
@@ -111,8 +111,18 @@ function App() {
     navigate("/login");
   };
 
+  const layoutStyle = {
+    display: "flex",
+    flexDirection: "column",
+    minHeight: "100vh",
+  };
+
+  const contentStyle = {
+    flexGrow: 1,
+  };
+
   return (
-    <div className="App">
+    <div className="App" style={layoutStyle}>
       <Header />
       {isTokenExpired && (
         <div
@@ -156,52 +166,52 @@ function App() {
           </div>
         </div>
       )}
-
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/passwordrecovery" element={<PasswordRecovery />} />
-        <Route path="/otp" element={<Otp />} />
-        <Route path="/passwordreset" element={<PasswordReset />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/store" element={<Store />} />
-        <Route path="/aboutus" element={<AboutUs />} />
-        <Route path="/dryfoods/frozenfoods" element={<FrozenFoods />} />
-        <Route path="/sub-category" element={<ProductSubcagegory />} />
-        <Route path="/cosmeticsproducts" element={<BeautyProduct />} />
-        <Route
-          path="/frozenfoodscarousel/:productId"
-          element={<FrozenFoodsCarousel />}
-        />
-        <Route
-          path="/beautyproductcarousel/:productId"
-          element={<BeautyProductCarousel />}
-        />
-        <Route path="/contactus" element={<ContactUs />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/shoppingbag" element={<ShoppingBag />} />
-        <Route path="/address" element={<Address />} />
-        <Route path="/shopcheckout" element={<ShopCheckout />} />
-        <Route path="/order-summary" element={<PaymentCheckout />} />
-        <Route path="/paymentmessage" element={<PaymentMessage />} />
-        <Route path="/payment" element={<Payment />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/searchitems" element={<SearchItems />} />
-        <Route path="/myorders" element={<MyOrders />} />
-        <Route path="/trackorder/:orderId" element={<TrackOrder />} />
-        <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/storebeautyprod" element={<StoreBeautyProd />} />
-        {/* <Route path="/storefrozenfoodprod" element={<StoreFrozenFoodProd />} /> */}
-        <Route
-          path="/storefrozenfoodprod/:storeProId"
-          element={<StoreFrozenFoodProd />}
-        />
-        <Route path="/notification" element={<Notification />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/terms-conditions" element={<TermsConditions />} />
-        <Route path="/refund-policy" element={<RefundPolicy />} />
-      </Routes>
+      <div style={contentStyle}>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/passwordrecovery" element={<PasswordRecovery />} />
+          <Route path="/otp" element={<Otp />} />
+          <Route path="/passwordreset" element={<PasswordReset />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/store" element={<Store />} />
+          <Route path="/aboutus" element={<AboutUs />} />
+          <Route path="/dryfoods/frozenfoods" element={<FrozenFoods />} />
+          <Route path="/sub-category" element={<ProductSubcagegory />} />
+          <Route path="/cosmeticsproducts" element={<BeautyProduct />} />
+          <Route
+            path="/frozenfoodscarousel/:productId"
+            element={<FrozenFoodsCarousel />}
+          />
+          <Route
+            path="/beautyproductcarousel/:productId"
+            element={<BeautyProductCarousel />}
+          />
+          <Route path="/contactus" element={<ContactUs />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/shoppingbag" element={<ShoppingBag />} />
+          <Route path="/address" element={<Address />} />
+          <Route path="/shopcheckout" element={<ShopCheckout />} />
+          <Route path="/order-summary" element={<PaymentCheckout />} />
+          <Route path="/paymentmessage" element={<PaymentMessage />} />
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/searchitems" element={<SearchItems />} />
+          <Route path="/myorders" element={<MyOrders />} />
+          <Route path="/trackorder/:orderId" element={<TrackOrder />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/storebeautyprod" element={<StoreBeautyProd />} />
+          <Route
+            path="/storefrozenfoodprod/:storeProId"
+            element={<StoreFrozenFoodProd />}
+          />
+          <Route path="/notification" element={<Notification />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-conditions" element={<TermsConditions />} />
+          <Route path="/refund-policy" element={<RefundPolicy />} />
+        </Routes>
+      </div>
       {!noFooterPaths.includes(location.pathname) && <Footer />}
     </div>
   );

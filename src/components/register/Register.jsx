@@ -190,8 +190,8 @@ function Register() {
             <button type="submit">Sign Up</button>
           </form>
         </div>
-        <p className="login-link">
-          Have account? <Link to="/login">Login</Link>
+        <p className="login-link" style={{color:"white"}}>
+          Have account? <Link to="/login" style={{color:"white"}}>Login</Link>
         </p>
         <ToastContainer /> 
       </div>
