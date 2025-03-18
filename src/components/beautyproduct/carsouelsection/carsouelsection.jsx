@@ -28,15 +28,12 @@ function Carsouelsection({ categoriesProduct }) {
   const currentMonth = monthNames[new Date().getMonth()];
   const userId = sessionStorage.getItem("userId");
 
-  useEffect(() => {
-    fetchFavorites();
-  }, []);
-
   const fetchFavorites = async () => {
     try {
       const response = await axios.get(
         `http://54.236.98.193:3129/api/favorite/get/${userId}`
       );
+      console.log(response?.data, "sdkjhfkjdhf");
       const favoriteProducts = response?.data?.data?.products.map(
         (product) => product._id
       );
@@ -46,36 +43,93 @@ function Carsouelsection({ categoriesProduct }) {
     }
   };
 
-  const addToFavorites = async (productId) => {
+  useEffect(() => {
+    if (userId) {
+      fetchFavorites();
+    }
+  }, []);
+
+  // const addToFavorites = async (productId) => {
+  //   try {
+  //     setLoadingFavoriteId(productId);
+  //     const response = await axios.post(
+  //       "http://54.236.98.193:3129/api/favorite/add",
+  //       {
+  //         userId: userId,
+  //         productId: productId,
+  //       }
+  //     );
+  //     if (response?.data?.success) {
+  //       toast.success(response?.data?.message, {
+  //         autoClose: 2000,
+  //       });
+  //       setFavorites([...favorites, productId]);
+  //     } else {
+  //       toast.warn(response?.data?.message, {
+  //         autoClose: 2000,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     if (error.response?.status === 409) {
+  //       toast.warn(error.response?.data?.message, {
+  //         autoClose: 2000,
+  //       });
+  //     } else {
+  //       toast.error("An error occurred, please try again later.", {
+  //         autoClose: 2000,
+  //       });
+  //     }
+  //   } finally {
+  //     setLoadingFavoriteId(null);
+  //   }
+  // };
+
+  const addToFavorites = async (product) => {
+    console.log(product, "product");
     try {
-      setLoadingFavoriteId(productId);
-      const response = await axios.post(
-        "http://54.236.98.193:3129/api/favorite/add",
-        {
-          userId: userId,
-          productId: productId,
-        }
+      setLoadingFavoriteId(product._id);
+
+      // Get stored favorites
+      let storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+      // Check if already in favorites
+      const isAlreadyFavorite = storedFavorites.some(
+        (item) => item._id === product._id
       );
-      if (response?.data?.success) {
-        toast.success(response?.data?.message, {
-          autoClose: 2000,
-        });
-        setFavorites([...favorites, productId]);
+
+      if (!isAlreadyFavorite) {
+        storedFavorites.push(product); // ✅ Save full product object
+        localStorage.setItem("favorites", JSON.stringify(storedFavorites));
+        toast.success("Added to favorites!", { autoClose: 2000 });
       } else {
-        toast.warn(response?.data?.message, {
-          autoClose: 2000,
-        });
+        toast.warn("Already in favorites!", { autoClose: 2000 });
+        return;
       }
+
+      // API call only if user is logged in
+      if (userId) {
+        const response = await axios.post(
+          "http://54.236.98.193:3129/api/favorite/add",
+          {
+            userId: userId,
+            productId: product._id, // API ko sirf id bhejni hai
+          }
+        );
+
+        if (response?.data?.success) {
+          toast.success(response?.data?.message, { autoClose: 2000 });
+        } else {
+          toast.warn(response?.data?.message, { autoClose: 2000 });
+        }
+      }
+
+      // Update state
+      setFavorites([...favorites, product._id]);
     } catch (error) {
-      if (error.response?.status === 409) {
-        toast.warn(error.response?.data?.message, {
-          autoClose: 2000,
-        });
-      } else {
-        toast.error("An error occurred, please try again later.", {
-          autoClose: 2000,
-        });
-      }
+      console.error("Error adding favorite:", error);
+      toast.error("An error occurred, please try again later.", {
+        autoClose: 2000,
+      });
     } finally {
       setLoadingFavoriteId(null);
     }
@@ -142,17 +196,13 @@ function Carsouelsection({ categoriesProduct }) {
                       <h4 className="legend3">
                         Price: ${product?.price || "N/A"}
                       </h4>
-                      <div className="carousel-info">
-                        {/* <p className="legend4">1.5 km |  <span>
-                        <i className="bx bxs-star"></i>
-                      </span>{" "}
-                        4.8 (1.2k)</p> */}
+                      {/* <div className="carousel-info">
                         <p
                           className="favourite-btn"
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            addToFavorites(product?._id);
+                            addToFavorites(product);
                           }}
                         >
                           <p
@@ -171,6 +221,24 @@ function Carsouelsection({ categoriesProduct }) {
                               <i className="bx bx-heart"></i>
                             )}
                           </p>
+                        </p>
+                      </div> */}
+                      <div className="carousel-info">
+                        <p
+                          className="favourite-btn"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            addToFavorites(product); 
+                          }}
+                        >
+                          {loadingFavoriteId === product._id ? (
+                            <i className="bx bx-loader bx-spin"></i>
+                          ) : favorites.includes(product._id) ? (
+                            <i className="bx bxs-heart active-favorite"></i>
+                          ) : (
+                            <i className="bx bx-heart"></i>
+                          )}
                         </p>
                       </div>
                     </div>
