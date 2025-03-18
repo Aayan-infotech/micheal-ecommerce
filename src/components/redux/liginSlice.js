@@ -7,7 +7,7 @@ export const loginUser = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "https://ecom.atulrajput.tech/api/auth/login",
+        "http://54.236.98.193:3129/api/auth/login",
         formData
       );
       if (response.data.success) {

@@ -10,8 +10,8 @@ function Register() {
   const [formData, setFormData] = useState({
     fullName: "",
     emailOrMobile: "",
-    age: "",
-    gender: "",
+    // age: "",
+    // gender: "",
     password: "",
     confirmPassword: "",
   });
@@ -28,10 +28,10 @@ function Register() {
       newErrors.emailOrMobile = fieldValues.emailOrMobile
         ? ""
         : "Please fill the email or mobile number";
-    if ("age" in fieldValues)
-      newErrors.age = fieldValues.age ? "" : "Please fill the age";
-    if ("gender" in fieldValues)
-      newErrors.gender = fieldValues.gender ? "" : "Please select the gender";
+    // if ("age" in fieldValues)
+    //   newErrors.age = fieldValues.age ? "" : "Please fill the age";
+    // if ("gender" in fieldValues)
+    //   newErrors.gender = fieldValues.gender ? "" : "Please select the gender";
     if ("password" in fieldValues)
       newErrors.password = fieldValues.password
         ? ""
@@ -75,7 +75,7 @@ function Register() {
           dataToSubmit.mobileNumber = formData.emailOrMobile;
         }
         const response = await axios.post(
-          "https://ecom.atulrajput.tech/api/user/register",
+          "http://54.236.98.193:3129/api/user/register",
           dataToSubmit
         );
         toast.success(response?.data?.message || "User registered successfully!", {
@@ -123,7 +123,7 @@ function Register() {
                 {errors.fullName && <p className="error">{errors.fullName}</p>}
               </label>
               <label>
-                <h4>Email/Mobile Number</h4>
+                <h4>Email</h4>
                 <input
                   type="text"
                   name="emailOrMobile"
@@ -135,7 +135,7 @@ function Register() {
                   <p className="error">{errors.emailOrMobile}</p>
                 )}
               </label>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label>
                   <h4>Age</h4>
                   <input
@@ -161,7 +161,7 @@ function Register() {
                   </select>
                   {errors.gender && <p className="error">{errors.gender}</p>}
                 </label>
-              </div>
+              </div> */}
               <label>
                 <h4>Password</h4>
                 <input
@@ -190,8 +190,8 @@ function Register() {
             <button type="submit">Sign Up</button>
           </form>
         </div>
-        <p className="login-link">
-          Have account? <Link to="/login">Login</Link>
+        <p className="login-link" style={{color:"white"}}>
+          Have account? <Link to="/login" style={{color:"white"}}>Login</Link>
         </p>
         <ToastContainer /> 
       </div>

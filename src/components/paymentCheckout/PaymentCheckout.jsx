@@ -25,7 +25,7 @@ function PaymentCheckout() {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://ecom.atulrajput.tech/api/product/summary/${userId}/${selectedSlot?._id}`
+        `http://54.236.98.193:3129/api/product/summary/${userId}/${selectedSlot?._id}`
       );
       const data = response?.data?.data;
       setGetVoucher(data?.voucher);
@@ -46,7 +46,7 @@ function PaymentCheckout() {
     setLoading(true);
     try {
       const response = await axios.get(
-        "https://ecom.atulrajput.tech/api/voucher/get"
+        "http://54.236.98.193:3129/api/voucher/get"
       );
       if (response.data.success) {
         setVouchers(response.data.data);
@@ -62,7 +62,7 @@ function PaymentCheckout() {
   const applyCoupon = async (voucher) => {
     try {
       const response = await axios.put(
-        `https://ecom.atulrajput.tech/api/voucher/apply/${voucher?._id}/${userId}`,
+        `http://54.236.98.193:3129/api/voucher/apply/${voucher?._id}/${userId}`,
         {
           code: voucher.code,
           purchaseAmount: totalAmount,

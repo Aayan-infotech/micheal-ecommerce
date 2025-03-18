@@ -6,7 +6,7 @@ export const addToCart = createAsyncThunk(
   'cart/addToCart',
   async ({ userId, productId, quantity }, { rejectWithValue }) => {
     try {
-      const response = await axios.post('https://ecom.atulrajput.tech/api/cart/add', {
+      const response = await axios.post('http://54.236.98.193:3129/api/cart/add', {
         userId,
         productId,
         quantity,

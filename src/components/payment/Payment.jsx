@@ -42,7 +42,7 @@ function Payment() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://ecom.atulrajput.tech/api/product/order",
+        "http://54.236.98.193:3129/api/product/order",
         {
           userId: userId,
           deliverySlotId: selectedSlot?._id,
@@ -64,13 +64,12 @@ function Payment() {
     try {
       const details = await actions.order.capture();
       const response = await axios.post(
-        "https://ecom.atulrajput.tech/api/paypal/create-payment",
+        "http://54.236.98.193:3129/api/paypal/create-payment",
         {
           id: details.id,
         }
       );
       if (response.data.success) {
-        console.log("Payment verified successfully:", response.data);
         alert("Payment successful and verified!");
       } else {
         alert("Payment verification failed.");

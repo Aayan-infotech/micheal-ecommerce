@@ -16,9 +16,8 @@ function MyOrders() {
     const fetchOrderHistory = async () => {
       try {
         const response = await axios.get(
-          `https://ecom.atulrajput.tech/api/product/order-history/${userId}`
+          `http://54.236.98.193:3129/api/product/order-history/${userId}`
         );
-        console.log(response?.data?.data, "abinash");
         if (response.data.success) {
           setOrderHistory(response.data.data);
         }

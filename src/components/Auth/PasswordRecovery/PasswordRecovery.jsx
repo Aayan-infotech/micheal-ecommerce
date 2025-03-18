@@ -13,7 +13,7 @@ function PasswordRecovery() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://ecom.atulrajput.tech/api/auth/send-email",
+        "http://54.236.98.193:3129/api/auth/send-email",
         { email }
       );
       if (response.data.success) {
@@ -34,9 +34,9 @@ function PasswordRecovery() {
     <div className="passwordrecovery">
       <div className="container pass-contain">
         <h1 className="sign">Password Recovery</h1>
-        <p className="pass">
+        <p className="" style={{ color: "white" }}>
           Discover premium cosmetics and high-quality dry & frozen foods, all in
-          one place
+          one place.
         </p>
         <div className="form">
           <form className="pass-form" onSubmit={handleSubmit}>

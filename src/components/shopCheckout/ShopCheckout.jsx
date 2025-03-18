@@ -27,7 +27,7 @@ function ShopCheckout() {
   const fetchAddressDetails = async () => {
     try {
       const response = await axios.get(
-        `https://ecom.atulrajput.tech/api/address/get/${userId}`
+        `http://54.236.98.193:3129/api/address/get/${userId}`
       );
       setAddresses(response.data.data);
       setLoading(false);
@@ -40,7 +40,7 @@ function ShopCheckout() {
   const fetchDeliverySlots = async () => {
     try {
       const response = await axios.get(
-        `https://ecom.atulrajput.tech/api/deliveryslot/get`
+        `http://54.236.98.193:3129/api/deliveryslot/get`
       );
       setDeliverySlots(response.data.data);
       setLoading(false);
@@ -63,7 +63,7 @@ function ShopCheckout() {
   const handleDelete = async (add_id) => {
     try {
       const response = await axios.delete(
-        `https://ecom.atulrajput.tech/api/address/delete/${add_id}`
+        `http://54.236.98.193:3129/api/address/delete/${add_id}`
       );
       if (response.data.success) {
         toast.success(response?.data?.message, {
@@ -115,7 +115,6 @@ function ShopCheckout() {
       },
     });
   };
-  
 
   return (
     <>
@@ -240,7 +239,7 @@ function ShopCheckout() {
                   <button
                     onClick={handleToProceedCheckout}
                     className="slot-button"
-                    disabled={!selectedAddressId || !selectedTimePeriod}
+                    // disabled={!selectedAddressId || !selectedTimePeriod}
                   >
                     Proceed To Payment
                   </button>

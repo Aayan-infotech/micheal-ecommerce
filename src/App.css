@@ -67,47 +67,49 @@
 }
 
 /*=============== BASE ===============*/
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html{
+html {
   scroll-behavior: smooth;
 }
 
 body,
 button,
 input,
-textarea{
+textarea {
   font-family: var(--body-font);
   font-size: var(--normal-font-size);
 }
 
-body{
+body {
   background-color: var(--body-color);
   color: var(--text-color);
 }
 
-h1, h2, h3{
+h1,
+h2,
+h3 {
   color: var(--container-color);
   font-weight: var(--font-semi-bold);
 }
 
-h1{
+h1 {
   font-size: var(--h1-font-size);
 }
 
-ul{
+ul {
   list-style: none;
 }
 
-a{
+a {
   text-decoration: none;
 }
 
-button{
+button {
   cursor: pointer;
   border: none;
   outline: none;
@@ -119,40 +121,62 @@ button{
 } */
 
 /*=============== REUSABLE CSS CLASSES ===============*/
-.section{
+.section {
   padding: 3rem 0 2rem;
 }
 
-.section__title{
+.section__title {
   font-size: var(--h1-font-size);
   color: var(--title-color);
 }
 
-.section__subtitle{
+.section__subtitle {
   display: block;
   font-size: var(--small-font-size);
   margin-bottom: 4rem;
 }
 
 .section__title,
-.section__subtitle{
+.section__subtitle {
   text-align: center;
 }
 
 /*=============== LAYOUT ===============*/
-.container{
+.container {
+  padding: 20px;
   max-width: 1200px;
+  /* Default for larger screens */
   margin-left: auto;
   margin-right: auto;
+  width: 90%;
+  /* Ensures responsiveness */
 }
 
-.grid{
+@media (max-width: 1024px) {
+  .container {
+    max-width: 90%;
+    width: 95%;
+  }
+}
+
+/* ✅ Mobile screens (480px se chhoti screens ke liye) */
+@media (max-width: 768px) {
+  .container {
+    max-width: 100%;
+    width: 100%;
+    padding: 15px;
+    /* Mobile pe thoda kam padding */
+  }
+}
+
+
+.grid {
   display: grid;
   gap: 1.5rem;
 }
 
 /*=============== BUTTONS ===============*/
-.button{
+.button {
   display: inline-block;
   background-color: #7843e9;
   color: var(--container-color);
@@ -161,18 +185,18 @@ button{
   font-weight: var(--font-medium);
 }
 
-.button:hover{
-    box-shadow: 0px 1px 5px 2px #afa3a3;
-    background-color: #6e34ec;
+.button:hover {
+  box-shadow: 0px 1px 5px 2px #afa3a3;
+  background-color: #6e34ec;
 }
 
-.button__icon{
+.button__icon {
   margin-left: var(--mb-0-5);
   position: relative;
   top: 5px;
 }
 
-.button--flex{
+.button--flex {
   display: inline-block;
   align-items: center;
 }
@@ -211,8 +235,7 @@ button{
   }
 }
 
-@media screen and (max-width: 576px) {
-}
+@media screen and (max-width: 576px) {}
 
 /* For small devices */
 @media screen and (max-width: 350px) {

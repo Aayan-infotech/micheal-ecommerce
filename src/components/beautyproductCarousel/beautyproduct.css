@@ -1,11 +1,11 @@
-.beautyproductCarousel {
-  margin-bottom: 60px;
+.beautyproductcarousel {
+  padding: 20px;
 }
 
 /* Default Layout (Desktop) */
 .cart-section {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   margin-bottom: 20px;
 }
@@ -155,107 +155,107 @@
 
 @media (max-width: 1024px) {
   .cart-section {
-      flex-direction: column;
-      align-items: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .left-cart-sec img {
-      width: 100%;
-      height: auto;
+    width: 100%;
+    height: auto;
   }
 
   .right-cart-sec {
-      padding-left: 0;
-      margin-top: 20px;
+    padding-left: 0;
+    margin-top: 20px;
   }
 
   .right-cart-para {
-      width: 100%;
+    width: 100%;
   }
 
   .right-cart-navi {
-      justify-content: space-between;
+    justify-content: space-between;
   }
 }
 
 @media (max-width: 768px) {
   .cart-head {
-      font-size: 1.5rem;
+    font-size: 1.5rem;
   }
 
   .right-cart-para {
-      font-size: 0.9rem;
+    font-size: 0.9rem;
   }
 
   .right-cart-info {
-      font-size: 0.9rem;
+    font-size: 0.9rem;
   }
 
   .right-cart-butt {
-      padding: 10px 20px;
-      font-size: 1rem;
+    padding: 10px 20px;
+    font-size: 1rem;
   }
 
   .heart-icon {
-      font-size: 1.8rem;
+    font-size: 1.8rem;
   }
 
   .cart-about .cart-head {
-      font-size: 1.3rem;
-      width: 100%;
+    font-size: 1.3rem;
+    width: 100%;
   }
 
   .cart-about-summary {
-      font-size: 0.9rem;
+    font-size: 0.9rem;
   }
 
   .cart-links .cart-head {
-      font-size: 1.3rem;
-      width: 100%;
+    font-size: 1.3rem;
+    width: 100%;
   }
 
   .cart-links-first {
-      font-size: 0.9rem;
+    font-size: 0.9rem;
   }
 }
 
 @media (max-width: 480px) {
   .left-cart-sec img {
-      width: 100%;
-      height: auto;
+    width: 100%;
+    height: auto;
   }
 
   .left-cart-para {
-      width: 140px;
-      height: 35px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.8rem;
+    width: 140px;
+    height: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
   }
 
   .right-cart-para {
-      font-size: 0.8rem;
+    font-size: 0.8rem;
   }
 
   .right-cart-butt {
-      padding: 8px 15px;
-      font-size: 0.9rem;
+    padding: 8px 15px;
+    font-size: 0.9rem;
   }
 
   .heart-icon {
-      font-size: 1.6rem;
-      top: 10px;
+    font-size: 1.6rem;
+    top: 10px;
   }
 
   .cart-about {
-      flex-direction: column;
+    flex-direction: column;
   }
 
   .cart-about-summary {
-      font-size: 0.8rem;
+    font-size: 0.8rem;
   }
 
   .cart-links-info {
-      font-size: 0.9rem;
+    font-size: 0.9rem;
   }
 }

@@ -23,9 +23,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(145, 144, 144);
   cursor: pointer;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.profile-info .img-upload p :hover {
+  height: 180px;
+  width: 180px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
+  background-color: rgb(175 175 175);
 }
 
 .profile-info .img-upload p i {
@@ -40,7 +51,7 @@
 
 .img-upload h2 {
   margin: 10px 0 0 10px;
-  white-space:nowrap;
+  white-space: nowrap;
 }
 
 .img-info {
@@ -62,11 +73,14 @@
   width: 100%;
   margin-bottom: 20px;
 }
+
 .img-info-butt {
   display: flex;
+  align-items: center;
   justify-content: center;
   gap: 50px;
 }
+
 .img-info-butt button {
   padding: 15px 60px;
   border: none;
@@ -110,6 +124,7 @@
     align-items: center;
     justify-content: center;
   }
+
   .img-upload {
     display: flex;
     align-items: center;
@@ -126,6 +141,7 @@
   .img-info-name input {
     width: 100%;
   }
+
   .img-info {
     width: 100%;
   }

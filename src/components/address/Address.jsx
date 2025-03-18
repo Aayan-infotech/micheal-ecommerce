@@ -95,7 +95,7 @@ function Address() {
     try {
       if (isEditing) {
         const response1 = await fetch(
-          `https://ecom.atulrajput.tech/api/address/update/${address?._id}`,
+          `http://54.236.98.193:3129/api/address/update/${address?._id}`,
           {
             method: "PUT",
             headers: {
@@ -117,7 +117,7 @@ function Address() {
         }
       } else {
         const response = await fetch(
-          "https://ecom.atulrajput.tech/api/address/add",
+          "http://54.236.98.193:3129/api/address/add",
           {
             method: "POST",
             headers: {
