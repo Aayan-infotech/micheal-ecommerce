@@ -24,12 +24,11 @@ function SearchItems() {
         setIsFirstLoad(false);
         try {
           const res = await axios.post(
-            "https://ecom.atulrajput.tech/api/product/search",
+            "http://54.236.98.193:3129/api/product/search",
             { name: debouncedQuery }
           );
 
           if (res.status === 200) {
-            console.log(res?.data?.data);
             setSearchResults(res?.data?.data);
           }
         } catch (error) {

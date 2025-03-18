@@ -34,7 +34,7 @@ function Cart() {
     if (userId) {
       try {
         const response = await axios.delete(
-          `https://ecom.atulrajput.tech/api/cart/delete/${card_id}`,
+          `http://54.236.98.193:3129/api/cart/delete/${card_id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -61,7 +61,6 @@ function Cart() {
   };
 
   const cartItems = userId ? allProducts : localCart;
-  console.log(cartItems, "cartItems");
   // const totalPrice = cartItems.reduce(
   //   (acc, item) => acc + item.price * item.quantity,
   //   0

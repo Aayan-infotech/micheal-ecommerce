@@ -6,6 +6,8 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import Header from "./components/header/Header";
 import Login from "./components/login/Login";
@@ -72,9 +74,7 @@ function App() {
           sessionStorage.removeItem("token");
           setToken(null);
         } else {
-          toast.error("Token is still valid.", {
-            autoClose: 2000,
-          });
+          console.log("Token is still valid.");
         }
       } catch (error) {
         console.error("Invalid token format:", error.message);
@@ -92,6 +92,7 @@ function App() {
           const currentTime = Math.floor(Date.now() / 1000);
 
           if (decodedToken.exp < currentTime) {
+            console.log("Token has expired.");
             setIsTokenExpired(true);
             sessionStorage.removeItem("token");
             setToken(null);
@@ -123,6 +124,7 @@ function App() {
 
   return (
     <div className="App" style={layoutStyle}>
+      <ToastContainer />
       <Header />
       {isTokenExpired && (
         <div

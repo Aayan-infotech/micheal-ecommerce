@@ -6,11 +6,12 @@ function StoreBeautyProd() {
   const [product, setProduct] = useState({});
 
   const storeProducts = JSON.parse(sessionStorage.getItem("selectProduct"));
+
   useEffect(() => {
     const fetchProd = async () => {
       try {
         const response = await fetch(
-          `https://ecom.atulrajput.tech/api/product/get/${storeProducts._id}`
+          `http://54.236.98.193:3129/api/product/get/${storeProducts._id}`
         );
         const data = await response.json();
         setProduct(data.data);

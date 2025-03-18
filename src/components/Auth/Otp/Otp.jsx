@@ -25,7 +25,7 @@ function Otp() {
     e.preventDefault();
     const otpValue = otp.join('');
     try {
-      const response = await axios.post('https://ecom.atulrajput.tech/api/auth/verifyOTP', { otp: otpValue });
+      const response = await axios.post('http://54.236.98.193:3129/api/auth/verifyOTP', { otp: otpValue });
       if (response.data.success) {
         // Store the token and redirect or handle as needed
         localStorage.setItem('token', response.data.token);

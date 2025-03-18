@@ -9,7 +9,6 @@ function FrozenFoodCarousel({ categoryType }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { categoryData } = location.state || {};
-  console.log(categoryData, 'categoryData---')
 
   useEffect(() => {
     if (categoryType.length > 0) {
@@ -20,7 +19,7 @@ function FrozenFoodCarousel({ categoryType }) {
 
   const fetchProducts = async (categoryId) => {
     try {
-      const response = await axios.get(`https://ecom.atulrajput.tech/api/product/categoryproducts/${categoryId}`);
+      const response = await axios.get(`http://54.236.98.193:3129/api/product/categoryproducts/${categoryId}`);
       setProduct(response?.data?.data);
     } catch (error) {
       console.error('Error fetching products:', error);

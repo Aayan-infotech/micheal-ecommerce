@@ -13,7 +13,7 @@ function PasswordRecovery() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://ecom.atulrajput.tech/api/auth/send-email",
+        "http://54.236.98.193:3129/api/auth/send-email",
         { email }
       );
       if (response.data.success) {

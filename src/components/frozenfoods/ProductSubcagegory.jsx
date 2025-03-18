@@ -22,7 +22,7 @@ export const ProductSubcagegory = () => {
   const fetchSubCategoriesProduct = async () => {
     try {
       const response = await axios.get(
-        `https://ecom.atulrajput.tech/api/product/subcategory/${subCatId}`
+        `http://54.236.98.193:3129/api/product/subcategory/${subCatId}`
       );
       setSubCategoryProducts(response?.data?.data);
     } catch (err) {

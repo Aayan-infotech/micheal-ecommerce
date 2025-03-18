@@ -35,7 +35,7 @@ function Carsouelsection({ categoriesProduct }) {
   const fetchFavorites = async () => {
     try {
       const response = await axios.get(
-        `https://ecom.atulrajput.tech/api/favorite/get/${userId}`
+        `http://54.236.98.193:3129/api/favorite/get/${userId}`
       );
       const favoriteProducts = response?.data?.data?.products.map(
         (product) => product._id
@@ -50,7 +50,7 @@ function Carsouelsection({ categoriesProduct }) {
     try {
       setLoadingFavoriteId(productId);
       const response = await axios.post(
-        "https://ecom.atulrajput.tech/api/favorite/add",
+        "http://54.236.98.193:3129/api/favorite/add",
         {
           userId: userId,
           productId: productId,
@@ -72,7 +72,6 @@ function Carsouelsection({ categoriesProduct }) {
           autoClose: 2000,
         });
       } else {
-        console.log("something went wrong", error);
         toast.error("An error occurred, please try again later.", {
           autoClose: 2000,
         });

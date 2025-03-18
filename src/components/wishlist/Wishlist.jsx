@@ -14,7 +14,7 @@ function Wishlist() {
   const fetchFavorites = async () => {
     try {
       const response = await axios.get(
-        `https://ecom.atulrajput.tech/api/favorite/get/${userId}`
+        `http://54.236.98.193:3129/api/favorite/get/${userId}`
       );
       if (response.data.success && response.data.data.products.length > 0) {
         setWishlists(response.data.data.products);
@@ -39,7 +39,7 @@ function Wishlist() {
   const handleDelete = async (p_id) => {
     try {
       const response = await axios.delete(
-        `https://ecom.atulrajput.tech/api/favorite/delete`,
+        `http://54.236.98.193:3129/api/favorite/delete`,
         { data: { productId: p_id, userId: userId } }
       );
       const updateWishlists = wishlists.filter((item) => item._id !== p_id);
@@ -49,7 +49,6 @@ function Wishlist() {
       });
       fetchFavorites();
     } catch (error) {
-      console.log("Error deleting favorite", error);
       toast.error("Failed to delete the item. Please try again.", {
         autoClose: 1000,
       });

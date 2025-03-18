@@ -18,8 +18,7 @@ function BeautyFoodCarsouel({categoryType}) {
 
   const fetchProducts = async (categoryId) => {
     try {
-      const response = await axios.get(`https://ecom.atulrajput.tech/api/product/categoryproducts/${categoryId}`);
-      console.log(response?.data?.data, '--------beatury food')
+      const response = await axios.get(`http://54.236.98.193:3129/api/product/categoryproducts/${categoryId}`);
       setProduct(response.data?.data);
     } catch (error) {
       console.error('Error fetching products:', error);

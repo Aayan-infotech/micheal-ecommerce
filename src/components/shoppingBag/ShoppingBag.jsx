@@ -44,14 +44,13 @@ function ShoppingBag() {
     }
     try {
       const response = await axios.put(
-        "https://ecom.atulrajput.tech/api/cart/change",
+        "http://54.236.98.193:3129/api/cart/change",
         {
           productId: productId,
           operation: action,
           userId: userId,
         }
       );
-      console.log(response.data, 'response.data');
       if (response.data.success) {
         setQuantities((prevQuantities) => {
           const updatedQuantity = action === "increase" ? prevQuantities[productId] + 1 : prevQuantities[productId] - 1;

@@ -20,7 +20,7 @@ function Home() {
     setLoading(true);
     try {
       const response = await axios.get(
-        "https://www.millysshop.se/api/product/getall"
+        "http://192.168.1.12:3129/api/product/getall?webView=true"
       );
       setAllProducts(response?.data?.data || []);
     } catch (error) {
@@ -38,7 +38,7 @@ function Home() {
   const fetchAllCategoriesType = async () => {
     try {
       const response = await axios.get(
-        "https://ecom.atulrajput.tech/api/category/get"
+        "http://54.236.98.193:3129/api/category/get"
       );
       setCategoryType(response?.data?.data);
       setLoading(false);
@@ -114,91 +114,97 @@ function Home() {
               </div>
             </div>
           </div>
-          <div className="carousel-container">
-            <h1 className="highlights-heading">All Products</h1>
-            {allProducts?.length > 0 ? (
-              <Carousel
-                showArrows={true}
-                infiniteLoop={true}
-                showThumbs={false}
-                showStatus={false}
-                autoPlay={true}
-                interval={3000}
-                centerMode={true}
-                centerSlidePercentage={33.33}
-                showIndicators={false}
-                renderArrowPrev={(onClickHandler, hasPrev, label) =>
-                  hasPrev && (
-                    <button
-                      type="button"
-                      className="carousel-arrow prev"
-                      onClick={onClickHandler}
-                      title={label}
-                    >
-                      &lt;
-                    </button>
-                  )
-                }
-                renderArrowNext={(onClickHandler, hasNext, label) =>
-                  hasNext && (
-                    <button
-                      type="button"
-                      className="carousel-arrow next"
-                      onClick={onClickHandler}
-                      title={label}
-                    >
-                      &gt;
-                    </button>
-                  )
-                }
-              >
-                {allProducts?.map((product, index) => (
-                  <div
-                    key={index}
-                    className="carousel-slide"
-                    onClick={() => handleClick(product?._id)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <img
-                      className="carousel-img"
-                      src={product?.image || blankImage}
-                      alt={product?.name}
-                    />
-                    <div className="carousel-text">
-                      <h2 className="legend3">{product?.name}</h2>
-                      <div className="carousel-infos">
-                        <p className="legend4">{product?.description}</p>
-                        <p className="legend5">
-                          <span className="actual-price">
-                            ${product?.price.toFixed(2)}
-                          </span>
-                          {product?.discount > 0 && (
-                            <span className="discounted-price">
-                              $
-                              {(
-                                product?.price *
-                                (1 - product?.discount / 100)
-                              ).toFixed(2)}
-                            </span>
-                          )}
-                        </p>
-                        {product?.discount > 0 && (
-                          <p className="legend6">
-                            <span className="price">
-                              ${product?.price.toFixed(2)}
-                            </span>
-                            <span>{product?.discount}% Off</span>
-                          </p>
-                        )}
+          {allProducts?.filter((product) => product?.stock > 0)?.length > 0 ? (
+            <div className="carousel-container">
+              <h1 className="highlights-heading">All Products</h1>
+              {allProducts?.length > 0 ? (
+                <Carousel
+                  showArrows={true}
+                  infiniteLoop={true}
+                  showThumbs={false}
+                  showStatus={false}
+                  autoPlay={true}
+                  interval={3000}
+                  centerMode={true}
+                  centerSlidePercentage={33.33}
+                  showIndicators={false}
+                  renderArrowPrev={(onClickHandler, hasPrev, label) =>
+                    hasPrev && (
+                      <button
+                        type="button"
+                        className="carousel-arrow prev"
+                        onClick={onClickHandler}
+                        title={label}
+                      >
+                        &lt;
+                      </button>
+                    )
+                  }
+                  renderArrowNext={(onClickHandler, hasNext, label) =>
+                    hasNext && (
+                      <button
+                        type="button"
+                        className="carousel-arrow next"
+                        onClick={onClickHandler}
+                        title={label}
+                      >
+                        &gt;
+                      </button>
+                    )
+                  }
+                >
+                  {allProducts
+                    ?.filter((product) => product?.stock > 0)
+                    .map((product, index) => (
+                      <div
+                        key={index}
+                        className="carousel-slide"
+                        onClick={() => handleClick(product?._id)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        <img
+                          className="carousel-img"
+                          src={product?.image || blankImage}
+                          alt={product?.name}
+                        />
+                        <div className="carousel-text">
+                          <h2 className="legend3">{product?.name}</h2>
+                          <div className="carousel-infos">
+                            <p className="legend4">{product?.description}</p>
+                            <p className="legend5">
+                              <span className="actual-price">
+                                ${product?.price.toFixed(2)}
+                              </span>
+                              {product?.discount > 0 && (
+                                <span className="discounted-price">
+                                  $
+                                  {(
+                                    product?.price *
+                                    (1 - product?.discount / 100)
+                                  ).toFixed(2)}
+                                </span>
+                              )}
+                            </p>
+                            {product?.discount > 0 && (
+                              <p className="legend6">
+                                <span className="price">
+                                  ${product?.price.toFixed(2)}
+                                </span>
+                                <span>{product?.discount}% Off</span>
+                              </p>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                ))}
-              </Carousel>
-            ) : (
-              <p>No products available</p>
-            )}
-          </div>
+                    ))}
+                </Carousel>
+              ) : (
+                <p>No products available</p>
+              )}
+            </div>
+          ) : (
+            <p>No products available</p>
+          )}
         </>
       )}
     </div>
