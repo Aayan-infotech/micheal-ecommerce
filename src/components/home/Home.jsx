@@ -20,7 +20,7 @@ function Home() {
     setLoading(true);
     try {
       const response = await axios.get(
-        "http://192.168.1.12:3129/api/product/getall?webView=true"
+        "http://54.236.98.193:3129/api/product/getall?webView=true"
       );
       setAllProducts(response?.data?.data || []);
     } catch (error) {
