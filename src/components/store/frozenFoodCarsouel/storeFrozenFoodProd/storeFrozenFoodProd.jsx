@@ -68,8 +68,7 @@ function StoreFrozenFoodProd() {
           "http://54.236.98.193:3129/api/cart/add",
           {
             userId,
-            productId: product._id,
-            quantity,
+            products: [{ productId: product._id, quantity: quantity }],
           }
         );
 
