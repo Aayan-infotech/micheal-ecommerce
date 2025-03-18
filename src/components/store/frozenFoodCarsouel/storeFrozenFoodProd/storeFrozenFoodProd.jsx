@@ -132,7 +132,11 @@ function StoreFrozenFoodProd() {
                       onClick={handleAddToCart}
                       disabled={btnLoading}
                     >
-                      {btnLoading ? "Adding..." : "Add To Cart"}
+                      {btnLoading ? (
+                        <i className="bx bx-loader bx-spin"></i>
+                      ) : (
+                        "Add To Cart"
+                      )}
                     </button>
                   </div>
                 </div>

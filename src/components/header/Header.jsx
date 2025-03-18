@@ -36,7 +36,6 @@ function Header() {
       }
     };
     window.addEventListener("storage", handleStorageChange);
-
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
@@ -101,12 +100,19 @@ function Header() {
           </div>
         </div>
         <div className="nav-actions">
+          <Link to="/searchitems" className="link-text" style={{marginRight:"10px"}}>
+            <button className="cart-button">
+              <i className="bx bx-search"></i>
+            </button>
+          </Link>
+
           <Link to="/cart" className="link-text">
             <button className="cart-button">
               <i className="bx bx-cart-alt"></i>
               {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
             </button>
           </Link>
+
           {isLoggedIn ? (
             <>
               <button className="signin-button" onClick={handleLogout}>
@@ -150,9 +156,9 @@ function Header() {
                 <Link to="/wishlist">
                   <i className="bx bx-heart"></i> Wishlist Page
                 </Link>
-                <Link to="/searchitems">
+                {/* <Link to="/searchitems">
                   <i className="bx bx-search"></i> Search
-                </Link>
+                </Link> */}
                 <Link to="/notification">
                   <i className="bx bx-bell"></i> Notification
                 </Link>

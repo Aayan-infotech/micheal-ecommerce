@@ -54,8 +54,6 @@ function Login() {
             })),
           };
 
-          console.log(cartPayload, "cartPayload");
-
           await axios.post(
             "http://54.236.98.193:3129/api/cart/add",
             cartPayload,
@@ -101,7 +99,7 @@ function Login() {
               <form className="login-form" onSubmit={handleSubmit}>
                 <div className="l-form">
                   <label>
-                    <h4>Email/Mobile Number</h4>
+                    <h4>Email</h4>
                     <input
                       type="text"
                       name="emailOrUsername"

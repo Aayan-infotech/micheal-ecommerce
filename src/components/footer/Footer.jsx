@@ -28,17 +28,6 @@ function Footer() {
               <Link style={{textDecoration:"none"}} to="/refund-policy"><h4 className="nav-links-url">Refund Policy</h4></Link>
             </div>
           </div>
-          {/* <div className="footer__social">
-            <h2 className="footer__title">Nav Links</h2>
-            <div className="footer__icons">
-              <Link to="./home" className="footer__social-link">Home</Link>
-              <Link to="./store" className="footer__social-link">Store</Link>
-              <Link to="./aboutus" className="footer__social-link">About Us</Link>
-              <Link to="./contactus" className="footer__social-link">Contact Us</Link>
-              <Link to="/privacy-policy" className="footer__social-link">Privacy Policy</Link>
-              <Link to="/terms-conditions" className="footer__social-link">Terms & Conditions</Link>
-            </div>
-          </div> */}
         </div>
       </div>
     </div>

@@ -68,12 +68,13 @@ function App() {
         const decodedToken = jwtDecode(token);
         const currentTime = Math.floor(Date.now() / 1000);
         if (decodedToken.exp < currentTime) {
-          console.log("Token has expired.");
           setIsTokenExpired(true);
           sessionStorage.removeItem("token");
           setToken(null);
         } else {
-          console.log("Token is still valid.");
+          toast.error("Token is still valid.", {
+            autoClose: 2000,
+          });
         }
       } catch (error) {
         console.error("Invalid token format:", error.message);
@@ -91,7 +92,6 @@ function App() {
           const currentTime = Math.floor(Date.now() / 1000);
 
           if (decodedToken.exp < currentTime) {
-            console.log("Token has expired.");
             setIsTokenExpired(true);
             sessionStorage.removeItem("token");
             setToken(null);

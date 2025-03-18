@@ -13,6 +13,7 @@
   width: 640px;
 }
 
+
 .second-store {
   display: flex;
   justify-content: center;
@@ -86,25 +87,28 @@
   }
 }
 
-@media screen and (max-width: 768px) {
-}
+@media screen and (max-width: 768px) {}
 
 @media screen and (max-width: 576px) {
+
   .second-store .food-store,
   .second-store .products-store {
     height: 200px;
     width: 380px;
     overflow: visible;
   }
+
   .products-store {
     margin: 150px 0;
   }
+
   .second-store .sec-store-img {
     height: 250px;
     width: 330px;
     border-radius: 20px;
     margin-top: 60px;
   }
+
   .second-store h2,
   .second-store p {
     color: black;
@@ -124,25 +128,30 @@
   .second-store .frozen {
     margin-right: 0px;
   }
+
   .products-store h2 {
     margin-right: 0px;
   }
 }
 
 @media screen and (max-width: 350px) {
+
   .second-store .food-store .food-sec,
   .second-store .products-store .products-sec {
     height: 150px;
   }
+
   .second-store .food-store,
   .second-store .products-store {
     height: 100px;
     width: 200px;
     overflow: visible;
   }
+
   .products-store {
     margin: 150px 0;
   }
+
   .second-store .sec-store-img {
     height: 150px;
     width: 170px;

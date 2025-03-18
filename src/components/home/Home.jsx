@@ -59,7 +59,6 @@ function Home() {
   );
 
   const handleNavigation = (category) => {
-    console.log(category, "category");
     if (category?.title?.includes("Dry Foods")) {
       navigate("/dryfoods/frozenfoods", { state: { categoryData: category } });
     } else {

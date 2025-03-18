@@ -18,14 +18,12 @@ function FrozenfoodsCarousel() {
     const userId = sessionStorage.getItem("userId");
 
     const { items: allProducts } = useSelector((state) => state.cart);
-    // console.log(allProducts, 'allProducts');
 
     useEffect(() => {
         const fetchProductDetails = async () => {
             try {
                 const response = await axios.get(`https://ecom.atulrajput.tech/api/product/get/${productId}`);
                 setProduct(response?.data?.data);
-                console.log(response?.data?.data, 'response?.data?.data');
                 setLoading(false);
             } catch (err) {
                 setError('Error fetching product details');

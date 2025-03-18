@@ -10,8 +10,8 @@ function Register() {
   const [formData, setFormData] = useState({
     fullName: "",
     emailOrMobile: "",
-    age: "",
-    gender: "",
+    // age: "",
+    // gender: "",
     password: "",
     confirmPassword: "",
   });
@@ -28,10 +28,10 @@ function Register() {
       newErrors.emailOrMobile = fieldValues.emailOrMobile
         ? ""
         : "Please fill the email or mobile number";
-    if ("age" in fieldValues)
-      newErrors.age = fieldValues.age ? "" : "Please fill the age";
-    if ("gender" in fieldValues)
-      newErrors.gender = fieldValues.gender ? "" : "Please select the gender";
+    // if ("age" in fieldValues)
+    //   newErrors.age = fieldValues.age ? "" : "Please fill the age";
+    // if ("gender" in fieldValues)
+    //   newErrors.gender = fieldValues.gender ? "" : "Please select the gender";
     if ("password" in fieldValues)
       newErrors.password = fieldValues.password
         ? ""
@@ -123,7 +123,7 @@ function Register() {
                 {errors.fullName && <p className="error">{errors.fullName}</p>}
               </label>
               <label>
-                <h4>Email/Mobile Number</h4>
+                <h4>Email</h4>
                 <input
                   type="text"
                   name="emailOrMobile"
@@ -135,7 +135,7 @@ function Register() {
                   <p className="error">{errors.emailOrMobile}</p>
                 )}
               </label>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label>
                   <h4>Age</h4>
                   <input
@@ -161,7 +161,7 @@ function Register() {
                   </select>
                   {errors.gender && <p className="error">{errors.gender}</p>}
                 </label>
-              </div>
+              </div> */}
               <label>
                 <h4>Password</h4>
                 <input

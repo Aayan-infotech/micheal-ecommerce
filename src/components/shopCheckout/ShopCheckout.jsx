@@ -115,7 +115,6 @@ function ShopCheckout() {
       },
     });
   };
-  
 
   return (
     <>
@@ -240,7 +239,7 @@ function ShopCheckout() {
                   <button
                     onClick={handleToProceedCheckout}
                     className="slot-button"
-                    disabled={!selectedAddressId || !selectedTimePeriod}
+                    // disabled={!selectedAddressId || !selectedTimePeriod}
                   >
                     Proceed To Payment
                   </button>

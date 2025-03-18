@@ -16,7 +16,6 @@ function Wishlist() {
       const response = await axios.get(
         `https://ecom.atulrajput.tech/api/favorite/get/${userId}`
       );
-      console.log(response?.data?.data, "abinash");
       if (response.data.success && response.data.data.products.length > 0) {
         setWishlists(response.data.data.products);
         setError(null); // Clear any previous error
@@ -30,7 +29,6 @@ function Wishlist() {
       setError(
         error?.response?.data?.message || "Failed to fetch wishlist items!"
       );
-      console.log("Error fetching favorites", error?.response?.data);
     }
   };
 

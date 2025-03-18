@@ -34,9 +34,9 @@ function PasswordRecovery() {
     <div className="passwordrecovery">
       <div className="container pass-contain">
         <h1 className="sign">Password Recovery</h1>
-        <p className="pass">
+        <p className="" style={{ color: "white" }}>
           Discover premium cosmetics and high-quality dry & frozen foods, all in
-          one place
+          one place.
         </p>
         <div className="form">
           <form className="pass-form" onSubmit={handleSubmit}>

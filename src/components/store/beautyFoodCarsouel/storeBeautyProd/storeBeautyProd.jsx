@@ -6,8 +6,6 @@ function StoreBeautyProd() {
   const [product, setProduct] = useState({});
 
   const storeProducts = JSON.parse(sessionStorage.getItem("selectProduct"));
-  // console.log(storeProducts._id);
-
   useEffect(() => {
     const fetchProd = async () => {
       try {
@@ -15,7 +13,6 @@ function StoreBeautyProd() {
           `https://ecom.atulrajput.tech/api/product/get/${storeProducts._id}`
         );
         const data = await response.json();
-        console.log(data?.data, 'particular product')
         setProduct(data.data);
       } catch (error) {
         console.error("Error fetching products:", error);

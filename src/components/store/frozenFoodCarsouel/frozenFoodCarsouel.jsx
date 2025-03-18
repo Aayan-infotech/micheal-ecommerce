@@ -9,6 +9,7 @@ function FrozenFoodCarousel({ categoryType }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { categoryData } = location.state || {};
+  console.log(categoryData, 'categoryData---')
 
   useEffect(() => {
     if (categoryType.length > 0) {

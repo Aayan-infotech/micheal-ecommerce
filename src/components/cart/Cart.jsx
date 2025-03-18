@@ -18,7 +18,6 @@ function Cart() {
   const token = sessionStorage.getItem("token");
   const userId = sessionStorage.getItem("userId");
   const [localCart, setLocalCart] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
