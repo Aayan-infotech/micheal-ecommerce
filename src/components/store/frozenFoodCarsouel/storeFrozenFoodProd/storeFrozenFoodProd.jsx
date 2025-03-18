@@ -4,7 +4,6 @@ import "./storeFrozenFoodProd.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import addToCart from "../../../redux/addToCart";
 import { useDispatch } from "react-redux";
 
 function StoreFrozenFoodProd() {

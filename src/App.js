@@ -46,8 +46,6 @@ import RefundPolicy from "./components/content/RefundPolicy";
 import { useDispatch } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 
-// import ProtectedRoute from './ProtectedRoute';
-
 function App() {
   const location = useLocation();
   const [isTokenExpired, setIsTokenExpired] = useState(false);
