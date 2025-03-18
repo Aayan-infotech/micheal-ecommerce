@@ -3,11 +3,11 @@ pipeline {
 
     environment {
         IMAGE_NAME = "docker.io/aayanindia/trade-hunter-backend"
-        CONTAINER_PORT = "7777"
-        HOST_PORT = "7777"
+        CONTAINER_PORT = "2874"
+        HOST_PORT = "80"
         DOCKER_HUB_USERNAME = credentials('docker-hub-username')
         DOCKER_HUB_PASSWORD = credentials('docker-hub-password')
-        EMAIL_RECIPIENTS = "rishabh.sharma@aayaninfotech.com"
+        EMAIL_RECIPIENTS = "abinash.sinha@aayaninfotech.com"
         SONARTOKEN = credentials('sonartoken') // Securely use stored token
     }
 
@@ -188,7 +188,7 @@ pipeline {
                     """,
                     to: "${EMAIL_RECIPIENTS}",
                     from: "development.aayanindia@gmail.com",
-                    replyTo: "atul.rajput@aayaninfotech.com",
+                    replyTo: "abinash.sinha@aayaninfotech.com",
                     mimeType: 'text/html'
                 )
             }
