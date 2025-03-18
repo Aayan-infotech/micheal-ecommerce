@@ -114,7 +114,7 @@ function Beautyproduct() {
           "http://54.236.98.193:3129/api/cart/add",
           {
             userId,
-            products: [{ productId: product._id, quantity: quantity }],
+            products: [{ productId: product._id, quantity: quantity }]
           }
         );
 
