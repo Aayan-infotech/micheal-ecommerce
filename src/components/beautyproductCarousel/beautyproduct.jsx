@@ -29,55 +29,118 @@ function Beautyproduct() {
       } catch (err) {
         setError("Error fetching product details");
         setLoading(false);
-        console.error("Error fetching product details:", err);
       }
     };
     fetchProductDetails();
   }, [productId]);
 
   // Function to handle add to cart action
+  // const handleAddToCart = async (e) => {
+  //   e.preventDefault();
+  //   setBtnLoading(true);
+  //   try {
+  //     if (!userId) {
+  //       toast.error("Please log in to add products to your cart.", {
+  //         autoClose: 1000,
+  //       });
+  //       setBtnLoading(false);
+  //       return;
+  //     }
+  //     if (product && product._id) {
+  //       const response = await dispatch(
+  //         addToCart({ userId, productId: product._id, quantity })
+  //       );
+  //       if (response?.payload?.success) {
+  //         toast.success(
+  //           response?.payload?.message || "Product Added Successfully!",
+  //           {
+  //             autoClose: 1000,
+  //           }
+  //         );
+  //       } else {
+  //         toast.error(
+  //           response?.payload?.message || "Failed to add product to cart.",
+  //           {
+  //             autoClose: 1000,
+  //           }
+  //         );
+  //       }
+  //     } else {
+  //       toast.error("Product details not available.", {
+  //         autoClose: 1000,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     toast.error("An error occurred. Please try again.", {
+  //       autoClose: 1000,
+  //     });
+  //   } finally {
+  //     setBtnLoading(false);
+  //   }
+  // };
+
   const handleAddToCart = async (e) => {
     e.preventDefault();
     setBtnLoading(true);
     try {
       if (!userId) {
-        toast.error("Please log in to add products to your cart.", {
-          autoClose: 1000,
-        });
-        setBtnLoading(false);
+        let localCart = JSON.parse(localStorage.getItem("cart")) || [];
+        const existingProductIndex = localCart.findIndex(
+          (item) => item.productId === product._id
+        );
+
+        if (existingProductIndex !== -1) {
+          localCart[existingProductIndex].quantity += quantity;
+        } else {
+          localCart.push({
+            productId: product._id,
+            name: product.name,
+            price: product.price,
+            quantity: quantity,
+            image: product.image,
+          });
+        }
+        localStorage.setItem("cart", JSON.stringify(localCart));
+        toast.success("Added to cart (Saved Locally)", { autoClose: 1000 });
+        setTimeout(() => {
+          setBtnLoading(false);
+          window.location.reload();
+        }, 500);
         return;
       }
+
       if (product && product._id) {
-        const response = await dispatch(
-          addToCart({ userId, productId: product._id, quantity })
+        const response = await axios.post(
+          "http://54.236.98.193:3129/api/cart/add",
+          {
+            userId,
+            productId: product._id,
+            quantity,
+          }
         );
-        if (response?.payload?.success) {
+
+        if (response.data.success) {
           toast.success(
-            response?.payload?.message || "Product Added Successfully!",
+            response.data.message || "Product Added Successfully!",
             {
               autoClose: 1000,
             }
           );
         } else {
           toast.error(
-            response?.payload?.message || "Failed to add product to cart.",
+            response.data.message || "Failed to add product to cart.",
             {
               autoClose: 1000,
             }
           );
         }
       } else {
-        toast.error("Product details not available.", {
-          autoClose: 1000,
-        });
+        toast.error("Product details not available.", { autoClose: 1000 });
       }
     } catch (error) {
-      toast.error("An error occurred. Please try again.", {
-        autoClose: 1000,
-      });
-    } finally {
-      setBtnLoading(false);
+      toast.error("An error occurred. Please try again.", { autoClose: 1000 });
     }
+    setBtnLoading(false);
   };
 
   return (
@@ -118,30 +181,17 @@ function Beautyproduct() {
                         onClick={handleAddToCart}
                         disabled={btnLoading}
                       >
-                        {btnLoading ? "Adding..." : "Add To Cart"}
+                        {btnLoading ? (
+                          <i className="bx bx-loader bx-spin"></i>
+                        ) : (
+                          "Add To Cart"
+                        )}
                       </button>
                     </div>
                   </div>
                   <h2 className="cart-head">Price: ${product?.price}</h2>
                 </div>
               </div>
-              {/* <div className="cart-about">
-                                <h2 className="cart-head">{product?.name}</h2>
-                                <p className="cart-about-summary">{product?.description}</p>
-                            </div>
-                            <div className="cart-links">
-                                <h2 className="cart-head">Additional Information</h2>
-                                <div className="cart-links-info">
-                                    <p className="cart-links-first">
-                                        Category: {product?.category}
-                                    </p>
-                                    <h2 className="cart-head">Subcategory: {product?.subcategory}</h2>
-                                    <p className="cart-links-second">
-                                        Stock: {product?.stock} available
-                                    </p>
-                                    <h2 className="cart-head">Price: ${product?.price}</h2>
-                                </div>
-                            </div> */}
             </>
           ) : (
             <div>No product found.</div>

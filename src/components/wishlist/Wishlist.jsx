@@ -8,50 +8,74 @@ import Loading from "../loader/Loading";
 function Wishlist() {
   const [wishlists, setWishlists] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); // New state for error handling
+  const [error, setError] = useState(null);
   const userId = sessionStorage.getItem("userId");
 
-  const fetchFavorites = async () => {
+  useEffect(() => {
+    if (userId) {
+      fetchFavoritesFromAPI();
+    } else {
+      fetchFavoritesFromLocalStorage();
+    }
+  }, [userId]);
+
+  // 🔹 API se favorites fetch karega agar user logged in hai
+  const fetchFavoritesFromAPI = async () => {
     try {
       const response = await axios.get(
         `http://54.236.98.193:3129/api/favorite/get/${userId}`
       );
       if (response.data.success && response.data.data.products.length > 0) {
         setWishlists(response.data.data.products);
-        setError(null); // Clear any previous error
+        setError(null);
       } else {
         setWishlists([]);
-        setError(response.data.message || "No favorites found!");
+        setError("No favorites found!");
       }
-      setLoading(false);
     } catch (error) {
+      setError("Failed to fetch wishlist items!");
+    } finally {
       setLoading(false);
-      setError(
-        error?.response?.data?.message || "Failed to fetch wishlist items!"
-      );
     }
   };
 
-  useEffect(() => {
-    fetchFavorites();
-  }, [userId]);
+  // 🔹 localStorage se favorites fetch karega agar user logged in nahi hai
+  const fetchFavoritesFromLocalStorage = () => {
+    const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    if (storedFavorites.length > 0) {
+      setWishlists(storedFavorites);
+      setError(null);
+    } else {
+      setWishlists([]);
+      setError("No favorites found!");
+    }
+    setLoading(false);
+  };
 
+  // 🔹 Delete function (API ke liye)
   const handleDelete = async (p_id) => {
-    try {
-      const response = await axios.delete(
-        `http://54.236.98.193:3129/api/favorite/delete`,
-        { data: { productId: p_id, userId: userId } }
-      );
-      const updateWishlists = wishlists.filter((item) => item._id !== p_id);
-      setWishlists(updateWishlists);
-      toast.success(response?.data?.message || "Deleted successfully!", {
-        autoClose: 1000,
-      });
-      fetchFavorites();
-    } catch (error) {
-      toast.error("Failed to delete the item. Please try again.", {
-        autoClose: 1000,
-      });
+    if (userId) {
+      try {
+        const response = await axios.delete(
+          `http://54.236.98.193:3129/api/favorite/delete`,
+          { data: { productId: p_id, userId: userId } }
+        );
+        setWishlists((prev) => prev.filter((item) => item._id !== p_id));
+        toast.success(response?.data?.message || "Deleted successfully!", {
+          autoClose: 1000,
+        });
+      } catch (error) {
+        toast.error("Failed to delete the item. Please try again.", {
+          autoClose: 1000,
+        });
+      }
+    } else {
+      // 🔹 localStorage se delete karega agar user logged in nahi hai
+      let storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+      storedFavorites = storedFavorites.filter((item) => item._id !== p_id);
+      localStorage.setItem("favorites", JSON.stringify(storedFavorites));
+      setWishlists(storedFavorites);
+      toast.success("Removed from favorites!", { autoClose: 1000 });
     }
   };
 
@@ -67,7 +91,12 @@ function Wishlist() {
             {loading ? (
               <Loading />
             ) : error ? (
-              <h3 className="no-data-message fw-bold" style={{color:"white"}}>{error}</h3>
+              <h3
+                className="no-data-message fw-bold"
+                style={{ color: "white" }}
+              >
+                {error}
+              </h3>
             ) : wishlists.length === 0 ? (
               <p className="no-data-message">Your wishlist is empty!</p>
             ) : (
