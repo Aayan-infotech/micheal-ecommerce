@@ -24,7 +24,7 @@ function SearchItems() {
         setIsFirstLoad(false);
         try {
           const res = await axios.post(
-            "http://54.236.98.193:3129/api/product/search",
+            "http://3.223.253.106:3129/api/product/search",
             { name: debouncedQuery }
           );
 

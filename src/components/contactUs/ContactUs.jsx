@@ -69,7 +69,7 @@ function ContactUs() {
           dataToSubmit.mobileNumber = formData.email;
         }
         const response = await axios.post(
-          "http://54.236.98.193:3129/api/contact/contactUs",
+          "http://3.223.253.106:3129/api/contact/contactUs",
           dataToSubmit
         );
         toast.success(response?.data?.message || "Message sent successfully!", {

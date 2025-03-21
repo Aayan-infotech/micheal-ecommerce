@@ -20,7 +20,7 @@ function Home() {
     setLoading(true);
     try {
       const response = await axios.get(
-        "http://54.236.98.193:3129/api/product/getall?webView=true"
+        "http://3.223.253.106:3129/api/product/getall?webView=true"
       );
       setAllProducts(response?.data?.data || []);
     } catch (error) {
@@ -38,7 +38,7 @@ function Home() {
   const fetchAllCategoriesType = async () => {
     try {
       const response = await axios.get(
-        "http://54.236.98.193:3129/api/category/get"
+        "http://3.223.253.106:3129/api/category/get"
       );
       setCategoryType(response?.data?.data);
       setLoading(false);

@@ -19,7 +19,7 @@ function Store() {
   const fetchAllCategoriesType = async () => {
     try {
       const response = await axios.get(
-        "http://54.236.98.193:3129/api/category/get"
+        "http://3.223.253.106:3129/api/category/get"
       );
       setTitle(response?.data?.message);
       setCategoryType(response?.data?.data);

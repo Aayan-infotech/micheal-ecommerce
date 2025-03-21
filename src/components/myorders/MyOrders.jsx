@@ -16,7 +16,7 @@ function MyOrders() {
     const fetchOrderHistory = async () => {
       try {
         const response = await axios.get(
-          `http://54.236.98.193:3129/api/product/order-history/${userId}`
+          `http://3.223.253.106:3129/api/product/order-history/${userId}`
         );
         if (response.data.success) {
           setOrderHistory(response.data.data);

@@ -23,7 +23,7 @@ function Wishlist() {
   const fetchFavoritesFromAPI = async () => {
     try {
       const response = await axios.get(
-        `http://54.236.98.193:3129/api/favorite/get/${userId}`
+        `http://3.223.253.106:3129/api/favorite/get/${userId}`
       );
       if (response.data.success && response.data.data.products.length > 0) {
         setWishlists(response.data.data.products);
@@ -57,7 +57,7 @@ function Wishlist() {
     if (userId) {
       try {
         const response = await axios.delete(
-          `http://54.236.98.193:3129/api/favorite/delete`,
+          `http://3.223.253.106:3129/api/favorite/delete`,
           { data: { productId: p_id, userId: userId } }
         );
         setWishlists((prev) => prev.filter((item) => item._id !== p_id));

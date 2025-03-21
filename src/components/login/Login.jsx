@@ -55,7 +55,7 @@ function Login() {
           };
 
           await axios.post(
-            "http://54.236.98.193:3129/api/cart/add",
+            "http://3.223.253.106:3129/api/cart/add",
             cartPayload,
             {
               headers: {

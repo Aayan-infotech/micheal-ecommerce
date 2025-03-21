@@ -18,7 +18,7 @@ function StoreFrozenFoodProd() {
   const fetchProd = async () => {
     try {
       const response = await axios.get(
-        `http://54.236.98.193:3129/api/product/get/${storeProId}`
+        `http://3.223.253.106:3129/api/product/get/${storeProId}`
       );
       setProduct(response?.data?.data);
       setLoading(false);
@@ -64,7 +64,7 @@ function StoreFrozenFoodProd() {
 
       if (product && product._id) {
         const response = await axios.post(
-          "http://54.236.98.193:3129/api/cart/add",
+          "http://3.223.253.106:3129/api/cart/add",
           {
             userId,
             products: [{ productId: product._id, quantity: quantity }]

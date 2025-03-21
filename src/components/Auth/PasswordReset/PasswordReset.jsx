@@ -23,7 +23,7 @@ function PasswordReset() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://54.236.98.193:3129/api/auth/reset-password",
+        "http://3.223.253.106:3129/api/auth/reset-password",
         { token, newPassword }
       );
       if (response.data.success) {

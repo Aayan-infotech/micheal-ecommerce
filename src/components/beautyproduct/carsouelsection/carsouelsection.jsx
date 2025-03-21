@@ -31,7 +31,7 @@ function Carsouelsection({ categoriesProduct }) {
   const fetchFavorites = async () => {
     try {
       const response = await axios.get(
-        `http://54.236.98.193:3129/api/favorite/get/${userId}`
+        `http://3.223.253.106:3129/api/favorite/get/${userId}`
       );
       console.log(response?.data, "sdkjhfkjdhf");
       const favoriteProducts = response?.data?.data?.products.map(
@@ -53,7 +53,7 @@ function Carsouelsection({ categoriesProduct }) {
   //   try {
   //     setLoadingFavoriteId(productId);
   //     const response = await axios.post(
-  //       "http://54.236.98.193:3129/api/favorite/add",
+  //       "http://3.223.253.106:3129/api/favorite/add",
   //       {
   //         userId: userId,
   //         productId: productId,
@@ -109,7 +109,7 @@ function Carsouelsection({ categoriesProduct }) {
       // API call only if user is logged in
       if (userId) {
         const response = await axios.post(
-          "http://54.236.98.193:3129/api/favorite/add",
+          "http://3.223.253.106:3129/api/favorite/add",
           {
             userId: userId,
             productId: product._id, // API ko sirf id bhejni hai

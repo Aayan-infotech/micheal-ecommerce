@@ -19,7 +19,7 @@ function Profile() {
   const fetchUserData = async () => {
     try {
       const response = await axios.get(
-        `http://54.236.98.193:3129/api/user/${userId}`
+        `http://3.223.253.106:3129/api/user/${userId}`
       );
       const userData = response.data;
 
@@ -46,7 +46,7 @@ function Profile() {
     setBtnLoading(true);
     try {
       const response = await axios.put(
-        `http://54.236.98.193:3129/api/user/edit/${userId}`,
+        `http://3.223.253.106:3129/api/user/edit/${userId}`,
         {
           mobileNumber: formData.mobileNumber,
           fullName: formData.fullName,

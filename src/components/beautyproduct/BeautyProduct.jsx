@@ -29,7 +29,7 @@ function BeautyProduct() {
   const fetchSubCategories = async () => {
     try {
       const response = await axios.get(
-        `http://54.236.98.193:3129/api/category/get/${storedCategoryId}`
+        `http://3.223.253.106:3129/api/category/get/${storedCategoryId}`
       );
       setSsbCategoryTitle(response?.data?.data?.title);
       setSubCategory(response?.data?.subcategories);
@@ -43,7 +43,7 @@ function BeautyProduct() {
   const fetchCategoriesProduct = async () => {
     try {
       const response = await axios.get(
-        `http://54.236.98.193:3129/api/product/categoryproducts/${storedCategoryId}`
+        `http://3.223.253.106:3129/api/product/categoryproducts/${storedCategoryId}`
       );
       setCategoriesProduct(response?.data?.data);
       setLoading(false);

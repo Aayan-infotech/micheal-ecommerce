@@ -44,7 +44,7 @@ function ShoppingBag() {
     }
     try {
       const response = await axios.put(
-        "http://54.236.98.193:3129/api/cart/change",
+        "http://3.223.253.106:3129/api/cart/change",
         {
           productId: productId,
           operation: action,
