@@ -25,7 +25,7 @@ pipeline {
                 script {
                     sh '''
                     echo "Running ESLint..."
-                    npm run lint || echo "⚠️ ESLint completed with errors, but continuing pipeline..."
+                    npm run lint || echo "⚠️ ESLint completed with errors, but continuing pipeline....."
                     '''
                 }
             }
