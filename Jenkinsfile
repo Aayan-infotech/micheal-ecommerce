@@ -2,12 +2,12 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "docker.io/aayanindia/trade-hunter-backend"
-        CONTAINER_PORT = "7777"
-        HOST_PORT = "7777"
+        IMAGE_NAME = "docker.io/aayanindia/michle-web"
+        CONTAINER_PORT = "4895"
+        HOST_PORT = "4895"
         DOCKER_HUB_USERNAME = credentials('docker-hub-username')
         DOCKER_HUB_PASSWORD = credentials('docker-hub-password')
-        EMAIL_RECIPIENTS = "rishabh.sharma@aayaninfotech.com"
+        EMAIL_RECIPIENTS = "abinash.singh@aayaninfotech.com"
         SONARTOKEN = credentials('sonartoken') // Securely use stored token
     }
 
@@ -25,7 +25,7 @@ pipeline {
                 script {
                     sh '''
                     echo "Running ESLint..."
-                    npm run lint || echo "⚠️ ESLint completed with errors, but continuing pipeline..."
+                    npm run lint || echo "⚠️ ESLint completed with errors, but continuing pipeline....."
                     '''
                 }
             }
@@ -188,7 +188,7 @@ pipeline {
                     """,
                     to: "${EMAIL_RECIPIENTS}",
                     from: "development.aayanindia@gmail.com",
-                    replyTo: "atul.rajput@aayaninfotech.com",
+                    replyTo: "abinash.aayan@aayaninfotech.com",
                     mimeType: 'text/html'
                 )
             }
