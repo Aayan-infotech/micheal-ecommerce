@@ -76,14 +76,6 @@ spec:
               cpu: "1000m"
               memory: "1024Mi"
 
-          # Probes Added Here!
-          startupProbe:
-            httpGet:
-              path: /healthz
-              port: 3129
-            failureThreshold: 10
-            periodSeconds: 3
-
           livenessProbe:
             httpGet:
               path: /healthz
@@ -97,7 +89,7 @@ spec:
             periodSeconds: 10
 
         - name: fluentd-sidecar
-          image: fluent/fluentd:v1.16.3
+          image: fluent/fluentd:v1.17.1-debian-1.1
           volumeMounts:
             - name: app-logs
               mountPath: "/var/log/app"
