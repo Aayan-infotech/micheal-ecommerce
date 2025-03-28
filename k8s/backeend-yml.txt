@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: micheal-back
-          image: amazingatul/ecom-backend:prodv1
+          image: amazingatul/ecom-backend:m3
           imagePullPolicy: Always  
           ports:
             - containerPort: 3129
